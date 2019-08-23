@@ -1,16 +1,17 @@
 # Linguagem de Programação Educacional PNP
 
-[![Versão: 0.0.1](https://img.shields.io/badge/version-0.0.1-brightgreen.svg) 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Versão: 0.0.1](https://img.shields.io/badge/version-0.0.1-brightgreen.svg) 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-PNP *is not* Pseudocode / PNP *não é* Pseudocódigo 
+*PNP is not Pseudocode*
 
 Especificação: PNP
+
 Versão: 0.1
+
 Status: Alpha
+
 Lançamento: Agosto 2019
-
-
 
 
 ## Introdução
@@ -287,4 +288,4 @@ Separador:
 
 ## Licença
 
-
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
