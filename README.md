@@ -3,6 +3,8 @@
 ![Versão: 0.0.1](https://img.shields.io/badge/version-0.0.1-brightgreen.svg) 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
+Acesse a [documentação completa](https://github.com/joaofouyer/PNP/blob/master/docs/README.md)
+
 *PNP is not Pseudocode*
 
 Especificação: PNP
@@ -12,9 +14,6 @@ Versão: 0.1
 Status: Alpha
 
 Lançamento: Agosto 2019
-
-
-## Introdução
 
 A linguagem de programação PNP (PNP *não é* Pseudocódigo, ou simplesmente PNP *is not* Pseudocode) é inspirada em Pseudocódigo. Originalmente, Pseudocódigo é uma linguagem informal de alto nível para descrever princípios e esboços de algoritmos. Devido a sua legibilidade, Pseudocódigo é amplamente utilizado no meio acadêmico, científico e para elaboração para documentação técnica, onde a compreensão do algoritmo é mais importante que a linguagem que será utilizada para a implementação.	
 
