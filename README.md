@@ -284,8 +284,13 @@ Separador:
 
 
 ## Autores
+
+Este projeto foi desenvolvido durante a disciplina de Compiladores na Universidade Católica
+de São Paulo pelos alunos
+
+- Emerson Lopes <emersonalveslopes@gmail.com >
+- Jefferson Lisboa <lisboa.jeff@gmail.com>
 - João Fouyer <jfouyer@gmail.com>
-
-## Licença
-
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+- João Oliveira <inorijoao@hotmail.com>
+- Mirella Medeiros <mirellamedeiros.09@hotmail.com>
+- Victor Rodrigues <victor.meca2015@gmail.com >
