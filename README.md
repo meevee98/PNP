@@ -33,59 +33,55 @@ Exemplo Olá Mundo em PNP:
 
 
 ```
-algoritmo saudar
-entrada 
-  caractere: saudacao
-saida
-  nulo
+procedimento saudar
+entrada
+  saudacao: string;
 inicio
-    escreva(saudação, ", mundo!")
+   frase: string;
+   frase <- saudacao + ", mundo!";
+   escreva(frase);
 fim
 
+procedimento principal
 
-vazio principal
-                         /* Quando não há entrada nem saída, o comando pode ser
-                            omitido */
 inicio
-  caractere: ciao
-  ciao <- "Olá"
-  saudar(ciao)
+  ciao: string;
+  ciao <- "Olá";
+  saudar(ciao);
 fim
-
 ```
 
 Para calcular a sequência de Fibonacci:
 
 ```
-algoritmo calcular_fib
-entrada 
-  inteiro: termo
-saida 
-  inteiro: j
-condicao
-  termo >= 0
+procedimento calcular_fib
+entrada
+ termo: inteiro;
+saida
+ j: inteiro;
+
 inicio
-  inteiro: i, k, t 
-  i <- 0
-  se termo = 0 entao
-    j <- 0
+  i, k, t: inteiro;
+  i <- 0;
+  se (termo = 0) entao
+    j <- 0;
   senao
-    j <- 1
-    para k de 1 ate termo faca
-      t <- i + j
-      i <- j
-      j <- t
+    j <- 1;
+    para k de 1 ate termo repita
+      t <- i + j;
+      i <- j;
+      j <- t;
     fim
   fim
 fim
 
-algoritmo principal
-saida 
-  nulo
+procedimento principal
 inicio
-  inteiro: n
-  calcular_fib(5, n)
-  escreva("O quinto termo da sequência de Fibonacci é: ", n)  
+  n: inteiro;
+  frase: string;
+  calcular_fib(5, n);
+  frase <- "O quinto termo da sequência de Fibonacci é: " + n;
+  escreva(frase);
 fim
 ```
 
