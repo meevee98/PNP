@@ -80,7 +80,7 @@ No exemplo que será utilizado a seguir, haverá apenas um procedimento, chamado
 procedimento principal
 inicio
     fahrenheit, celsius: inteiro;
-    saida: string;
+    resultado: string;
     fahrenheit <- 0;
     celsius <- 5 * (fahrenheit - 32) / 9;
     saida <- celsius;
@@ -89,7 +89,7 @@ inicio
 fim
 ```
 
-No começo deste procedimento, foram declaradas as variáveis *fahrenheit* e *celsius*, ambas do tipo inteiro. Posteriormente, foi realizada a declaração da variável saída, do tipo string.
+No começo deste procedimento, foram declaradas as variáveis *fahrenheit* e *celsius*, ambas do tipo inteiro. Posteriormente, foi realizada a declaração da variável `resultado`, do tipo string.
 
 A primeira instrução é a representação da fórmula de conversão de temperatura em Fahrenheit para Celsius. Em PNP, existem as seguintes expressões aritméticas disponíveis:
 

@@ -109,13 +109,13 @@ Um separador separa os tokens:
 
 ### Blocos
 
-### se ... então
+### se ... entao
 
-### enquanto ... faça
+### enquanto ... faca
 
-### repita ... até que
+### repita ... ate que
 
-### para ... de ... até ... repita
+### para ... de ... ate ... repita
 
 ## Procedimentos
 
