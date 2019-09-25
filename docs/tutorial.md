@@ -83,8 +83,7 @@ inicio
 	saida: string;
     fahrenheit <- 0;
     celsius <- 5 * (fahrenheit - 32) / 9;
-    saida <- celsius;
-    saida <- saida + " " + fahrenheit;
+    saida   <- celsius + " " + fahrenheit;
     escreva(saida);
 fim
 ```
@@ -130,8 +129,7 @@ inicio
     enquanto fahrenheit <= maior faça
     inicio
     	celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-    	saida <- celsius;
-    	saida <- saida + " " + fahrenheit;
+    	saida <- celsius + " " + fahrenheit;
     	escreva(saida);
         fahrenheit <-  fahrenheit + intervalo;
     fim
@@ -166,8 +164,7 @@ inicio
     enquanto fahrenheit <= maior faça
     inicio
     	celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-    	saida <- celsius;
-    	saida <- saida + " " + fahrenheit;
+    	saida <- celsius + " " + fahrenheit;
     	escreva(saida);
         fahrenheit <-  fahrenheit + intervalo;
     fim
@@ -187,8 +184,7 @@ Note que o bloco `enquanto` a condição é pré-testada e pode conter uma ou ma
 
 ```
 celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-saida <- celsius;
-saida <- saida + " " + fahrenheit;
+saida <- celsius + " " + fahrenheit;
 escreva(saida);
 fahrenheit <-  fahrenheit + intervalo;
 ```
@@ -211,8 +207,7 @@ inicio
     para fahrenheit de 0 até 140 repita
     inicio
     	celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-    	saida <- celsius;
-    	saida <- saida + " " + fahrenheit;
+    	saida <- celsius + " " + fahrenheit;
     	escreva(saida);
     fim
 fim
