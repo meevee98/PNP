@@ -20,9 +20,9 @@ A melhor forma de entrar em contato com uma nova linguagem de programação é *
 ```pnp
 procedimento principal
 inicio
-  saudacao: string;
-  saudacao <- "Olá, mundo.";
-  escreva(saudacao);
+    saudacao: string;
+    saudacao <- "Olá, mundo.";
+    escreva(saudacao);
 fim
 ```
 
@@ -79,8 +79,8 @@ No exemplo que será utilizado a seguir, haverá apenas um procedimento, chamado
 ```pnp
 procedimento principal
 inicio
-	fahrenheit, celsius: inteiro;
-	saida: string;
+    fahrenheit, celsius: inteiro;
+    saida: string;
     fahrenheit <- 0;
     celsius <- 5 * (fahrenheit - 32) / 9;
     saida <- celsius;
@@ -104,7 +104,7 @@ A primeira instrução é a representação da fórmula de conversão de tempera
 
 Note que existem dois tipos de operadores de divisão: `/` e `div`. Enquanto o operador / suporta variáveis do tipo inteiro ou racional, o operador `div` suporta somente variáveis do tipo inteiro. A diferença entre os dois operadores ainda se estende no resultado, visto que / fornece como o resultado com casas decimais, `div` fornece apenas a parte inteira. É importante lembrar que o resultado do operador `div` não é um arredondamento do resultado, mas sim a parte inteira. Isso significa que: `7 div 4 ` fornece 1 como resultado, por mais que valor pudesse ser arredondado para 2.
 
-A segunda instrução atribui à variável saída o valor da variável `celsius`. Nesta atribuição, há uma conversão de tipo de inteiro para string. A instrução a seguir também apresenta o operador `+`, mas neste caso ela representa uma **concatenação** de caracteres ao invés de soma aritmética. Por exemplo, valor da variável `saida` após esta instrução será "-17  0", se o valor de `celsius` for -17 e o valor de `fahrenheit` for 0.
+A segunda instrução atribui à variável saída o valor da variável `celsius`. Nesta atribuição, há uma conversão de tipo de inteiro para string. A instrução a seguir também apresenta o operador `+`, mas neste caso ela representa uma **concatenação** de caracteres ao invés de soma aritmética. Por exemplo, valor da variável `saida` após esta instrução será `"-17 0"`, se o valor de `celsius` for -17 e o valor de `fahrenheit` for 0.
 
 Seguindo o padrão de legibilidade das demais linguagens de programação, é recomendável que seja realizada a indentação dentro dos blocos, por mais que ela não altere o comportamento do seu algoritmo. Desta forma, é possível enxergar facilmente quais instruções estão dentro dos blocos e quais estão fora. Assim como Martin Fowler afirmou:
 
@@ -119,20 +119,19 @@ Existem alguns problemas com o procedimento do exemplo anterior devido ao tipo d
 ```pnp
 procedimento principal
 inicio
-	fahrenheit, celsius: racional;
-	menor, maior, intervalo: racional;
-	saida: string;
-	menor <- 0;
-    maior <- 140;
-    intervalo <- 20;
+    fahrenheit, celsius: racional;
+    menor, maior, intervalo: racional;
+    saida: string;
+    menor <- 0.0;
+    maior <- 140.0;
+    intervalo <- 20.0;
     
     fahrenheit <- menor;
-    enquanto fahrenheit <= maior faça
-    inicio
-    	celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-    	saida <- celsius;
-    	saida <- saida + " " + fahrenheit;
-    	escreva(saida);
+    enquanto (fahrenheit <= maior) faca
+        celsius <- 5.0/9.0 * (fahrenheit - 32.0);
+        saida <- celsius;
+        saida <- saida + " " + fahrenheit;
+        escreva(saida);
         fahrenheit <-  fahrenheit + intervalo;
     fim
 fim
@@ -155,20 +154,19 @@ Utilizando ainda o exemplo de conversão de temperatura entre °F e °C, podemos
 ```pnp
 procedimento principal
 inicio
-	fahrenheit, celsius: racional;
-	menor, maior, intervalo: racional;
-	saida: string;
-	menor <- 0;
-    maior <- 140;
-    intervalo <- 20;
+    fahrenheit, celsius: racional;
+    menor, maior, intervalo: racional;
+    saida: string;
+    menor <- 0.0;
+    maior <- 140.0;
+    intervalo <- 20.0;
     
     fahrenheit <- menor;
-    enquanto fahrenheit <= maior faça
-    inicio
-    	celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-    	saida <- celsius;
-    	saida <- saida + " " + fahrenheit;
-    	escreva(saida);
+    enquanto (fahrenheit <= maior) faca
+        celsius <- 5.0/9.0 * (fahrenheit - 32.0);
+        saida <- celsius;
+        saida <- saida + " " + fahrenheit;
+        escreva(saida);
         fahrenheit <-  fahrenheit + intervalo;
     fim
 fim
@@ -177,13 +175,13 @@ fim
 No começo deste procedimento, foram declaradas as variáveis *fahrenheit* e *celsius*, ambas do tipo racional. Posteriormente, também foram declaradas as variáveis menor, maior e intervalo, também do tipo racional. Por fim, foi realizada a declaração da variável saída, do tipo string.
 
 
-Após as declarações, são atribuídas às variáveis os seus valores iniciais. A variável *menor* recebe valor 0 no comando `menor <- 0;`. A variável *maior* recebe valor 140 no comando `maior <- 140;`.  É atribuído 20 à variável `intervalo`  e o valor de menor na variável *fahrenheit* nas instruções `intervalo <- 20;` e `fahrenheit <- menor`; respectivamente.
+Após as declarações, são atribuídas às variáveis os seus valores iniciais. A variável *menor* recebe valor 0 no comando `menor <- 0.0;`. A variável *maior* recebe valor 140 no comando `maior <- 140.0;`.  É atribuído 20 à variável `intervalo`  e o valor de menor na variável *fahrenheit* nas instruções `intervalo <- 20.0;` e `fahrenheit <- menor`; respectivamente.
 
-Como todas as linhas são calculadas através da mesma fórmula, então foi utilizado o laço de repetição que calcula um valor por linha, que é o propósito do comando `enquanto .... faça`.
+Como todas as linhas são calculadas através da mesma fórmula, então foi utilizado o laço de repetição que calcula um valor por linha, que é o propósito do comando `enquanto .... faca`.
 
 A condição que segue o comando `enquanto` é testada. Se ela for verdadeira (o valor da variável `fahrenheit` é **menor ou igual** ao valor da variável `maior`) todos os comandos do bloco são executados. A condição é testada novamente e se a condição for verdadeira, o bloco é executado novamente. Quando o teste for falso (o valor da variável `fahrenheit` *supera* o valor da variável `maior`) o laço de repetição termina e a execução continua na próxima instrução. Se o procedimento não tiver mais instruções, ele termina.
 
-Note que o bloco `enquanto` a condição é pré-testada e pode conter uma ou mais instruções que são delimitadas pelo `inicio`  e `fim`. No exemplo, são 5 instruções:
+Note que o bloco `enquanto` a condição é pré-testada e pode conter uma ou mais instruções que são delimitadas pelo `faca`  e `fim`. No exemplo, são 5 instruções:
 
 ```
 celsius <- 5.0/9.0 * (fahrenheit - 32.0);
@@ -193,27 +191,26 @@ escreva(saida);
 fahrenheit <-  fahrenheit + intervalo;
 ```
 
-Existem mais dois laços de repetição em PNP e que podem ser utilizados para propósitos diferentes. O primeiro é o comando `repita ... até que <condicao>`. Neste caso, todos os comandos do laço são executados enquanto a condição for **falsa**. A partir do momento que a condição for verdadeira, o fluxo sairá do laço de repetição. Este tipo de laço de repetição tem a condição pós-testada, o que garante que as instruções do bloco serão testadas ao menos uma vez.
+Existem mais dois laços de repetição em PNP e que podem ser utilizados para propósitos diferentes. O primeiro é o comando `repita ... ate que <condicao>`. Neste caso, todos os comandos do laço são executados enquanto a condição for **falsa**. A partir do momento que a condição for verdadeira, o fluxo sairá do laço de repetição. Este tipo de laço de repetição tem a condição pós-testada, o que garante que as instruções do bloco serão testadas ao menos uma vez.
 
-O segundo laço de repetição é o `para ... de ... até ... repita `. Que repete as instruções do bloco até que o valor da variável atinja o valor do *limite*, incrementando o valor dela com o passo 1.
+O segundo laço de repetição é o `para ... de ... ate ... repita `. Que repete as instruções do bloco até que o valor da variável atinja o valor do *limite*, incrementando o valor dela com o passo 1.
 
 ```
 procedimento principal
 inicio
-	fahrenheit, celsius: inteiro;
-	menor, maior, intervalo: inteiro;
-	saida: string;
-	menor <- 0;
+    fahrenheit, celsius: inteiro;
+    menor, maior, intervalo: inteiro;
+    saida: string;
+    menor <- 0;
     maior <- 140;
     intervalo <- 20;
     
     fahrenheit <- menor;
-    para fahrenheit de 0 até 140 repita
-    inicio
-    	celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-    	saida <- celsius;
-    	saida <- saida + " " + fahrenheit;
-    	escreva(saida);
+    para fahrenheit de 0 ate 140 repita
+        celsius <- 5.0/9.0 * (fahrenheit - 32.0);
+        saida <- celsius;
+        saida <- saida + " " + fahrenheit;
+        escreva(saida);
     fim
 fim
 ```
