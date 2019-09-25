@@ -58,9 +58,7 @@ Nota-se a presença do símbolo `;` ao final de todas as instruções. Ele é ob
 
 O próximo exemplo utiliza a fórmula de conversão de temperatura entre graus Celsius e Fahrenheit, que pode ser representada como   
 
-$$
-°C = (°F-32) \times \frac{5}{9}
-$$
+°C = (°F-32) * 5/9
 
 
 O procedimento calcula a conversão e imprime no dispositivo de saída a temperatura em Fahrenheit e o seu equivalente em Celsius. O exemplo de saída é representado na tabela abaixo:
@@ -108,7 +106,7 @@ Note que existem dois tipos de operadores de divisão: `/` e `div`. Enquanto o o
 
 A segunda instrução atribui à variável saída o valor da variável `celsius`. Nesta atribuição, há uma conversão de tipo de inteiro para string. A instrução a seguir também apresenta o operador `+`, mas neste caso ela representa uma **concatenação** de caracteres ao invés de soma aritmética. Por exemplo, valor da variável `saida` após esta instrução será "-17  0", se o valor de `celsius` for -17 e o valor de `fahrenheit` for 0.
 
-Seguindo o padrão de legibilidade das demais linguagens de programação, é recomendável que seja realizada a indentação dentro dos blocos, por mais que ela não altere o comportamento do seu algoritmo. Desta forma, é possível enxergar facilmente quais instruções estão dentro dos blocos e quais estão fora. Assim como Martin Fowler afirmou
+Seguindo o padrão de legibilidade das demais linguagens de programação, é recomendável que seja realizada a indentação dentro dos blocos, por mais que ela não altere o comportamento do seu algoritmo. Desta forma, é possível enxergar facilmente quais instruções estão dentro dos blocos e quais estão fora. Assim como Martin Fowler afirmou:
 
 > Any fool can write code that a computer can understand. Good programmers write code that humans can understand.
 
@@ -228,10 +226,3 @@ fim
 ## Argumentos
 
 ## Escopo de Variáveis
-
-
-[]: #ola-mundo
-
-[]: #expressões-aritmeticas
-
-[]: #tipos
