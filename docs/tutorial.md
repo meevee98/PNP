@@ -21,7 +21,9 @@ A melhor forma de entrar em contato com uma nova linguagem de programação é *
 procedimento principal
 inicio
   saudacao: string;
+
   saudacao <- "Olá, mundo.";
+  
   escreva(saudacao);
 fim
 ```
@@ -81,9 +83,11 @@ procedimento principal
 inicio
 	fahrenheit, celsius: inteiro;
 	saida: string;
+
     fahrenheit <- 0;
     celsius <- 5 * (fahrenheit - 32) / 9;
     saida   <- celsius + " " + fahrenheit;
+
     escreva(saida);
 fim
 ```
@@ -121,6 +125,7 @@ inicio
 	fahrenheit, celsius: racional;
 	menor, maior, intervalo: racional;
 	saida: string;
+
 	menor <- 0;
     maior <- 140;
     intervalo <- 20;
@@ -156,6 +161,7 @@ inicio
 	fahrenheit, celsius: racional;
 	menor, maior, intervalo: racional;
 	saida: string;
+
 	menor <- 0;
     maior <- 140;
     intervalo <- 20;
@@ -199,6 +205,7 @@ inicio
 	fahrenheit, celsius: inteiro;
 	menor, maior, intervalo: inteiro;
 	saida: string;
+
 	menor <- 0;
     maior <- 140;
     intervalo <- 20;
