@@ -83,9 +83,8 @@ inicio
     resultado: string;
     fahrenheit <- 0;
     celsius <- 5 * (fahrenheit - 32) / 9;
-    saida <- celsius;
-    saida <- saida + " " + fahrenheit;
-    escreva(saida);
+    resultado <- celsius + " " + fahrenheit;
+    escreva(resultado);
 fim
 ```
 
@@ -104,7 +103,7 @@ A primeira instrução é a representação da fórmula de conversão de tempera
 
 Note que existem dois tipos de operadores de divisão: `/` e `div`. Enquanto o operador / suporta variáveis do tipo inteiro ou racional, o operador `div` suporta somente variáveis do tipo inteiro. A diferença entre os dois operadores ainda se estende no resultado, visto que / fornece como o resultado com casas decimais, `div` fornece apenas a parte inteira. É importante lembrar que o resultado do operador `div` não é um arredondamento do resultado, mas sim a parte inteira. Isso significa que: `7 div 4 ` fornece 1 como resultado, por mais que valor pudesse ser arredondado para 2.
 
-A segunda instrução atribui à variável saída o valor da variável `celsius`. Nesta atribuição, há uma conversão de tipo de inteiro para string. A instrução a seguir também apresenta o operador `+`, mas neste caso ela representa uma **concatenação** de caracteres ao invés de soma aritmética. Por exemplo, valor da variável `saida` após esta instrução será `"-17 0"`, se o valor de `celsius` for -17 e o valor de `fahrenheit` for 0.
+A segunda instrução atribui à variável `resultado` o valor da variável `celsius`. Nesta atribuição, há uma conversão de tipo de inteiro para string. A instrução a seguir também apresenta o operador `+`, mas neste caso ela representa uma **concatenação** de caracteres ao invés de soma aritmética. Por exemplo, valor da variável `resultado` após esta instrução será `"-17 0"`, se o valor de `celsius` for -17 e o valor de `fahrenheit` for 0.
 
 Seguindo o padrão de legibilidade das demais linguagens de programação, é recomendável que seja realizada a indentação dentro dos blocos, por mais que ela não altere o comportamento do seu algoritmo. Desta forma, é possível enxergar facilmente quais instruções estão dentro dos blocos e quais estão fora. Assim como Martin Fowler afirmou:
 
@@ -121,7 +120,7 @@ procedimento principal
 inicio
     fahrenheit, celsius: racional;
     menor, maior, intervalo: racional;
-    saida: string;
+    resultado: string;
     menor <- 0.0;
     maior <- 140.0;
     intervalo <- 20.0;
@@ -129,9 +128,8 @@ inicio
     fahrenheit <- menor;
     enquanto (fahrenheit <= maior) faca
         celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-        saida <- celsius;
-        saida <- saida + " " + fahrenheit;
-        escreva(saida);
+        resultado <- celsius + " " + fahrenheit;
+        escreva(resultado);
         fahrenheit <-  fahrenheit + intervalo;
     fim
 fim
@@ -156,7 +154,7 @@ procedimento principal
 inicio
     fahrenheit, celsius: racional;
     menor, maior, intervalo: racional;
-    saida: string;
+    resultado: string;
     menor <- 0.0;
     maior <- 140.0;
     intervalo <- 20.0;
@@ -164,15 +162,14 @@ inicio
     fahrenheit <- menor;
     enquanto (fahrenheit <= maior) faca
         celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-        saida <- celsius;
-        saida <- saida + " " + fahrenheit;
-        escreva(saida);
-        fahrenheit <-  fahrenheit + intervalo;
+        resultado <- celsius + " " + fahrenheit;
+        escreva(resultado);
+        fahrenheit <- fahrenheit + intervalo;
     fim
 fim
 ```
 
-No começo deste procedimento, foram declaradas as variáveis *fahrenheit* e *celsius*, ambas do tipo racional. Posteriormente, também foram declaradas as variáveis menor, maior e intervalo, também do tipo racional. Por fim, foi realizada a declaração da variável saída, do tipo string.
+No começo deste procedimento, foram declaradas as variáveis *fahrenheit* e *celsius*, ambas do tipo racional. Posteriormente, também foram declaradas as variáveis menor, maior e intervalo, também do tipo racional. Por fim, foi realizada a declaração da variável `resultado`, do tipo string.
 
 
 Após as declarações, são atribuídas às variáveis os seus valores iniciais. A variável *menor* recebe valor 0 no comando `menor <- 0.0;`. A variável *maior* recebe valor 140 no comando `maior <- 140.0;`.  É atribuído 20 à variável `intervalo`  e o valor de menor na variável *fahrenheit* nas instruções `intervalo <- 20.0;` e `fahrenheit <- menor`; respectivamente.
@@ -183,11 +180,10 @@ A condição que segue o comando `enquanto` é testada. Se ela for verdadeira (o
 
 Note que o bloco `enquanto` a condição é pré-testada e pode conter uma ou mais instruções que são delimitadas pelo `faca`  e `fim`. No exemplo, são 5 instruções:
 
-```
+```pnp
 celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-saida <- celsius;
-saida <- saida + " " + fahrenheit;
-escreva(saida);
+resultado <- celsius + " " + fahrenheit;
+escreva(resultado);
 fahrenheit <-  fahrenheit + intervalo;
 ```
 
@@ -195,30 +191,188 @@ Existem mais dois laços de repetição em PNP e que podem ser utilizados para p
 
 O segundo laço de repetição é o `para ... de ... ate ... repita `. Que repete as instruções do bloco até que o valor da variável atinja o valor do *limite*, incrementando o valor dela com o passo 1.
 
-```
+```pnp
 procedimento principal
 inicio
     fahrenheit, celsius: inteiro;
     menor, maior, intervalo: inteiro;
-    saida: string;
-    menor <- 0;
-    maior <- 140;
-    intervalo <- 20;
+    resultado: string;
+    menor <- 0.0;
+    maior <- 140.0;
+    intervalo <- 20.0;
     
     fahrenheit <- menor;
     para fahrenheit de 0 ate 140 repita
         celsius <- 5.0/9.0 * (fahrenheit - 32.0);
-        saida <- celsius;
-        saida <- saida + " " + fahrenheit;
-        escreva(saida);
+        resultado <- celsius + " " + fahrenheit;
+        escreva(resultado);
+    fim
+fim
+```
+
+## Procedimentos
+
+Em PNP, um procedimento é equivalente a uma função em C ou um procedimento em PASCAL, embora muito mais simplificado. Um procedimento oferece uma forma conveniente de encapsular grupos de computações, que podem ser utilizadas sem se preocupar a sua implementação. Com procedimentos bem implementados, é possível abstrair *como* o trabalho é realizado, bastando saber o que é feito. 
+
+Em geral, procedimentos podem ser utilizados em PNP ou em outras linguagens apenas para simplificar e tornar a leitura do código mais legível. Outras vezes, procedimentos podem ser implementados porque pode ser utilizado em vários trechos, evitando assim, código duplicado.
+
+Este documento já abordou o procedimento `principal` e o `escreva`, que são padrões da linguagem de programação PNP. Agora é hora de escrever procedimentos novos. Desde que não existe o operador de potência em PNP, o exemplo a seguir ilustra a mecânica de uma definição de um novo procedimento chamado `potencia(base, expoente)`, para calcular a potência de um inteiro `m` em um inteiro positivo `n`. 
+
+Desta forma, o valor de `potencia(2, 5)` é *32*. Nota-se que este exemplo não implementa uma rotina prática de potência, visto que suporta apenas expoentes positivos de pequenos números inteiros, mas é o suficiente para introduzir ao conceito de procedimentos. 
+
+```pnp
+procedimento potencia
+
+entrada
+    base, expoente: inteiro;
+saida
+    resultado: inteiro;
+
+inicio
+
+    resultado <- 1;
+    
+    para i de 1 ate expoente faca
+        resultado <- resultado * base;
+    fim
+
+fim
+```
+
+Um procedimento tem a seguinte forma:
+
+```pnp
+prodimento <identificador-procedimento>
+entrada
+    <argumentos, se houver>: tipos;  
+saida
+    <argumento, se houver>: tipo;
+inicio
+    declaracoes;
+    instrucoes;
+fim
+```
+
+O procedimento potencia, do exemplo anterior, pode ser chamado da seguinte forma:
+
+```pnp
+procedimento principal
+inicio
+    resultado: inteiro;
+    potencia(2, 5, resultado);
+    escreva(resultado);
+fim
+```
+
+A chamada ao procedimento potência passa dois argumentos de entrada: 2 e 5. O procedimento também devolve um valor inteiro como a saída, que é impresso no dispositivo de saída através do procedimento escreva.
+
+O código-fonte completo, teria a seguinte forma:
+
+```pnp
+procedimento potencia
+
+entrada
+    base, expoente: inteiro;
+saida
+    resultado: inteiro;
+
+inicio
+
+    resultado <- 1;
+    
+    para i de 1 ate expoente faca
+        resultado <- resultado * base;
+    fim
+
+fim
+
+procedimento principal
+
+inicio
+    resultado: inteiro;
+    potencia(2, 5, resultado);
+    escreva(resultado);
+fim
+```
+
+Fornecendo um outro exemplo, um pouco mais sofisticado, é possível reescrever a conversão de temperatura de °F para °C utilizando procedimentos, conforme visto a seguir:
+
+```pnp
+procedimento fah_para_celsius
+
+entrada
+    fahrenheit: racional
+saida
+    celsius: racional
+
+inicio
+    celsius <- 5.0/9.0 * (fahrenheit - 32.0);
+fim
+```
+
+Um outro procedimento pode ser utilizado para imprimir no dispositivo de saída os valores de `celsius` e `fahrenheit`.
+
+```pnp
+procedimento imprimir_temperaturas
+entrada
+    celsius, fahrenheit: racional
+saida
+    nao ha
+
+inicio
+    resultado: string;
+    resultado <- celsius + " " + fahrenheit;
+    escreva(resultado);
+fim
+```
+
+Por fim, o código-fonte completo ficaria da seguinte forma:
+
+```pnp
+procedimento fah_para_celsius
+
+entrada
+    fahrenheit: racional
+saida
+    celsius: racional
+
+inicio
+    celsius <- 5.0/9.0 * (fahrenheit - 32.0);
+fim
+
+procedimento imprimir_temperaturas
+entrada
+    celsius, fahrenheit: racional
+saida
+    nao ha
+
+inicio
+    resultado: string;
+    resultado <- celsius + " " + fahrenheit;
+    escreva(resultado);
+fim
+
+procedimento principal
+inicio
+    fahrenheit, celsius: racional;
+    menor, maior, intervalo: racional;
+    menor <- 0.0;
+    maior <- 140.0;
+    intervalo <- 20.0;
+    
+    fahrenheit <- menor;
+    
+    enquanto (fahrenheit <= maior) faca
+        fah_para_celsius(fahrenheit, celsius);
+        imprimit_temperaturas(celsius, fahrenheit);
+        fahrenheit <- fahrenheit + intervalo;
     fim
 fim
 ```
 
 
-## Entradas e Saídas
 
-## Procedimentos
+## Entradas e Saídas
 
 ## Argumentos
 
