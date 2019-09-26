@@ -232,7 +232,7 @@ inicio
 
     resultado <- 1;
     
-    para i de 1 ate expoente faca
+    para i de 1 ate expoente repita
         resultado <- resultado * base;
     fim
 
@@ -280,7 +280,7 @@ inicio
 
     resultado <- 1;
     
-    para i de 1 ate expoente faca
+    para i de 1 ate expoente repita
         resultado <- resultado * base;
     fim
 
@@ -301,9 +301,9 @@ Fornecendo um outro exemplo, um pouco mais sofisticado, é possível reescrever 
 procedimento fah_para_celsius
 
 entrada
-    fahrenheit: racional
+    fahrenheit: racional;
 saida
-    celsius: racional
+    celsius: racional;
 
 inicio
     celsius <- 5.0/9.0 * (fahrenheit - 32.0);
@@ -315,7 +315,7 @@ Um outro procedimento pode ser utilizado para imprimir no dispositivo de saída 
 ```pnp
 procedimento imprimir_temperaturas
 entrada
-    celsius, fahrenheit: racional
+    celsius, fahrenheit: racional;
 saida
     nao ha
 
@@ -332,9 +332,9 @@ Por fim, o código-fonte completo ficaria da seguinte forma:
 procedimento fah_para_celsius
 
 entrada
-    fahrenheit: racional
+    fahrenheit: racional;
 saida
-    celsius: racional
+    celsius: racional;
 
 inicio
     celsius <- 5.0/9.0 * (fahrenheit - 32.0);
@@ -342,7 +342,7 @@ fim
 
 procedimento imprimir_temperaturas
 entrada
-    celsius, fahrenheit: racional
+    celsius, fahrenheit: racional;
 saida
     nao ha
 
