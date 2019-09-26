@@ -373,9 +373,9 @@ fim
 
 ## Entradas e Saídas
 
-Em PNP as entradas são equivalente aos paramêtros em uma função na linguagem C. Apenas os tipos literais definidos pela linguagem, como `string`, `inteiro` ou `racional`, podem ser enviados como entrada. Como um procedimento em PNP não é função de alta ordem, uma função não pode ser passada como argumento de `entrada` ou de `saída`.
+Em PNP as entradas são equivalente aos paramêtros de uma função na linguagem C. Apenas os tipos literais definidos pela linguagem, como `string`, `inteiro` ou `racional`, podem ser enviados como entrada. Como um procedimento em PNP não é função de alta ordem, uma função não pode ser passada como argumento de `entrada` ou de `saída`.
 
-Uma chamada de procedimento em PNP, constitui pelo seu nome e opcionalmente os parametros de entrada e uma única saída. Diferentemente de outras linguagens, a saída de um procedimento, não é atribuido à uma variável utilizando um operador.
+Uma chamada de procedimento em PNP é constituido pelo seu nome e opcionalmente os parametros de entrada e uma única saída. Diferentemente de outras linguagens, a saída de um procedimento, não é atribuido à uma variável utilizando um operador.
 
 ```pnp
  fah_para_celsius(fahrenheit, resultado)
