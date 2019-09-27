@@ -20,6 +20,9 @@ PASSO: 'passo';
 REPITA: 'repita';
 ENQUANTO: 'enquanto';
 FACA: 'faca';
+QUE: 'que';
+CASO: 'caso';
+SEJA: 'seja';
 
 // tipos primitivos
 INTEIRO: 'inteiro';
@@ -48,14 +51,16 @@ XOR: 'xor';
 NOT: 'nao';
 
 // variaveis literais
-INTEIRO_LITERAL: ZERO+ |               // zero separado para garantir que não aceita -0
-                 SINAL? ZERO* NAO_ZERO DIGITO*;
+NATURAL_LITERAL: ZERO* NAO_ZERO DIGITO*; // para impedir que a dimensão do vetor seja <= 0
 
-RACIONAL_LITERAL: ZERO+'.'ZERO+ |                  // zero separado para garantir que não aceita -0.0
-                  SINAL? ZERO* NAO_ZERO DIGITO*'.' DIGITO+ | // aceita -000000R.0000000
-                  SINAL? ZERO+'.'NAO_ZERO* DIGITO NAO_ZERO*;  // aceita -0000000.000000R
-BOOLEANO_LITERAL: 'true' |
-                  'false';
+INTEIRO_LITERAL: ZERO+                 // zero separado para garantir que não aceita -0
+               | SINAL? ZERO* NAO_ZERO DIGITO*;
+
+RACIONAL_LITERAL: ZERO+'.'ZERO+                    // zero separado para garantir que não aceita -0.0
+                | SINAL? ZERO* NAO_ZERO DIGITO*'.' DIGITO+   // aceita -000000R.0000000
+                | SINAL? ZERO+'.'NAO_ZERO* DIGITO NAO_ZERO*;  // aceita -0000000.000000R
+BOOLEANO_LITERAL: 'true'
+                | 'false';
 CARACTERE_LITERAL: '\'' CARACTER '\'';
 STRING_LITERAL: '"' CARACTER*? '"';
 
@@ -66,20 +71,22 @@ FECHA_PARENTESES: ')';
 SEPARADOR_VARIAVEL: ',';
 SEPARADOR_VARIAVEL_TIPO: ':';
 
-ID : [a-zA-Z][_a-zA-Z0-9]* ;	// identificador de variavel - começa com letra
-WS : [ \t\r\n]+ -> skip ;		// skip spaces, tabs, newlines
+fragment SINAL: '-' | '+';
+fragment ZERO: '0';
+fragment NAO_ZERO: [1-9];
+fragment DIGITO: ZERO | NAO_ZERO;
+fragment ALFA: [_a-zA-Z];
+fragment CARACTER: ~['\\\n\r]   // qualquer caractere, menos \n, \r, ' e \
+                 | ESCAPE;
+fragment ESCAPE: '\\''b'     // backspace
+               | '\\''t'     // tabulation
+               | '\\''n'     // new line
+               | '\\''f'     // form feed
+               | '\\''r'     // carriage return
+               | '\\''"'     // escaped "
+               | '\\''\''    // escaped '
+               | '\\''\\';   // escaped \
 
-SINAL: '-' | '+';
-ZERO: '0';
-NAO_ZERO: [1-9];
-DIGITO: ZERO | NAO_ZERO;
-CARACTER: ~['\\\n\r] | // qualquer caractere, menos \n, \r, ' e \
-          ESCAPE;
-ESCAPE: '\\''b' |   // backspace
-        '\\''t' |   // tabulation
-        '\\''n' |   // new line
-        '\\''f' |   // form feed
-        '\\''r' |   // carriage return
-        '\\''"' |   // escaped "
-        '\\''\'' |  // escaped '
-        '\\''\\';   // escaped \
+
+ID : ALFA (ALFA | DIGITO)* ;	// identificador de variavel - começa com letra
+WS : [ \t\r\n]+ -> skip ;		// skip spaces, tabs, newlines
