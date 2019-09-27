@@ -20,9 +20,11 @@ A melhor forma de entrar em contato com uma nova linguagem de programação é *
 ```pnp
 procedimento principal
 inicio
-    saudacao: string;
-    saudacao <- "Olá, mundo.";
-    escreva(saudacao);
+  saudacao: string;
+
+  saudacao <- "Olá, mundo.";
+  
+  escreva(saudacao);
 fim
 ```
 
@@ -81,9 +83,11 @@ procedimento principal
 inicio
     fahrenheit, celsius: inteiro;
     resultado: string;
+
     fahrenheit <- 0;
     celsius <- 5 * (fahrenheit - 32) / 9;
     resultado <- celsius + " " + fahrenheit;
+
     escreva(resultado);
 fim
 ```
@@ -121,6 +125,7 @@ inicio
     fahrenheit, celsius: racional;
     menor, maior, intervalo: racional;
     resultado: string;
+
     menor <- 0.0;
     maior <- 140.0;
     intervalo <- 20.0;
@@ -155,6 +160,7 @@ inicio
     fahrenheit, celsius: racional;
     menor, maior, intervalo: racional;
     resultado: string;
+
     menor <- 0.0;
     maior <- 140.0;
     intervalo <- 20.0;
@@ -197,6 +203,7 @@ inicio
     fahrenheit, celsius: inteiro;
     menor, maior, intervalo: inteiro;
     resultado: string;
+    
     menor <- 0.0;
     maior <- 140.0;
     intervalo <- 20.0;
