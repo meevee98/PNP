@@ -1,4 +1,5 @@
-// Generated from D:/Workspace/PNP/src/lexer/src/grammar\pnp.g4 by ANTLR 4.7.2
+// Generated from F:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
+package syntax.grammar.antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -15,121 +16,109 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArquivo(pnpParser.ArquivoContext ctx) { }
+	@Override public void enterFile(pnpParser.FileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArquivo(pnpParser.ArquivoContext ctx) { }
+	@Override public void exitFile(pnpParser.FileContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcedimento(pnpParser.ProcedimentoContext ctx) { }
+	@Override public void enterProcedure(pnpParser.ProcedureContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProcedimento(pnpParser.ProcedimentoContext ctx) { }
+	@Override public void exitProcedure(pnpParser.ProcedureContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcedimento_declaracao(pnpParser.Procedimento_declaracaoContext ctx) { }
+	@Override public void enterProcedureDeclaration(pnpParser.ProcedureDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProcedimento_declaracao(pnpParser.Procedimento_declaracaoContext ctx) { }
+	@Override public void exitProcedureDeclaration(pnpParser.ProcedureDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcedimento_entrada(pnpParser.Procedimento_entradaContext ctx) { }
+	@Override public void enterProcedureInput(pnpParser.ProcedureInputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProcedimento_entrada(pnpParser.Procedimento_entradaContext ctx) { }
+	@Override public void exitProcedureInput(pnpParser.ProcedureInputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcedimento_saida(pnpParser.Procedimento_saidaContext ctx) { }
+	@Override public void enterProcedureOutput(pnpParser.ProcedureOutputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProcedimento_saida(pnpParser.Procedimento_saidaContext ctx) { }
+	@Override public void exitProcedureOutput(pnpParser.ProcedureOutputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcedimento_bloco(pnpParser.Procedimento_blocoContext ctx) { }
+	@Override public void enterProcedureBlock(pnpParser.ProcedureBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProcedimento_bloco(pnpParser.Procedimento_blocoContext ctx) { }
+	@Override public void exitProcedureBlock(pnpParser.ProcedureBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcedimento_variavel_declaracao(pnpParser.Procedimento_variavel_declaracaoContext ctx) { }
+	@Override public void enterBlock(pnpParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProcedimento_variavel_declaracao(pnpParser.Procedimento_variavel_declaracaoContext ctx) { }
+	@Override public void exitBlock(pnpParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBloco(pnpParser.BlocoContext ctx) { }
+	@Override public void enterVariableDeclarationBlock(pnpParser.VariableDeclarationBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBloco(pnpParser.BlocoContext ctx) { }
+	@Override public void exitVariableDeclarationBlock(pnpParser.VariableDeclarationBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBloco_variavel_declaracao(pnpParser.Bloco_variavel_declaracaoContext ctx) { }
+	@Override public void enterCommand(pnpParser.CommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBloco_variavel_declaracao(pnpParser.Bloco_variavel_declaracaoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterComando(pnpParser.ComandoContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitComando(pnpParser.ComandoContext ctx) { }
+	@Override public void exitCommand(pnpParser.CommandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -147,97 +136,157 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperacao_relacional(pnpParser.Operacao_relacionalContext ctx) { }
+	@Override public void enterStatementCondition(pnpParser.StatementConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperacao_relacional(pnpParser.Operacao_relacionalContext ctx) { }
+	@Override public void exitStatementCondition(pnpParser.StatementConditionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperacao_logica(pnpParser.Operacao_logicaContext ctx) { }
+	@Override public void enterRelationalOperation(pnpParser.RelationalOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperacao_logica(pnpParser.Operacao_logicaContext ctx) { }
+	@Override public void exitRelationalOperation(pnpParser.RelationalOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperacao(pnpParser.OperacaoContext ctx) { }
+	@Override public void enterLogicalOperation(pnpParser.LogicalOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperacao(pnpParser.OperacaoContext ctx) { }
+	@Override public void exitLogicalOperation(pnpParser.LogicalOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariavel_declaracao(pnpParser.Variavel_declaracaoContext ctx) { }
+	@Override public void enterArithmeticOperation(pnpParser.ArithmeticOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariavel_declaracao(pnpParser.Variavel_declaracaoContext ctx) { }
+	@Override public void exitArithmeticOperation(pnpParser.ArithmeticOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVariavel_atribuicao(pnpParser.Variavel_atribuicaoContext ctx) { }
+	@Override public void enterConcatenationOperation(pnpParser.ConcatenationOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVariavel_atribuicao(pnpParser.Variavel_atribuicaoContext ctx) { }
+	@Override public void exitConcatenationOperation(pnpParser.ConcatenationOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpressao(pnpParser.ExpressaoContext ctx) { }
+	@Override public void enterOperation(pnpParser.OperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpressao(pnpParser.ExpressaoContext ctx) { }
+	@Override public void exitOperation(pnpParser.OperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpressao_booleana(pnpParser.Expressao_booleanaContext ctx) { }
+	@Override public void enterVariableDeclaration(pnpParser.VariableDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExpressao_booleana(pnpParser.Expressao_booleanaContext ctx) { }
+	@Override public void exitVariableDeclaration(pnpParser.VariableDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncao(pnpParser.FuncaoContext ctx) { }
+	@Override public void enterVariableAssignment(pnpParser.VariableAssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFuncao(pnpParser.FuncaoContext ctx) { }
+	@Override public void exitVariableAssignment(pnpParser.VariableAssignmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpression(pnpParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpression(pnpParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBooleanExpression(pnpParser.BooleanExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBooleanExpression(pnpParser.BooleanExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumericalExpression(pnpParser.NumericalExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumericalExpression(pnpParser.NumericalExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCharacterExpression(pnpParser.CharacterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCharacterExpression(pnpParser.CharacterExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunction(pnpParser.FunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction(pnpParser.FunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -255,253 +304,361 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSe_statement(pnpParser.Se_statementContext ctx) { }
+	@Override public void enterIfStatement(pnpParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSe_statement(pnpParser.Se_statementContext ctx) { }
+	@Override public void exitIfStatement(pnpParser.IfStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSe_inicio(pnpParser.Se_inicioContext ctx) { }
+	@Override public void enterIfStart(pnpParser.IfStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSe_inicio(pnpParser.Se_inicioContext ctx) { }
+	@Override public void exitIfStart(pnpParser.IfStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSe_entao(pnpParser.Se_entaoContext ctx) { }
+	@Override public void enterIfThen(pnpParser.IfThenContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSe_entao(pnpParser.Se_entaoContext ctx) { }
+	@Override public void exitIfThen(pnpParser.IfThenContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSe_senao(pnpParser.Se_senaoContext ctx) { }
+	@Override public void enterIfElse(pnpParser.IfElseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSe_senao(pnpParser.Se_senaoContext ctx) { }
+	@Override public void exitIfElse(pnpParser.IfElseContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSe_senao_se(pnpParser.Se_senao_seContext ctx) { }
+	@Override public void enterIfElseIf(pnpParser.IfElseIfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSe_senao_se(pnpParser.Se_senao_seContext ctx) { }
+	@Override public void exitIfElseIf(pnpParser.IfElseIfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSenao_se(pnpParser.Senao_seContext ctx) { }
+	@Override public void enterElseIf(pnpParser.ElseIfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSenao_se(pnpParser.Senao_seContext ctx) { }
+	@Override public void exitElseIf(pnpParser.ElseIfContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPara_statement(pnpParser.Para_statementContext ctx) { }
+	@Override public void enterSwitchStatement(pnpParser.SwitchStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPara_statement(pnpParser.Para_statementContext ctx) { }
+	@Override public void exitSwitchStatement(pnpParser.SwitchStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPara_inicio(pnpParser.Para_inicioContext ctx) { }
+	@Override public void enterSwitchStart(pnpParser.SwitchStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPara_inicio(pnpParser.Para_inicioContext ctx) { }
+	@Override public void exitSwitchStart(pnpParser.SwitchStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPara_intervalo(pnpParser.Para_intervaloContext ctx) { }
+	@Override public void enterSwitchCases(pnpParser.SwitchCasesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPara_intervalo(pnpParser.Para_intervaloContext ctx) { }
+	@Override public void exitSwitchCases(pnpParser.SwitchCasesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPara_passo(pnpParser.Para_passoContext ctx) { }
+	@Override public void enterSwitchDefault(pnpParser.SwitchDefaultContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPara_passo(pnpParser.Para_passoContext ctx) { }
+	@Override public void exitSwitchDefault(pnpParser.SwitchDefaultContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPara_bloco(pnpParser.Para_blocoContext ctx) { }
+	@Override public void enterForStatement(pnpParser.ForStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPara_bloco(pnpParser.Para_blocoContext ctx) { }
+	@Override public void exitForStatement(pnpParser.ForStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEnquanto_statement(pnpParser.Enquanto_statementContext ctx) { }
+	@Override public void enterForStart(pnpParser.ForStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEnquanto_statement(pnpParser.Enquanto_statementContext ctx) { }
+	@Override public void exitForStart(pnpParser.ForStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEnquanto_inicio(pnpParser.Enquanto_inicioContext ctx) { }
+	@Override public void enterForInterval(pnpParser.ForIntervalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEnquanto_inicio(pnpParser.Enquanto_inicioContext ctx) { }
+	@Override public void exitForInterval(pnpParser.ForIntervalContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEnquanto_bloco(pnpParser.Enquanto_blocoContext ctx) { }
+	@Override public void enterForStep(pnpParser.ForStepContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEnquanto_bloco(pnpParser.Enquanto_blocoContext ctx) { }
+	@Override public void exitForStep(pnpParser.ForStepContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTipo(pnpParser.TipoContext ctx) { }
+	@Override public void enterForBlock(pnpParser.ForBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTipo(pnpParser.TipoContext ctx) { }
+	@Override public void exitForBlock(pnpParser.ForBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperador(pnpParser.OperadorContext ctx) { }
+	@Override public void enterWhileStatement(pnpParser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperador(pnpParser.OperadorContext ctx) { }
+	@Override public void exitWhileStatement(pnpParser.WhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperador_relacional(pnpParser.Operador_relacionalContext ctx) { }
+	@Override public void enterWhileStart(pnpParser.WhileStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperador_relacional(pnpParser.Operador_relacionalContext ctx) { }
+	@Override public void exitWhileStart(pnpParser.WhileStartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperador_aritmetico(pnpParser.Operador_aritmeticoContext ctx) { }
+	@Override public void enterWhileBlock(pnpParser.WhileBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperador_aritmetico(pnpParser.Operador_aritmeticoContext ctx) { }
+	@Override public void exitWhileBlock(pnpParser.WhileBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOperador_logico(pnpParser.Operador_logicoContext ctx) { }
+	@Override public void enterDoWhileStatement(pnpParser.DoWhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOperador_logico(pnpParser.Operador_logicoContext ctx) { }
+	@Override public void exitDoWhileStatement(pnpParser.DoWhileStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterValor_literal(pnpParser.Valor_literalContext ctx) { }
+	@Override public void enterDoWhileBlock(pnpParser.DoWhileBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitValor_literal(pnpParser.Valor_literalContext ctx) { }
+	@Override public void exitDoWhileBlock(pnpParser.DoWhileBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterNumero_literal(pnpParser.Numero_literalContext ctx) { }
+	@Override public void enterDoWhileEnd(pnpParser.DoWhileEndContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitNumero_literal(pnpParser.Numero_literalContext ctx) { }
+	@Override public void exitDoWhileEnd(pnpParser.DoWhileEndContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterType(pnpParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType(pnpParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayDimention(pnpParser.ArrayDimentionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayDimention(pnpParser.ArrayDimentionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryOperator(pnpParser.BinaryOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryOperator(pnpParser.BinaryOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRelationalOperator(pnpParser.RelationalOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRelationalOperator(pnpParser.RelationalOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArithmeticOperator(pnpParser.ArithmeticOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArithmeticOperator(pnpParser.ArithmeticOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAdditiveOperator(pnpParser.AdditiveOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAdditiveOperator(pnpParser.AdditiveOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMultiplicativeOperator(pnpParser.MultiplicativeOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiplicativeOperator(pnpParser.MultiplicativeOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnaryLogicalOperator(pnpParser.UnaryLogicalOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnaryLogicalOperator(pnpParser.UnaryLogicalOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryLogicalOperator(pnpParser.BinaryLogicalOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryLogicalOperator(pnpParser.BinaryLogicalOperatorContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

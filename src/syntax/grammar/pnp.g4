@@ -6,143 +6,242 @@ grammar pnp;
 import tokens;
 
 // usado para testes rápidos
-arquivo: procedimento* EOF;
+file
+    : variableDeclarationBlock? procedure+ EOF
+    ;
 
 // procedimento
-procedimento: procedimento_declaracao procedimento_entrada? procedimento_saida? procedimento_bloco
+procedure
+    : procedureDeclaration procedureInput? procedureOutput? procedureBlock
     ;
-procedimento_declaracao: PROCEDIMENTO ID
+procedureDeclaration
+    : PROCEDIMENTO ID
     ;
-procedimento_entrada: ENTRADA (NULO | (variavel_declaracao FIM_COMANDO)+)
+procedureInput
+    : ENTRADA (NULO | variableDeclaration+)
     ;
-procedimento_saida: SAIDA (NULO | variavel_declaracao FIM_COMANDO)
+procedureOutput
+    : SAIDA (NULO | variableDeclaration)
     ;
-procedimento_bloco: INICIO bloco FIM
+procedureBlock
+    : INICIO block FIM
     ;
 
 // bloco - declarações de variáveis sempre no começo do bloco
-bloco: bloco_variavel_declaracao* (comando | statement)*
+block
+    : variableDeclarationBlock? (command | statement)*
     ;
-bloco_variavel_declaracao: variavel_declaracao FIM_COMANDO
+variableDeclarationBlock
+    : variableDeclaration+
     ;
 
-comando: (funcao | variavel_atribuicao) FIM_COMANDO
+command
+    : (function | variableAssignment) FIM_COMANDO
     ;
-statement: se_statement
-         | para_statement
-         | enquanto_statement
-         | ate_que_statement
-         | caso_statement
+statement
+    : ifStatement
+    | forStatement
+    | whileStatement
+    | doWhileStatement
+    | switchStatement
     ;
-statement_condicao: ABRE_PARENTESES expressao_booleana FECHA_PARENTESES
+statementCondition
+    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES
     ;
 
 // operacao
-operacao_relacional: ABRE_PARENTESES operacao_relacional FECHA_PARENTESES
-                   | expressao_numerica operador_relacional expressao_numerica
-                   | expressao
+relationalOperation
+    : ABRE_PARENTESES relationalOperation FECHA_PARENTESES
+    | arithmeticOperation relationalOperator arithmeticOperation
+    | characterExpression relationalOperator characterExpression
+    | booleanExpression
     ;
-operacao_logica: ABRE_PARENTESES operacao_logica FECHA_PARENTESES
-               | operador_logico_unario operacao_logica
-               | operacao_logica operador_logico_binario operacao_logica
-               | expressao_booleana
+logicalOperation
+    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES
+    | unaryLogicalOperator logicalOperation
+    | logicalOperation binaryLogicalOperator logicalOperation
+    | booleanExpression
+    | relationalOperation
     ;
-operacao_aritmetica: ABRE_PARENTESES operacao_aritmetica FECHA_PARENTESES
-                   | operacao_aritmetica operador_multiplicativo operacao_aritmetica
-                   | operacao_aritmetica operador_aditivo operacao_aritmetica
-                   | expressao_numerica;
+arithmeticOperation
+    : ABRE_PARENTESES arithmeticOperation FECHA_PARENTESES
+    | arithmeticOperation multiplicativeOperator arithmeticOperation
+    | arithmeticOperation additiveOperator arithmeticOperation
+    | numericalExpression
+    ;
+concatenationOperation
+    : ABRE_PARENTESES concatenationOperation FECHA_PARENTESES
+    | concatenationOperation ADICAO concatenationOperation
+    | characterExpression
+    ;
 
-operacao: operacao_aritmetica
-        | operacao_logica
-        | operacao_relacional
+operation
+    : arithmeticOperation
+    | logicalOperation
+    | relationalOperation
+    | concatenationOperation
     ;
 
-variavel_declaracao: ID (',' ID)* ':' tipo
+variableDeclaration
+    : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO type FIM_COMANDO
     ;
-variavel_atribuicao: ID vetor_dimensao? ATRIBUICAO operacao
+variableAssignment
+    : ID arrayDimention? ATRIBUICAO operation
     ;
 
 // expressao - separar depois em expressao de cada tipo
-expressao: expressao_booleana
-         | expressao_numerica
+expression
+    : booleanExpression
+    | numericalExpression
+    | characterExpression
     ;
-expressao_booleana: ID
-                  | BOOLEANO_LITERAL;
-expressao_numerica: ID
-                  | NATURAL_LITERAL
-                  | INTEIRO_LITERAL
-                  | RACIONAL_LITERAL;
+booleanExpression
+    : ID
+    | BOOLEANO_LITERAL
+    ;
+numericalExpression
+    : ID
+    | NATURAL_LITERAL
+    | INTEIRO_LITERAL
+    | RACIONAL_LITERAL
+    ;
+characterExpression
+    : ID
+    | CARACTERE_LITERAL
+    | STRING_LITERAL
+    ;
 
-funcao: ID ABRE_PARENTESES params? FECHA_PARENTESES
+function
+    : ID ABRE_PARENTESES params? FECHA_PARENTESES
     ;
-params: expressao (',' expressao)*
+params
+    : expression (SEPARADOR_VARIAVEL expression)*
     ;
 
 // condicional se
-se_statement: se_inicio se_entao se_senao_se;
-se_inicio: SE statement_condicao;
-se_entao: ENTAO bloco;
-se_senao: SENAO bloco FIM;
-se_senao_se: senao_se
-           | se_senao
-           | FIM;
-senao_se: SENAO se_statement;
+ifStatement
+    : ifStart ifThen ifElseIf
+    ;
+ifStart
+    : SE statementCondition
+    ;
+ifThen
+    : ENTAO block
+    ;
+ifElse
+    : SENAO block FIM
+    ;
+ifElseIf
+    : elseIf
+    | ifElse
+    | FIM
+    ;
+elseIf
+    : SENAO ifStatement
+    ;
 
 // condicional caso
-caso_statement: caso_inicio caso_casos+ caso_senao? FIM;
-caso_inicio: CASO ID SEJA;
-caso_casos: expressao (SEPARADOR_VARIAVEL expressao)* SEPARADOR_VARIAVEL_TIPO bloco;
-caso_senao: SENAO bloco;
+switchStatement
+    : switchStart switchCases+ switchDefault? FIM
+    ;
+switchStart
+    : CASO ID SEJA
+    ;
+switchCases
+    : expression (SEPARADOR_VARIAVEL expression)* SEPARADOR_VARIAVEL_TIPO block
+    ;
+switchDefault
+    : SENAO block
+    ;
 
 // laço para
-para_statement: para_inicio para_intervalo para_passo? para_bloco;
-para_inicio: PARA ID;
-para_intervalo: DE expressao_numerica ATE expressao_numerica;
-para_passo: PASSO expressao_numerica;
-para_bloco: REPITA bloco FIM;
+forStatement
+    : forStart forInterval forStep? forBlock
+    ;
+forStart
+    : PARA ID
+    ;
+forInterval
+    : DE numericalExpression ATE numericalExpression
+    ;
+forStep
+    : PASSO numericalExpression
+    ;
+forBlock
+    : REPITA block FIM
+    ;
 
 // laço enquanto
-enquanto_statement: enquanto_inicio enquanto_bloco;
-enquanto_inicio: ENQUANTO statement_condicao;
-enquanto_bloco: FACA bloco FIM;
+whileStatement
+    : whileStart whileBlock
+    ;
+whileStart
+    : ENQUANTO statementCondition
+    ;
+whileBlock
+    : FACA block FIM
+    ;
 
 // laço ate que
-ate_que_statement: ate_que_inicio ate_que_bloco;
-ate_que_inicio: REPITA bloco;
-ate_que_bloco: ATE QUE statement_condicao FIM_COMANDO;
+doWhileStatement
+    : doWhileBlock doWhileEnd
+    ;
+doWhileBlock
+    : REPITA block
+    ;
+doWhileEnd
+    : ATE QUE statementCondition FIM_COMANDO
+    ;
 
 // tipos primitivos
-tipo: INTEIRO
+type
+    : INTEIRO
     | RACIONAL
     | BOOLEANO
     | CARACTERE
     | STRING
-    | tipo vetor_dimensao;
+    | type arrayDimention
+    ;
 
-vetor_dimensao: '[' (NATURAL_LITERAL | ID) ']';
+arrayDimention
+    : ABRE_CHAVES (NATURAL_LITERAL | ID) FECHA_CHAVES
+    ;
 
 // operadores
-operador_binario: operador_relacional
-                | operador_aritmetico
-                | operador_logico_binario;
+binaryOperator
+    : relationalOperator
+    | arithmeticOperator
+    | binaryLogicalOperator
+    ;
 
+relationalOperator
+    : IGUALDADE
+    | DESIGUALDADE
+    | MAIOR
+    | MAIOR_IGUAL
+    | MENOR
+    | MENOR_IGUAL
+    ;
+arithmeticOperator
+    : additiveOperator
+    | multiplicativeOperator
+    ;
+additiveOperator
+    : ADICAO
+    | SUBTRACAO
+    ;
+multiplicativeOperator
+    : MULTIPLICACAO
+    | DIVISAO_RAC
+    | DIVISAO_INT
+    | MODULO
+    ;
 
-operador_relacional: IGUALDADE
-                   | DESIGUALDADE
-                   | MAIOR
-                   | MAIOR_IGUAL
-                   | MENOR
-                   | MENOR_IGUAL;
-operador_aritmetico: operador_aditivo
-                   | operador_multiplicativo;
-operador_aditivo: ADICAO
-                | SUBTRACAO;
-operador_multiplicativo: MULTIPLICACAO
-                       | DIVISAO_RAC
-                       | DIVISAO_INT
-                       | MODULO;
-
-operador_logico_unario:  NOT;
-operador_logico_binario: AND
-                       | OR
-                       | XOR;
+unaryLogicalOperator
+    : NOT
+    ;
+binaryLogicalOperator
+    : AND
+    | OR
+    | XOR
+    ;
