@@ -6,7 +6,6 @@
 - [Expressões Aritméticas](#expressões-aritméticas)
 - [Tipos](#tipos)
 - [Laços de Repetições](#laços-de-repetições)
-- [Entradas e Saídas](#entradas-e-saídas)
 - [Procedimentos](#procedimentos)
 - [Argumentos](#argumentos)
 - [Escopo de Variáveis](#escopo-de-variáveis)
@@ -48,7 +47,7 @@ As expressões de um procedimento são delimitados por `início` e `fim`, defini
 
 Em PNP, todas as variáveis devem ser declaradas antes de serem utilizadas, sendo recomendável que o faça no começo do procedimento, antes de qualquer expressão ou instrução. Uma declaração anuncia as propriedades das variáveis. Por isso que a primeira instrução trata-se de uma declaração de uma variável, onde `saudacao` é o **identificador** da variável e string é o seu **tipo**. Uma cadeia de caracteres entre aspas duplas são denominadas *string*.
 
-Deve-se sempre utilizar da sintaxe apresentada para declarar uma variável em PNP, ou seja, é necessário indicar primeiro o identificador e depois o tipo, no formato `identificador: tipo;`. Identificadores precisam ser únicos, ou seja, é possível atribuir um único nome para cada variável. Por outro lado, é possível realizar a declaração de uma lista de variáveis que sejam do mesmo tipo, como por exemplo `identificador1, identificador2: tipo;`
+Deve-se sempre utilizar da sintaxe apresentada para declarar uma variável em PNP, ou seja, é necessário indicar primeiro o identificador e depois o tipo, no formato `identificador: tipo;`. Identificadores precisam ser únicos, ou seja, é possível atribuir um único nome para cada variável. Por outro lado, é possível realizar a declaração de diversas variáveis que sejam do mesmo tipo de uma vez só, como por exemplo `identificador1, identificador2: tipo;`
 
 A segunda instrução realiza uma atribuição da cadeia "Olá, mundo." para a variável declarada anteriormente. A instrução de atribuição é representado por `<-`, onde a variável deve sempre ficar à esquerda e o valor a ser atribuído nela deve ficar à direita.
 
@@ -105,7 +104,7 @@ A primeira instrução é a representação da fórmula de conversão de tempera
 | div      | divisão       | inteiro            |
 | mod      | módulo        | inteiro            |
 
-Note que existem dois tipos de operadores de divisão: `/` e `div`. Enquanto o operador / suporta variáveis do tipo inteiro ou racional, o operador `div` suporta somente variáveis do tipo inteiro. A diferença entre os dois operadores ainda se estende no resultado, visto que / fornece como o resultado com casas decimais, `div` fornece apenas a parte inteira. É importante lembrar que o resultado do operador `div` não é um arredondamento do resultado, mas sim a parte inteira. Isso significa que: `7 div 4 ` fornece 1 como resultado, por mais que valor pudesse ser arredondado para 2.
+Note que existem dois tipos de operadores de divisão: `/` e `div`. Enquanto o operador / suporta variáveis do tipo inteiro ou racional, o operador `div` suporta somente variáveis do tipo inteiro. A diferença entre os dois operadores ainda se estende no resultado, visto que / fornece como o resultado com casas decimais, `div` fornece apenas a parte inteira. É importante lembrar que o resultado do operador `div` não é um arredondamento do quociente, mas sim a parte inteira. Isso significa que: `7 div 4 ` fornece 1 como resultado, por mais que quociente pudesse ser arredondado para 2.
 
 A segunda instrução atribui à variável `resultado` o valor da variável `celsius`. Nesta atribuição, há uma conversão de tipo de inteiro para string. A instrução a seguir também apresenta o operador `+`, mas neste caso ela representa uma **concatenação** de caracteres ao invés de soma aritmética. Por exemplo, valor da variável `resultado` após esta instrução será `"-17 0"`, se o valor de `celsius` for -17 e o valor de `fahrenheit` for 0.
 
@@ -175,16 +174,16 @@ inicio
 fim
 ```
 
-No começo deste procedimento, foram declaradas as variáveis *fahrenheit* e *celsius*, ambas do tipo racional. Posteriormente, também foram declaradas as variáveis menor, maior e intervalo, também do tipo racional. Por fim, foi realizada a declaração da variável `resultado`, do tipo string.
+No começo deste procedimento, foram declaradas as variáveis *fahrenheit* e *celsius*, ambas do tipo racional. Posteriormente, também foram declaradas as variáveis *menor*, *maior* e *intervalo*, também do tipo racional. Por fim, foi realizada a declaração da variável `resultado`, do tipo string.
 
 
 Após as declarações, são atribuídas às variáveis os seus valores iniciais. A variável *menor* recebe valor 0 no comando `menor <- 0.0;`. A variável *maior* recebe valor 140 no comando `maior <- 140.0;`.  É atribuído 20 à variável `intervalo`  e o valor de menor na variável *fahrenheit* nas instruções `intervalo <- 20.0;` e `fahrenheit <- menor`; respectivamente.
 
-Como todas as linhas são calculadas através da mesma fórmula, então foi utilizado o laço de repetição que calcula um valor por linha, que é o propósito do comando `enquanto .... faca`.
+Como todas as linhas da tabela de conversão de temperatura são calculadas através da mesma fórmula, então foi utilizado o laço de repetição que calcula um valor por linha, que é o propósito do comando `enquanto .... faca`.
 
 A condição que segue o comando `enquanto` é testada. Se ela for verdadeira (o valor da variável `fahrenheit` é **menor ou igual** ao valor da variável `maior`) todos os comandos do bloco são executados. A condição é testada novamente e se a condição for verdadeira, o bloco é executado novamente. Quando o teste for falso (o valor da variável `fahrenheit` *supera* o valor da variável `maior`) o laço de repetição termina e a execução continua na próxima instrução. Se o procedimento não tiver mais instruções, ele termina.
 
-Note que o bloco `enquanto` a condição é pré-testada e pode conter uma ou mais instruções que são delimitadas pelo `faca`  e `fim`. No exemplo, são 5 instruções:
+Note que o bloco `enquanto` a condição é pré-testada e pode conter uma ou mais instruções que são delimitadas pelo `faca` e `fim`. No exemplo, são 5 instruções:
 
 ```pnp
 celsius <- 5.0/9.0 * (fahrenheit - 32.0);
@@ -209,7 +208,7 @@ inicio
     intervalo <- 20.0;
     
     fahrenheit <- menor;
-    para fahrenheit de 0 ate 140 repita
+    para fahrenheit de 0 ate 140 passo 20 repita
         celsius <- 5.0/9.0 * (fahrenheit - 32.0);
         resultado <- celsius + " " + fahrenheit;
         escreva(resultado);
@@ -219,7 +218,7 @@ fim
 
 ## Procedimentos
 
-Em PNP, um procedimento é equivalente a uma função em C ou um procedimento em PASCAL, embora muito mais simplificado. Um procedimento oferece uma forma conveniente de encapsular grupos de computações, que podem ser utilizadas sem se preocupar a sua implementação. Com procedimentos bem implementados, é possível abstrair *como* o trabalho é realizado, bastando saber o que é feito. 
+Em PNP, um procedimento é equivalente a uma função em C ou um procedimento em PASCAL, embora muito mais simplificado. Um procedimento oferece uma forma conveniente de encapsular grupos de computações, que podem ser utilizadas sem se preocupar a sua implementação. Com procedimentos bem implementados, é possível abstrair *como* o trabalho é realizado, bastando saber o que é calculado. 
 
 Em geral, procedimentos podem ser utilizados em PNP ou em outras linguagens apenas para simplificar e tornar a leitura do código mais legível. Outras vezes, procedimentos podem ser implementados porque pode ser utilizado em vários trechos, evitando assim, código duplicado.
 
@@ -378,17 +377,17 @@ fim
 ```
 
 
-## Entradas e Saídas
+## Argumentos
 
-Em PNP as entradas são equivalente aos paramêtros de uma função na linguagem C. Apenas os tipos literais definidos pela linguagem, como `string`, `inteiro` ou `racional`, podem ser enviados como entrada. Como um procedimento em PNP não é função de alta ordem, uma função não pode ser passada como argumento de `entrada` ou de `saída`.
+Em PNP as entradas de procedimentos são equivalentes às entradas de algoritmos escritos em pseudocódigo. Apenas os tipos literais definidos pela linguagem, como `string`, `inteiro` ou `racional`, podem ser utilizados como argumentos de entrada. Como um procedimento em PNP não é função de alta ordem, uma função não pode ser passada como argumento de `entrada` ou de `saída`.
 
-Uma chamada de procedimento em PNP é constituido pelo seu nome e opcionalmente os parametros de entrada e uma única saída. Diferentemente de outras linguagens, a saída de um procedimento, não é atribuido à uma variável utilizando um operador.
+Uma chamada de procedimento em PNP é constituído pelo seu nome e opcionalmente os argumentos de entrada e no máximo uma única saída. A saída de um procedimento não é atribuída à uma variável utilizando um operador, mas é realizada a cópia de seu valor para a variável passada como último argumento.
 
 ```pnp
  fah_para_celsius(fahrenheit, resultado)
 ```
 
-A equipe de desenvolvimento da linguagem PNP definiu que a a saida deve ser identificada sempre pelo último argumento inserido no procedimento, no exemplo apresentado, para a função `fah_para_celsius`, o argumento `resultado`, é a saida para o procedimento de transformação de fahrenheit para celsius. .
+No exemplo apresentado, a chamada para a função `fah_para_celsius`, o argumento `resultado`, recebe a saída do procedimento.
 
 
 ```pnp
@@ -414,7 +413,5 @@ inicio
 
 fim
 ```
-
-## Argumentos
 
 ## Escopo de Variáveis
