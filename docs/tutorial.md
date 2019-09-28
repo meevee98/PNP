@@ -6,9 +6,10 @@
 - [Expressões Aritméticas](#expressões-aritméticas)
 - [Tipos](#tipos)
 - [Laços de Repetições](#laços-de-repetições)
+- [Instrução de Seleção](#instrução-de-seleção)
 - [Procedimentos](#procedimentos)
 - [Argumentos](#argumentos)
-- [Escopo de Variáveis](#escopo-de-variáveis)
+
 
 ## Introdução
 A linguagem de programação PNP (PNP não é Pseudocódigo, ou simplesmente PNP is not Pseudocode) é inspirada em Pseudocódigo. Originalmente, Pseudocódigo é uma linguagem informal de alto nível para descrever princípios e esboços de algoritmos. Devido a sua legibilidade, Pseudocódigo é amplamente utilizado no meio acadêmico, científico e para elaboração para documentação técnica, onde a compreensão do algoritmo é mais importante que a linguagem que será utilizada para a implementação.
@@ -219,6 +220,26 @@ inicio
     fim
 fim
 ```
+
+## Instrução de Seleção
+
+```pnp
+procedimento principal
+inicio
+    fahrenheit, celsius: racional;
+    resultado: string;
+    
+    fahrenheit <- 20.0;
+    
+    se ( fahrenheit = 0.0 ) entao
+        celsius <- -17.8;
+    senao
+        celsius <- 5.0/9.0 * (fahrenheit - 32.0);
+    fim
+ 
+fim
+```
+
 
 ## Procedimentos
 
