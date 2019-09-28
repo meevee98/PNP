@@ -23,6 +23,10 @@ FACA: 'faca';
 QUE: 'que';
 CASO: 'caso';
 SEJA: 'seja';
+TIPO: 'tipo';
+PRINCIPAL: 'principal';
+ESCREVA: 'escreva';
+LEIA: 'leia';
 
 // tipos primitivos
 INTEIRO: 'inteiro';
@@ -34,7 +38,7 @@ NULO: 'nao ha';
 
 // operadores
 IGUALDADE: '=';
-DESIGUALDADE: '<>';
+DESIGUALDADE: '!=';
 MAIOR: '>';
 MAIOR_IGUAL: '>=';
 MENOR: '<';
@@ -45,6 +49,7 @@ MULTIPLICACAO: '*';
 DIVISAO_RAC: '/';
 DIVISAO_INT: 'div';
 MODULO: 'mod';
+CONCATENACAO: '++';
 AND: 'e';
 OR: 'ou';
 XOR: 'xor';
@@ -72,6 +77,7 @@ ABRE_CHAVES: '[';
 FECHA_CHAVES: ']';
 SEPARADOR_VARIAVEL: ',';
 SEPARADOR_VARIAVEL_TIPO: ':';
+SEPARADOR_TIPO_VARIAVEL: '.';
 
 fragment SINAL: '-' | '+';
 fragment ZERO: '0';

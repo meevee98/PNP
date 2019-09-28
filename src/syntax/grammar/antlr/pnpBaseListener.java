@@ -1,4 +1,4 @@
-// Generated from F:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
+// Generated from C:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
 package syntax.grammar.antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -35,6 +35,18 @@ public class pnpBaseListener implements pnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitProcedure(pnpParser.ProcedureContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProcedureBody(pnpParser.ProcedureBodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProcedureBody(pnpParser.ProcedureBodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -88,6 +100,42 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMainProcedure(pnpParser.MainProcedureContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMainProcedure(pnpParser.MainProcedureContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTypeDeclaration(pnpParser.TypeDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeDeclaration(pnpParser.TypeDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTypeVariableDeclarationBlock(pnpParser.TypeVariableDeclarationBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeVariableDeclarationBlock(pnpParser.TypeVariableDeclarationBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBlock(pnpParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -107,6 +155,18 @@ public class pnpBaseListener implements pnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVariableDeclarationBlock(pnpParser.VariableDeclarationBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariableAssignmentBlock(pnpParser.VariableAssignmentBlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariableAssignmentBlock(pnpParser.VariableAssignmentBlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -172,13 +232,25 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArithmeticOperation(pnpParser.ArithmeticOperationContext ctx) { }
+	@Override public void enterIntegerArithmeticOperation(pnpParser.IntegerArithmeticOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArithmeticOperation(pnpParser.ArithmeticOperationContext ctx) { }
+	@Override public void exitIntegerArithmeticOperation(pnpParser.IntegerArithmeticOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRationalArithmeticOperation(pnpParser.RationalArithmeticOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRationalArithmeticOperation(pnpParser.RationalArithmeticOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -203,6 +275,18 @@ public class pnpBaseListener implements pnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitOperation(pnpParser.OperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterVariable(pnpParser.VariableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVariable(pnpParser.VariableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -268,6 +352,30 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterIntegerExpression(pnpParser.IntegerExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIntegerExpression(pnpParser.IntegerExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRationalExpression(pnpParser.RationalExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRationalExpression(pnpParser.RationalExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCharacterExpression(pnpParser.CharacterExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -299,6 +407,30 @@ public class pnpBaseListener implements pnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParams(pnpParser.ParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReadFunction(pnpParser.ReadFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReadFunction(pnpParser.ReadFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWriteFunction(pnpParser.WriteFunctionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWriteFunction(pnpParser.WriteFunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -556,6 +688,18 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTypeDefinitionType(pnpParser.TypeDefinitionTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTypeDefinitionType(pnpParser.TypeDefinitionTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterType(pnpParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -568,6 +712,18 @@ public class pnpBaseListener implements pnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPrimitiveType(pnpParser.PrimitiveTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPrimitiveType(pnpParser.PrimitiveTypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArrayDimention(pnpParser.ArrayDimentionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -575,6 +731,18 @@ public class pnpBaseListener implements pnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArrayDimention(pnpParser.ArrayDimentionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayDimentionLiteral(pnpParser.ArrayDimentionLiteralContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayDimentionLiteral(pnpParser.ArrayDimentionLiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -599,6 +767,30 @@ public class pnpBaseListener implements pnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRelationalOperator(pnpParser.RelationalOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEqualityOperator(pnpParser.EqualityOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEqualityOperator(pnpParser.EqualityOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterComparisonOperator(pnpParser.ComparisonOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitComparisonOperator(pnpParser.ComparisonOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -635,6 +827,18 @@ public class pnpBaseListener implements pnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMultiplicativeOperator(pnpParser.MultiplicativeOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRationalMultiplicativeOperator(pnpParser.RationalMultiplicativeOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRationalMultiplicativeOperator(pnpParser.RationalMultiplicativeOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

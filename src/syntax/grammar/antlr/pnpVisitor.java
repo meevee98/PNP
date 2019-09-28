@@ -1,4 +1,4 @@
-// Generated from F:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
+// Generated from C:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
 package syntax.grammar.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -22,6 +22,12 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitProcedure(pnpParser.ProcedureContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#procedureBody}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitProcedureBody(pnpParser.ProcedureBodyContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#procedureDeclaration}.
 	 * @param ctx the parse tree
@@ -47,6 +53,24 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProcedureBlock(pnpParser.ProcedureBlockContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link pnpParser#mainProcedure}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMainProcedure(pnpParser.MainProcedureContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeDeclaration(pnpParser.TypeDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#typeVariableDeclarationBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeVariableDeclarationBlock(pnpParser.TypeVariableDeclarationBlockContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link pnpParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -58,6 +82,12 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVariableDeclarationBlock(pnpParser.VariableDeclarationBlockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#variableAssignmentBlock}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariableAssignmentBlock(pnpParser.VariableAssignmentBlockContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#command}.
 	 * @param ctx the parse tree
@@ -89,11 +119,17 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLogicalOperation(pnpParser.LogicalOperationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link pnpParser#arithmeticOperation}.
+	 * Visit a parse tree produced by {@link pnpParser#integerArithmeticOperation}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArithmeticOperation(pnpParser.ArithmeticOperationContext ctx);
+	T visitIntegerArithmeticOperation(pnpParser.IntegerArithmeticOperationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#rationalArithmeticOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRationalArithmeticOperation(pnpParser.RationalArithmeticOperationContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#concatenationOperation}.
 	 * @param ctx the parse tree
@@ -106,6 +142,12 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitOperation(pnpParser.OperationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#variable}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVariable(pnpParser.VariableContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#variableDeclaration}.
 	 * @param ctx the parse tree
@@ -137,6 +179,18 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumericalExpression(pnpParser.NumericalExpressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link pnpParser#integerExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntegerExpression(pnpParser.IntegerExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#rationalExpression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRationalExpression(pnpParser.RationalExpressionContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link pnpParser#characterExpression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -154,6 +208,18 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParams(pnpParser.ParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#readFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReadFunction(pnpParser.ReadFunctionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#writeFunction}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWriteFunction(pnpParser.WriteFunctionContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#ifStatement}.
 	 * @param ctx the parse tree
@@ -281,17 +347,35 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDoWhileEnd(pnpParser.DoWhileEndContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link pnpParser#typeDefinitionType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitTypeDefinitionType(pnpParser.TypeDefinitionTypeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link pnpParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitType(pnpParser.TypeContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link pnpParser#primitiveType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimitiveType(pnpParser.PrimitiveTypeContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link pnpParser#arrayDimention}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitArrayDimention(pnpParser.ArrayDimentionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#arrayDimentionLiteral}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDimentionLiteral(pnpParser.ArrayDimentionLiteralContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#binaryOperator}.
 	 * @param ctx the parse tree
@@ -304,6 +388,18 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRelationalOperator(pnpParser.RelationalOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#equalityOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualityOperator(pnpParser.EqualityOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#comparisonOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitComparisonOperator(pnpParser.ComparisonOperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#arithmeticOperator}.
 	 * @param ctx the parse tree
@@ -322,6 +418,12 @@ public interface pnpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitMultiplicativeOperator(pnpParser.MultiplicativeOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link pnpParser#rationalMultiplicativeOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRationalMultiplicativeOperator(pnpParser.RationalMultiplicativeOperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link pnpParser#unaryLogicalOperator}.
 	 * @param ctx the parse tree

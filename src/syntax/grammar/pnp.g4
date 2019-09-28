@@ -5,14 +5,22 @@ grammar pnp;
 
 import tokens;
 
-// usado para testes rápidos
+// estrutura dos arquivos
 file
-    : variableDeclarationBlock? procedure+ EOF
+    : typeDeclaration*            // criação de tipos abstratos
+      variableDeclarationBlock?   // declaração das variáveis globais
+      variableAssignmentBlock?    // atribuição das variáveis globais
+      procedure*                  // procedimentos
+      mainProcedure               // procedimento principal
+      EOF
     ;
 
 // procedimento
 procedure
-    : procedureDeclaration procedureInput? procedureOutput? procedureBlock
+    : procedureDeclaration procedureBody
+    ;
+procedureBody
+    : procedureInput? procedureOutput? procedureBlock
     ;
 procedureDeclaration
     : PROCEDIMENTO ID
@@ -26,6 +34,17 @@ procedureOutput
 procedureBlock
     : INICIO block FIM
     ;
+mainProcedure
+    : PROCEDIMENTO PRINCIPAL procedureBody
+    ;
+
+// tipo abstrato
+typeDeclaration
+    : TIPO ID INICIO typeVariableDeclarationBlock FIM
+    ;
+typeVariableDeclarationBlock
+    : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO typeDefinitionType FIM_COMANDO
+    ;
 
 // bloco - declarações de variáveis sempre no começo do bloco
 block
@@ -33,6 +52,9 @@ block
     ;
 variableDeclarationBlock
     : variableDeclaration+
+    ;
+variableAssignmentBlock
+    : (variableAssignment FIM_COMANDO)+
     ;
 
 command
@@ -52,7 +74,8 @@ statementCondition
 // operacao
 relationalOperation
     : ABRE_PARENTESES relationalOperation FECHA_PARENTESES
-    | arithmeticOperation relationalOperator arithmeticOperation
+    | integerArithmeticOperation relationalOperator integerArithmeticOperation
+    | rationalArithmeticOperation comparisonOperator rationalArithmeticOperation
     | characterExpression relationalOperator characterExpression
     | booleanExpression
     ;
@@ -63,30 +86,43 @@ logicalOperation
     | booleanExpression
     | relationalOperation
     ;
-arithmeticOperation
-    : ABRE_PARENTESES arithmeticOperation FECHA_PARENTESES
-    | arithmeticOperation multiplicativeOperator arithmeticOperation
-    | arithmeticOperation additiveOperator arithmeticOperation
-    | numericalExpression
+integerArithmeticOperation
+    : ABRE_PARENTESES integerArithmeticOperation FECHA_PARENTESES
+    | integerArithmeticOperation multiplicativeOperator integerArithmeticOperation
+    | integerArithmeticOperation additiveOperator integerArithmeticOperation
+    | integerExpression
+    ;
+rationalArithmeticOperation
+    : integerArithmeticOperation
+    | ABRE_PARENTESES rationalArithmeticOperation FECHA_PARENTESES
+    | rationalArithmeticOperation rationalMultiplicativeOperator rationalArithmeticOperation
+    | rationalArithmeticOperation additiveOperator rationalArithmeticOperation
+    | rationalExpression
     ;
 concatenationOperation
     : ABRE_PARENTESES concatenationOperation FECHA_PARENTESES
-    | concatenationOperation ADICAO concatenationOperation
+    | concatenationOperation CONCATENACAO concatenationOperation
     | characterExpression
+    | numericalExpression
     ;
 
 operation
-    : arithmeticOperation
+    : integerArithmeticOperation
+    | rationalArithmeticOperation
     | logicalOperation
     | relationalOperation
     | concatenationOperation
+    ;
+
+variable
+    : ID arrayDimention? (SEPARADOR_TIPO_VARIAVEL variable)?
     ;
 
 variableDeclaration
     : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO type FIM_COMANDO
     ;
 variableAssignment
-    : ID arrayDimention? ATRIBUICAO operation
+    : variable ATRIBUICAO operation
     ;
 
 // expressao - separar depois em expressao de cada tipo
@@ -96,27 +132,43 @@ expression
     | characterExpression
     ;
 booleanExpression
-    : ID
-    | BOOLEANO_LITERAL
+    : BOOLEANO_LITERAL
+    | variable
     ;
 numericalExpression
-    : ID
-    | NATURAL_LITERAL
+    : integerExpression
+    | rationalExpression
+    ;
+integerExpression
+    : NATURAL_LITERAL
     | INTEIRO_LITERAL
-    | RACIONAL_LITERAL
+    | variable
+    ;
+rationalExpression
+    : RACIONAL_LITERAL
+    | variable
     ;
 characterExpression
-    : ID
-    | CARACTERE_LITERAL
+    : CARACTERE_LITERAL
     | STRING_LITERAL
+    | variable
     ;
 
 function
-    : ID ABRE_PARENTESES params? FECHA_PARENTESES
+    : readFunction
+    | writeFunction
+    | ID ABRE_PARENTESES params? FECHA_PARENTESES
     ;
 params
     : expression (SEPARADOR_VARIAVEL expression)*
     ;
+readFunction
+    : LEIA ABRE_PARENTESES FECHA_PARENTESES
+    ;
+writeFunction
+    : ESCREVA ABRE_PARENTESES params? FECHA_PARENTESES
+    ;
+
 
 // condicional se
 ifStatement
@@ -145,7 +197,7 @@ switchStatement
     : switchStart switchCases+ switchDefault? FIM
     ;
 switchStart
-    : CASO ID SEJA
+    : CASO variable SEJA
     ;
 switchCases
     : expression (SEPARADOR_VARIAVEL expression)* SEPARADOR_VARIAVEL_TIPO block
@@ -159,7 +211,7 @@ forStatement
     : forStart forInterval forStep? forBlock
     ;
 forStart
-    : PARA ID
+    : PARA variable
     ;
 forInterval
     : DE numericalExpression ATE numericalExpression
@@ -194,17 +246,32 @@ doWhileEnd
     ;
 
 // tipos primitivos
+typeDefinitionType
+    : primitiveType
+    | typeDefinitionType arrayDimentionLiteral
+    | ID
+    ;
+
 type
+    : primitiveType
+    | type arrayDimention
+    | ID
+    ;
+
+primitiveType
     : INTEIRO
     | RACIONAL
     | BOOLEANO
     | CARACTERE
     | STRING
-    | type arrayDimention
     ;
 
 arrayDimention
-    : ABRE_CHAVES (NATURAL_LITERAL | ID) FECHA_CHAVES
+    : ABRE_CHAVES variable FECHA_CHAVES
+    | arrayDimentionLiteral
+    ;
+arrayDimentionLiteral
+    : ABRE_CHAVES NATURAL_LITERAL FECHA_CHAVES
     ;
 
 // operadores
@@ -215,13 +282,21 @@ binaryOperator
     ;
 
 relationalOperator
+    : equalityOperator
+    | comparisonOperator
+    ;
+
+equalityOperator
     : IGUALDADE
     | DESIGUALDADE
-    | MAIOR
     | MAIOR_IGUAL
-    | MENOR
     | MENOR_IGUAL
     ;
+comparisonOperator
+    : MAIOR
+    | MENOR
+    ;
+
 arithmeticOperator
     : additiveOperator
     | multiplicativeOperator
@@ -231,10 +306,13 @@ additiveOperator
     | SUBTRACAO
     ;
 multiplicativeOperator
-    : MULTIPLICACAO
-    | DIVISAO_RAC
+    : rationalMultiplicativeOperator
     | DIVISAO_INT
     | MODULO
+    ;
+rationalMultiplicativeOperator
+    : MULTIPLICACAO
+    | DIVISAO_RAC
     ;
 
 unaryLogicalOperator

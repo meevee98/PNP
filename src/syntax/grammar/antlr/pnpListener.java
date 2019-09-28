@@ -1,4 +1,4 @@
-// Generated from F:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
+// Generated from C:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
 package syntax.grammar.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -27,6 +27,16 @@ public interface pnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitProcedure(pnpParser.ProcedureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#procedureBody}.
+	 * @param ctx the parse tree
+	 */
+	void enterProcedureBody(pnpParser.ProcedureBodyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#procedureBody}.
+	 * @param ctx the parse tree
+	 */
+	void exitProcedureBody(pnpParser.ProcedureBodyContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#procedureDeclaration}.
 	 * @param ctx the parse tree
@@ -68,6 +78,36 @@ public interface pnpListener extends ParseTreeListener {
 	 */
 	void exitProcedureBlock(pnpParser.ProcedureBlockContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link pnpParser#mainProcedure}.
+	 * @param ctx the parse tree
+	 */
+	void enterMainProcedure(pnpParser.MainProcedureContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#mainProcedure}.
+	 * @param ctx the parse tree
+	 */
+	void exitMainProcedure(pnpParser.MainProcedureContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeDeclaration(pnpParser.TypeDeclarationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#typeDeclaration}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeDeclaration(pnpParser.TypeDeclarationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#typeVariableDeclarationBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeVariableDeclarationBlock(pnpParser.TypeVariableDeclarationBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#typeVariableDeclarationBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeVariableDeclarationBlock(pnpParser.TypeVariableDeclarationBlockContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link pnpParser#block}.
 	 * @param ctx the parse tree
 	 */
@@ -87,6 +127,16 @@ public interface pnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVariableDeclarationBlock(pnpParser.VariableDeclarationBlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#variableAssignmentBlock}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariableAssignmentBlock(pnpParser.VariableAssignmentBlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#variableAssignmentBlock}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariableAssignmentBlock(pnpParser.VariableAssignmentBlockContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#command}.
 	 * @param ctx the parse tree
@@ -138,15 +188,25 @@ public interface pnpListener extends ParseTreeListener {
 	 */
 	void exitLogicalOperation(pnpParser.LogicalOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link pnpParser#arithmeticOperation}.
+	 * Enter a parse tree produced by {@link pnpParser#integerArithmeticOperation}.
 	 * @param ctx the parse tree
 	 */
-	void enterArithmeticOperation(pnpParser.ArithmeticOperationContext ctx);
+	void enterIntegerArithmeticOperation(pnpParser.IntegerArithmeticOperationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link pnpParser#arithmeticOperation}.
+	 * Exit a parse tree produced by {@link pnpParser#integerArithmeticOperation}.
 	 * @param ctx the parse tree
 	 */
-	void exitArithmeticOperation(pnpParser.ArithmeticOperationContext ctx);
+	void exitIntegerArithmeticOperation(pnpParser.IntegerArithmeticOperationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#rationalArithmeticOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterRationalArithmeticOperation(pnpParser.RationalArithmeticOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#rationalArithmeticOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitRationalArithmeticOperation(pnpParser.RationalArithmeticOperationContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#concatenationOperation}.
 	 * @param ctx the parse tree
@@ -167,6 +227,16 @@ public interface pnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOperation(pnpParser.OperationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterVariable(pnpParser.VariableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitVariable(pnpParser.VariableContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#variableDeclaration}.
 	 * @param ctx the parse tree
@@ -218,6 +288,26 @@ public interface pnpListener extends ParseTreeListener {
 	 */
 	void exitNumericalExpression(pnpParser.NumericalExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link pnpParser#integerExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterIntegerExpression(pnpParser.IntegerExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#integerExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitIntegerExpression(pnpParser.IntegerExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#rationalExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRationalExpression(pnpParser.RationalExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#rationalExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRationalExpression(pnpParser.RationalExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link pnpParser#characterExpression}.
 	 * @param ctx the parse tree
 	 */
@@ -247,6 +337,26 @@ public interface pnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParams(pnpParser.ParamsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#readFunction}.
+	 * @param ctx the parse tree
+	 */
+	void enterReadFunction(pnpParser.ReadFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#readFunction}.
+	 * @param ctx the parse tree
+	 */
+	void exitReadFunction(pnpParser.ReadFunctionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#writeFunction}.
+	 * @param ctx the parse tree
+	 */
+	void enterWriteFunction(pnpParser.WriteFunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#writeFunction}.
+	 * @param ctx the parse tree
+	 */
+	void exitWriteFunction(pnpParser.WriteFunctionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#ifStatement}.
 	 * @param ctx the parse tree
@@ -458,6 +568,16 @@ public interface pnpListener extends ParseTreeListener {
 	 */
 	void exitDoWhileEnd(pnpParser.DoWhileEndContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link pnpParser#typeDefinitionType}.
+	 * @param ctx the parse tree
+	 */
+	void enterTypeDefinitionType(pnpParser.TypeDefinitionTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#typeDefinitionType}.
+	 * @param ctx the parse tree
+	 */
+	void exitTypeDefinitionType(pnpParser.TypeDefinitionTypeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link pnpParser#type}.
 	 * @param ctx the parse tree
 	 */
@@ -468,6 +588,16 @@ public interface pnpListener extends ParseTreeListener {
 	 */
 	void exitType(pnpParser.TypeContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link pnpParser#primitiveType}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimitiveType(pnpParser.PrimitiveTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#primitiveType}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimitiveType(pnpParser.PrimitiveTypeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link pnpParser#arrayDimention}.
 	 * @param ctx the parse tree
 	 */
@@ -477,6 +607,16 @@ public interface pnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrayDimention(pnpParser.ArrayDimentionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#arrayDimentionLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayDimentionLiteral(pnpParser.ArrayDimentionLiteralContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#arrayDimentionLiteral}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayDimentionLiteral(pnpParser.ArrayDimentionLiteralContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#binaryOperator}.
 	 * @param ctx the parse tree
@@ -497,6 +637,26 @@ public interface pnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRelationalOperator(pnpParser.RelationalOperatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#equalityOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqualityOperator(pnpParser.EqualityOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#equalityOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqualityOperator(pnpParser.EqualityOperatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#comparisonOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterComparisonOperator(pnpParser.ComparisonOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#comparisonOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitComparisonOperator(pnpParser.ComparisonOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#arithmeticOperator}.
 	 * @param ctx the parse tree
@@ -527,6 +687,16 @@ public interface pnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMultiplicativeOperator(pnpParser.MultiplicativeOperatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link pnpParser#rationalMultiplicativeOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterRationalMultiplicativeOperator(pnpParser.RationalMultiplicativeOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link pnpParser#rationalMultiplicativeOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitRationalMultiplicativeOperator(pnpParser.RationalMultiplicativeOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link pnpParser#unaryLogicalOperator}.
 	 * @param ctx the parse tree
