@@ -3,6 +3,7 @@
 ### TOC
 
 - [Elementos Léxicos](#elementos-léxicos)
+   - [Tokens](#tokens)
    - [Identificadores](#identificadores)
    - [Palavras Reservadas](#palavras-reservadas)
    - [Operadores](#operadores)
@@ -13,11 +14,9 @@
 - [Procedimentos](#procedimentos)
 - [Escopo](#escopo)
 
-Este é o manual de referência para a linguagem de programação PNP. Este documento é inspirado no [The GNU C Reference Manual](https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html#Preface).
+## Convenções léxicas
 
-## Elementos Léxicos
-
-Esta seção descreve os elementos léxicos do código fonte em PNP. Estes elementos são denominados *tokens*. Existem 4 tipos diferentes de tokens: identificadores, palavras reservadas (*keywords*), operadores e separadores. Cada um deles será descrito a seguir. 
+### Tokens
 
 ### Identificadores
 
@@ -33,28 +32,99 @@ Palavras reservadas são identificadores reservados como a parte da linguagem de
 
 São palavras reservadas em PNP:
 
-|              |         |          |
-| ------------ | ------- | -------- |
-| algoritmo    | ate     | booleano |
-| caractere    | caso    | de       |
-| entao        | entrada | escreva  |
-| faca         | fim     | inicio   |
-| inteiro      | para    | passo    |
-| procedimento | que     | racional |
-| repita       | saida   | se       |
-| seja         | senao   |          |
+|           |              |          |
+| ----------| ------------ | -------- |
+| ate       | faca         | que      |
+| booleano  | fim          | racional |
+| caractere | inicio       | repita   |
+| caso      | inteiro      | saida    |
+| de        | mod          | se       |
+| div       | nao          | seja     |
+| e         | ou           | senao    |
+| enquanto  | para         | string   |
+| entao     | passo        | xor      |
+| entrada   | procedimento |          |
 
-### Operadores
+### Constantes
 
-Um operador é um token especial que realiza uma operação, como adição ou subtração com um, dois ou três operandos. Detalhes sobre os operadores serão fornecidos na seção [Expressões e Operadores](#expressões-e-operadores).
+```
+constant
+    : integerLiteral
+    | characterLiteral
+    | rationalLiteral
+    | stringLiteral
+    ;
+```
 
-### Separadores
+#### Constantes de Inteiro
 
-Um separador separa os tokens:
+Aceita omissão de sinal de números, números positivos e negativos, mas não aceita +0 nem -0
 
-`( ) [ ] { } ; , . : `
+#### Constantes de Caractere
 
-## Tipos
+Sequências de escape:
+
+|                      |       |
+| -------------------- | ----- |
+| espaço em branco     | \b    |
+| tabulação horizontal | \t    |
+| nova linha           | \n    |
+| formfeed             | \f    |
+| carriage return      | \r    |
+| aspas                | \\\"  |
+| apóstrofo            | \\\'  |
+| barra invertida      | \\\\  | 
+
+#### Constantes de Racional
+
+Aceita omissão de sinal de números, números positivos e negativos, mas não aceita +0.0 nem -0.0
+
+### Strings Literais
+
+## Notação Sintática
+
+## Significado dos Identificadores
+
+## Objetos e Valores
+
+## Conversões
+
+## Expressões
+
+```
+expression
+    : ID
+    | constant
+    | 
+```
+
+### Vetor
+
+### Chamada de Procedimento
+
+### Operadores Unários
+
+### Operadores Multiplicativos
+
+### Operadores Aditivos
+
+### Operadores Relacionais
+
+### Operadores Lógicos
+
+#### Operador e
+
+#### Operador ou
+
+#### Operador xor
+
+### Expressões de Atribuição
+
+### Expressões Constantes
+
+## Declarações
+
+### Especificadores de Tipo
 
 | tipo      | descrição                        |
 | --------- | -------------------------------- |
@@ -64,68 +134,13 @@ Um separador separa os tokens:
 | racional  | número racional                  |
 | booleano  | valor lógico verdadeiro ou falso |
 
-### Inteiro
+## Statements
 
+### Statements de Seleção
 
-
-### Racional
-
-
-
-### Caractere
-
-
-
-### String
-
-
-
-### Booleano
-
-
-
-## Expressões e Operadores
-
-### Expressões
-
-| operador | descrição     | tipos              |
-| -------- | ------------- | ------------------ |
-| +        | soma          | inteiro e racional |
-| -        | subtração     | inteiro e racional |
-| *        | multiplicação | inteiro e racional |
-| /        | divisão       | inteiro e racional |
-| div      | divisão       | inteiro            |
-| mod      | módulo        | inteiro            |
-
-### Atribuição
-
-### Operadores Aritméticos
-
-### Operadores de Comparação
-
-### Operadores Lógicos
-
-## Instruções e Comandos
-
-### Blocos
-
-### se ... entao
-
-### enquanto ... faca
-
-### repita ... ate que
-
-### para ... de ... ate ... repita
-
-## Procedimentos
-
-### Declarações de Procedimentos
-
-### Chamando Procedimentos
-
-### Argumentos
-
-### O Procedimento Principal
+### Statement de Iteração
 
 ## Escopo
+
+## Gramática
 
