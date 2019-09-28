@@ -1,7 +1,7 @@
 # PNP: Tutorial Introdutório 
 
 #### TOC
-
+- [Introdução](#introdução)
 - [Olá, Mundo](#olá-mundo)
 - [Expressões Aritméticas](#expressões-aritméticas)
 - [Tipos](#tipos)
@@ -9,6 +9,10 @@
 - [Procedimentos](#procedimentos)
 - [Argumentos](#argumentos)
 - [Escopo de Variáveis](#escopo-de-variáveis)
+
+## Introdução
+A linguagem de programação PNP (PNP não é Pseudocódigo, ou simplesmente PNP is not Pseudocode) é inspirada em Pseudocódigo. Originalmente, Pseudocódigo é uma linguagem informal de alto nível para descrever princípios e esboços de algoritmos. Devido a sua legibilidade, Pseudocódigo é amplamente utilizado no meio acadêmico, científico e para elaboração para documentação técnica, onde a compreensão do algoritmo é mais importante que a linguagem que será utilizada para a implementação.
+
 
 O formato deste tutorial segue o modelo utilizado no Capítulo 1 do livro [The C Programming Language](https://www.amazon.com.br/Programming-Language-Brian-W-Kernighan/dp/0131103628), escrito por [Kernighan](https://www.cs.princeton.edu/~bwk/) e [Dennis Ritchie](https://en.wikipedia.org/wiki/Dennis_Ritchie). Isso significa que primeiramente serão apresentados os elementos essenciais da linguagem em exemplos que aplicam as funcionalidades suportadas, sem aprofundar em muitos detalhes, regras e exceções. A intenção não  é oferecer um tutorial que contemple todas as funcionalidades da linguagem, mas sim indicar de  uma introdução ágil de como qualquer pessoa possa começar a escrever algoritmos com PNP, por  isso o presente tutorial irá se focar no prático. Serão contemplados declaração de variáveis e seus escopos, expressões aritméticas e lógicas, procedimentos e operações de entrada e saída.
 
@@ -414,4 +418,3 @@ inicio
 fim
 ```
 
-## Escopo de Variáveis
