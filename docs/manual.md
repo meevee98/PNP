@@ -2,16 +2,21 @@
 
 ### TOC
 
-- [Elementos Léxicos](#elementos-léxicos)
+- [Convenções Léxicas](#convenções-léxicas)
    - [Tokens](#tokens)
    - [Identificadores](#identificadores)
    - [Palavras Reservadas](#palavras-reservadas)
+   - [Constantes](#constantes)
+   - [Strings Literais](#strings-literais)
    - [Operadores](#operadores)
-   - [Espaço](#espaço)
-- [Tipos](#tipos)
-- [Expressões e Operadores](#expressões-e-operadores)
-- [Instruções e Comandos](#instruções-e-comandos)
-- [Procedimentos](#procedimentos)
+- [Notação Sintática](#notação-sintática)
+- [Conversões](#conversões)
+- [Expressões](#expressões)
+- [Declarações](#declarações)
+     - [Especificadores de Tipo](#especificadores-de-tipo)
+- [Statements](#statements)
+     - [Statements de Seleção](#statements-de-seleção)
+     - [Statements de Iteração](#statements-de-iteração)
 - [Escopo](#escopo)
 
 Este é o manual de referência para a linguagem de programação PNP. Este documento é inspirado no [The GNU C Reference Manual](https://www.gnu.org/software/gnu-c-manual/gnu-c-manual.html#Preface) e no Apêndice A do livro [The C Programming Language](https://www.amazon.com.br/Programming-Language-Brian-W-Kernighan/dp/0131103628), escrito por [Kernighan](https://www.cs.princeton.edu/~bwk/) e [Dennis Ritchie](https://en.wikipedia.org/wiki/Dennis_Ritchie).
@@ -23,7 +28,7 @@ Esta seção descreve os elementos léxicos do código fonte em PNP. Estes eleme
 
 ### Tokens
 
-Existem seis tipos diferentes de tokens: identificadores, palavras reservadas (*keywords*), constantes, literais de cadeia de caracteres, operadores e separadaores. Espaços em branco, tabs e quebras de linhas são geralmente ignorados, exceto quando separam tokens, palavras reservadas e constantes.
+Existem seis tipos diferentes de tokens: identificadores, palavras reservadas (*keywords*), constantes, literais de cadeia de caracteres, operadores e separadores. Espaços em branco, tabs e quebras de linhas são geralmente ignorados, exceto quando separam tokens, palavras reservadas e constantes.
 
 Abaixo são listados os tokens do PNP e posteriormente neste documento, em cada seção, serão apresentados os tokens correspondentes.
 
@@ -180,10 +185,10 @@ Sequências de escape:
 #### Constantes de Racional
 
 Uma constante de racional consiste na parte inteira, decimal ou fracionária. Ambas a parte inteira e a parte fracionária consistem em uma sequência de dígitos em representação decimal. Tanto a parte fracionária quanto a parte inteira precisam ser sempre explicitada, como por exemplo 1.0 ou 0.1.
-Exemplos como 1 ou .1 não são aceitos para constantes racionais. É permitido a omissão de sinal de números, números positivos e negativos, mas é permitido +0.0 nem -0.0.
+Exemplos como 1 ou .1 não são aceitos para constantes racionais. É permitido a omissão de sinal de números, números positivos e negativos, mas não é permitido +0.0 nem -0.0.
 
 ### Strings Literais
-Uma string literal ou string constante é uma sequência de carateres encapsulados por aspas duplas como "compiladores".
+Uma string literal ou string constante é uma sequência de carateres encapsulados por aspas duplas como `"compiladores"`.
 
 ## Notação Sintática
 
@@ -191,23 +196,22 @@ Ao longo deste documento é utilizada uma convenção para representar a descri�
 
 ```
 nome-da-regra
-    : atributo1
-    | atributo2
-    | atributo3
+    : cadeia1
+    | cadeia2
+    | cadeia3
 
 ```
 
 ## Conversões
-Alguns operadores podem, dependendo dos operandos, provocar conversão do tipo do valor de determinado operando. Isto é reconhecido por conversões ou *casting*
+Alguns operadores podem, dependendo dos operandos, provocar conversão do tipo do valor de determinado operando. Isto é reconhecido por conversões ou *casting*.
 
-Pode ocorrer, por exemplo a conversão do valor de um operando que seja do tipo inteiro para racional e vice-versa. Quando o valor de um racional é convertido para inteiro, a parte fracionária é simplesmente descartada, sem realizada arredondamento.
+Pode ocorrer, por exemplo a conversão do valor de um operando que seja do tipo inteiro para racional e vice-versa. Quando o valor de um racional é convertido para inteiro, a parte fracionária é simplesmente descartada, sem realizar arredondamento.
 
 Muitos operadores aritméticos podem causar conversões automaticamente e tratar os resultados das operações de forma semelhante. Em PNP, será utilizada a prioridade de converter valor dos operandos para racional caso algum deles seja racional.
 
-No final da expressão aritmética, caso a variável que receberá o valor seja de um tipo diferente do resultado, será realizada uma conversão. Desta forma, se o resultado for do tipo racional mas a variável do tipo inteiro, a parte fracionária será cortada.
+No final da expressão aritmética, caso a variável que receberá o valor seja de um tipo diferente do resultado, será provocado um erro de compilação.
 
-Ainda existe um caso especial à parte de expressões aritméticas, que é a concatenação de strings. Caso em uma operação de concatenação de strings um dos valores seja do tipo inteiro ou racional, será realizada a conversão do valor para string antes da concatenação. Ressalta-se que não é suportado a conversão inversa, ou seja, de string para racional ou inteiro.
-
+Ainda existe um caso especial diferente de expressões aritméticas é a concatenação de strings. Caso em uma operação de concatenação de strings um dos valores seja do tipo inteiro ou racional, será realizada a conversão do valor para string antes da concatenação. Ressalta-se que não é suportado a conversão inversa, ou seja, de string para racional ou inteiro.
 
 ## Expressões
 
@@ -276,7 +280,7 @@ additiveOperator
 
 ### Operadores Relacionais
 
-Em expressões relacionais, é prevalecida a prioridade da esquerda para a direita, visto que todos os operandos têm a mesma prioridade. O resultado de uma expressão relacional é um literal booleano.
+Em expressões relacionais, é permitido apenas um operador por vez. O resultado de uma expressão relacional é um literal booleano.
 
 São operadores relacionais `<`, `>`,  `<=`,  `>=`,  `=` e `!=`.
 
@@ -398,7 +402,9 @@ type
 
 ## Statements
 
-*Statements*, *comandos* ou *instruções* são executados em sequência. Em PNP, os dois *statements* mais importantes são os de seleção e os de iteração, que serão abordados abaixo.
+*Statements* ou *instruções* são executados em sequência. Em PNP, os dois *statements* mais importantes são os de seleção e os de iteração, que serão abordados abaixo.
+
+A tradução de *statements* literal para português (*afirmação*) não engloba o significado correto na computação. Desta forma, uma tradução aproximada visando a semântica do termo seria instrução, que pode resultar em três tipos diferentes: instrução de declaração, instrução de atribuição e instrução de comando.
 
 ```
 statement
@@ -420,7 +426,7 @@ Por outro lado, o *comando* `caso ... seja` é indicado para indicar fluxos de a
 
 O bloco de qualquer comando de seleção só é executado se a condição for verdadeira.
 
-#### Se Então Statement
+#### Statement Se Então
 
 ```
 ifStatement
@@ -440,13 +446,12 @@ ifElse
     ;
 ```
 
-#### Caso Faça Statement
-
+#### Statement Caso Faça
 ```
 switchStatement
     : CASO ID SEJA
       switchCases+
-      SENAO block? FIM
+      (SENAO block)? FIM
     ;
 switchCases
     : expression (SEPARADOR_VARIAVEL expression)* SEPARADOR_VARIAVEL_TIPO block
@@ -457,11 +462,11 @@ switchCases
 
 Existem três formas de iteração em PNP: `para i de 0 até 42 repita`, `enquanto <condição> faca` e a `repita até que <condicao>`.
 
-No laço de repetição `para`, o bloco é repetido até que o valor de i supere o valor do controle. O passo para incrementação pode ser otimido quando tem valor 1.
+No laço de repetição `para`, o bloco é repetido até que o valor da variável de controler iguale o valor da variável limite. O passo do incrementação e decrementação pode ser omitido. Se otimido, adquire por padrão o valor 1.
 
 No laço `enquanto`, o bloco é repetido enquanto a condição for verdeira em uma pré-condição, que é testada antes da execução do bloco. Já no laço `repita`, o bloco é repetido enquanto a condição for falsa em uma pós-condição, que é verificada após a execução do bloco.
 
-#### Para Statement
+#### Statement Para
 
 ```
 forStatement
@@ -473,7 +478,7 @@ forStatement
     ;
 ```
 
-#### Enquanto Statement
+#### Statement Enquanto
 
 ```
 whileStatement
@@ -481,7 +486,7 @@ whileStatement
     ;
 ```
 
-#### Repita Até Que Statement
+#### Statement Repita Até Que
 
 ```
 doWhileStatement
@@ -491,7 +496,7 @@ doWhileStatement
 
 ## Escopo
 
-Um escopo léxico de um identificador é a parte de um código-fonte onde as características do identificador são compreendidas. Em PNP, existem duas tipos de escopo: global e local.
+Um escopo léxico de um identificador é a parte de um código-fonte onde as características do identificador são compreendidas. Em PNP, existem duas tipos de escopo: *global* e *local*.
 
  Um identificador de escopo global é disponível para ser acessível por toda parte do código-fonte. Por outro lado, um identificador de escopo global é disponível para ser acessível apenas dentro daquele bloco, como laço de repetição ou procedimento.
  
