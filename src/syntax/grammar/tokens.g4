@@ -52,7 +52,7 @@ MODULO: 'mod';
 CONCATENACAO: '++';
 AND: 'e';
 OR: 'ou';
-XOR: 'xor';
+XOR: 'oux';
 NOT: 'nao';
 
 // variaveis literais
