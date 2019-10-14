@@ -1,160 +1,325 @@
 /**
  * Define a grammar called PNP
-
  */
 grammar pnp;
 
-// usado para testes rápidos
-arquivo: procedimento+ EOF;
+import tokens;
+
+// estrutura dos arquivos
+file
+    : typeDeclaration*            // criação de tipos abstratos
+      variableDeclarationBlock?   // declaração das variáveis globais
+      variableAssignmentBlock?    // atribuição das variáveis globais
+      procedure*                  // procedimentos
+      mainProcedure               // procedimento principal
+      EOF
+    ;
 
 // procedimento
-procedimento: procedimento_declaracao procedimento_entrada? procedimento_saida? procedimento_bloco
-	;
-procedimento_declaracao: PROCEDIMENTO ID
-	;
-procedimento_entrada: ENTRADA procedimento_variavel_declaracao
+procedure
+    : procedureDeclaration procedureBody
     ;
-procedimento_saida: SAIDA procedimento_variavel_declaracao
+procedureBody
+    : procedureInput? procedureOutput? procedureBlock
     ;
-procedimento_bloco: INICIO bloco FIM
+procedureDeclaration
+    : PROCEDIMENTO ID
     ;
-procedimento_variavel_declaracao : (variavel_declaracao ';')+
+procedureInput
+    : ENTRADA (NULO | variableDeclaration+)
+    ;
+procedureOutput
+    : SAIDA (NULO | variableDeclaration)
+    ;
+procedureBlock
+    : INICIO block FIM
+    ;
+mainProcedure
+    : PROCEDIMENTO PRINCIPAL procedureBody
+    ;
+
+// tipo abstrato
+typeDeclaration
+    : TIPO ID INICIO typeVariableDeclarationBlock FIM
+    ;
+typeVariableDeclarationBlock
+    : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO typeDefinitionType FIM_COMANDO
     ;
 
 // bloco - declarações de variáveis sempre no começo do bloco
-bloco : bloco_variavel_declaracao* (comando | statement)*
-	;
-bloco_variavel_declaracao : variavel_declaracao ';'
+block
+    : variableDeclarationBlock? (command | statement)*
+    ;
+variableDeclarationBlock
+    : variableDeclaration+
+    ;
+variableAssignmentBlock
+    : (variableAssignment FIM_COMANDO)+
     ;
 
-comando : ((funcao | variavel_atribuicao) ';')
-	;
-statement: se_statement | para_statement | enquanto_statement
+command
+    : (function | variableAssignment) FIM_COMANDO
+    ;
+statement
+    : ifStatement
+    | forStatement
+    | whileStatement
+    | doWhileStatement
+    | switchStatement
+    ;
+statementCondition
+    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES
     ;
 
 // operacao
-operacao_relacional: operacao operador_relacional operacao
+relationalOperation
+    : ABRE_PARENTESES relationalOperation FECHA_PARENTESES
+    | integerArithmeticOperation relationalOperator integerArithmeticOperation
+    | rationalArithmeticOperation comparisonOperator rationalArithmeticOperation
+    | characterExpression relationalOperator characterExpression
+    | booleanExpression
     ;
-operacao_logica: operacao operador_logico operacao
+logicalOperation
+    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES
+    | unaryLogicalOperator logicalOperation
+    | logicalOperation binaryLogicalOperator logicalOperation
+    | booleanExpression
+    | relationalOperation
     ;
-operacao : expressao (operador expressao)*
+integerArithmeticOperation
+    : ABRE_PARENTESES integerArithmeticOperation FECHA_PARENTESES
+    | integerArithmeticOperation multiplicativeOperator integerArithmeticOperation
+    | integerArithmeticOperation additiveOperator integerArithmeticOperation
+    | integerExpression
+    ;
+rationalArithmeticOperation
+    : integerArithmeticOperation
+    | ABRE_PARENTESES rationalArithmeticOperation FECHA_PARENTESES
+    | rationalArithmeticOperation rationalMultiplicativeOperator rationalArithmeticOperation
+    | rationalArithmeticOperation additiveOperator rationalArithmeticOperation
+    | rationalExpression
+    ;
+concatenationOperation
+    : ABRE_PARENTESES concatenationOperation FECHA_PARENTESES
+    | concatenationOperation CONCATENACAO concatenationOperation
+    | characterExpression
+    | numericalExpression
     ;
 
-variavel_declaracao : ID (',' ID)* ':' tipo
-	;
-variavel_atribuicao : ID ATRIBUICAO operacao
-	;
+operation
+    : integerArithmeticOperation
+    | rationalArithmeticOperation
+    | logicalOperation
+    | relationalOperation
+    | concatenationOperation
+    ;
+
+variable
+    : ID arrayDimention? (SEPARADOR_TIPO_VARIAVEL variable)?
+    ;
+
+variableDeclaration
+    : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO type FIM_COMANDO
+    ;
+variableAssignment
+    : variable ATRIBUICAO operation
+    ;
 
 // expressao - separar depois em expressao de cada tipo
-expressao : ID | valor_literal | funcao
-	;
-expressao_booleana: ID | BOOLEANO_LITERAL | funcao | operacao_relacional | operacao_logica
+expression
+    : booleanExpression
+    | numericalExpression
+    | characterExpression
+    ;
+booleanExpression
+    : BOOLEANO_LITERAL
+    | variable
+    ;
+numericalExpression
+    : integerExpression
+    | rationalExpression
+    ;
+integerExpression
+    : NATURAL_LITERAL
+    | INTEIRO_LITERAL
+    | variable
+    ;
+rationalExpression
+    : RACIONAL_LITERAL
+    | variable
+    ;
+characterExpression
+    : CARACTERE_LITERAL
+    | STRING_LITERAL
+    | variable
     ;
 
-funcao : ID '(' params? ')'
-	;
-params : expressao (',' expressao)*
-	;
+function
+    : readFunction
+    | writeFunction
+    | ID ABRE_PARENTESES params? FECHA_PARENTESES
+    ;
+params
+    : expression (SEPARADOR_VARIAVEL expression)*
+    ;
+readFunction
+    : LEIA ABRE_PARENTESES FECHA_PARENTESES
+    ;
+writeFunction
+    : ESCREVA ABRE_PARENTESES params? FECHA_PARENTESES
+    ;
+
 
 // condicional se
-se_statement: se_inicio se_entao se_senao_se;
+ifStatement
+    : ifStart ifThen ifElseIf
+    ;
+ifStart
+    : SE statementCondition
+    ;
+ifThen
+    : ENTAO block
+    ;
+ifElse
+    : SENAO block FIM
+    ;
+ifElseIf
+    : elseIf
+    | ifElse
+    | FIM
+    ;
+elseIf
+    : SENAO ifStatement
+    ;
 
-se_inicio: SE '(' expressao_booleana ')';
-se_entao: ENTAO bloco;
-se_senao: SENAO bloco FIM;
-se_senao_se: senao_se | se_senao | FIM;
-senao_se: SENAO se_statement;
+// condicional caso
+switchStatement
+    : switchStart switchCases+ switchDefault? FIM
+    ;
+switchStart
+    : CASO variable SEJA
+    ;
+switchCases
+    : expression (SEPARADOR_VARIAVEL expression)* SEPARADOR_VARIAVEL_TIPO block
+    ;
+switchDefault
+    : SENAO block
+    ;
 
-// loop para
-para_statement: para_inicio para_intervalo para_passo? para_bloco;
+// laço para
+forStatement
+    : forStart forInterval forStep? forBlock
+    ;
+forStart
+    : PARA variable
+    ;
+forInterval
+    : DE numericalExpression ATE numericalExpression
+    ;
+forStep
+    : PASSO numericalExpression
+    ;
+forBlock
+    : REPITA block FIM
+    ;
 
-para_inicio: PARA ID;
-para_intervalo: DE (ID | numero_literal) ATE (ID | numero_literal);
-para_passo: PASSO (ID | numero_literal);
-para_bloco: REPITA bloco FIM;
+// laço enquanto
+whileStatement
+    : whileStart whileBlock
+    ;
+whileStart
+    : ENQUANTO statementCondition
+    ;
+whileBlock
+    : FACA block FIM
+    ;
 
-// loop enquanto
-enquanto_statement: enquanto_inicio enquanto_bloco;
-enquanto_inicio: ENQUANTO '(' expressao_booleana ')';
-enquanto_bloco: FACA bloco FIM;
-
-// palavras reservadas
-PROCEDIMENTO: 'procedimento';
-ENTRADA: 'entrada';
-SAIDA: 'saida';
-INICIO: 'inicio';
-FIM: 'fim';
-SE: 'se';
-ENTAO: 'entao';
-SENAO: 'senao';
-PARA: 'para';
-DE: 'de';
-ATE: 'ate';
-PASSO: 'passo';
-REPITA: 'repita';
-ENQUANTO: 'enquanto';
-FACA: 'faca';
+// laço ate que
+doWhileStatement
+    : doWhileBlock doWhileEnd
+    ;
+doWhileBlock
+    : REPITA block
+    ;
+doWhileEnd
+    : ATE QUE statementCondition FIM_COMANDO
+    ;
 
 // tipos primitivos
-tipo : INTEIRO | RACIONAL | BOOLEANO | CARACTERE | STRING;
+typeDefinitionType
+    : primitiveType
+    | typeDefinitionType arrayDimentionLiteral
+    | ID
+    ;
 
-INTEIRO: 'inteiro';
-RACIONAL: 'racional';
-BOOLEANO: 'booleano';
-CARACTERE: 'caractere';
-STRING: 'string';
-NULO: 'nulo';
+type
+    : primitiveType
+    | type arrayDimention
+    | ID
+    ;
+
+primitiveType
+    : INTEIRO
+    | RACIONAL
+    | BOOLEANO
+    | CARACTERE
+    | STRING
+    ;
+
+arrayDimention
+    : ABRE_CHAVES variable FECHA_CHAVES
+    | arrayDimentionLiteral
+    ;
+arrayDimentionLiteral
+    : ABRE_CHAVES NATURAL_LITERAL FECHA_CHAVES
+    ;
 
 // operadores
-operador:   operador_relacional |
-            operador_aritmetico |
-            operador_logico;
+binaryOperator
+    : relationalOperator
+    | arithmeticOperator
+    | binaryLogicalOperator
+    ;
 
-operador_relacional:    IGUALDADE |
-                        DESIGUALDADE |
-                        MAIOR |
-                        MAIOR_IGUAL |
-                        MENOR |
-                        MENOR_IGUAL;
-operador_aritmetico:    ADICAO |
-                        SUBTRACAO |
-                        MULTIPLICACAO |
-                        DIVISAO_INT |
-                        DIVISAO_RAC |
-                        MODULO;
-operador_logico:    AND |
-                    OR |
-                    XOR |
-                    NOT;
+relationalOperator
+    : equalityOperator
+    | comparisonOperator
+    ;
 
-IGUALDADE: '=';
-DESIGUALDADE: '<>';
-MAIOR: '>';
-MAIOR_IGUAL: '>=';
-MENOR: '<';
-MENOR_IGUAL: '<=';
-ADICAO: '+';
-SUBTRACAO: '-';
-MULTIPLICACAO: '*';
-DIVISAO_RAC: '/';
-DIVISAO_INT: 'div';
-MODULO: 'mod';
-AND: 'e';
-OR: 'ou';
-XOR: 'xor';
-NOT: 'nao';
+equalityOperator
+    : IGUALDADE
+    | DESIGUALDADE
+    | MAIOR_IGUAL
+    | MENOR_IGUAL
+    ;
+comparisonOperator
+    : MAIOR
+    | MENOR
+    ;
 
-ATRIBUICAO: '<-';
+arithmeticOperator
+    : additiveOperator
+    | multiplicativeOperator
+    ;
+additiveOperator
+    : ADICAO
+    | SUBTRACAO
+    ;
+multiplicativeOperator
+    : rationalMultiplicativeOperator
+    | DIVISAO_INT
+    | MODULO
+    ;
+rationalMultiplicativeOperator
+    : MULTIPLICACAO
+    | DIVISAO_RAC
+    ;
 
-// variaveis literais
-valor_literal : INTEIRO_LITERAL | RACIONAL_LITERAL | BOOLEANO_LITERAL | CARACTERE_LITERAL | STRING_LITERAL;
-
-numero_literal: INTEIRO_LITERAL | RACIONAL_LITERAL;
-INTEIRO_LITERAL: [0-9];
-RACIONAL_LITERAL: INTEIRO_LITERAL'.'[0-9]+;
-BOOLEANO_LITERAL: 'true' | 'false';
-CARACTERE_LITERAL: '\''.'\'';
-STRING_LITERAL : '"'.*?'"';
-
-ID : [a-zA-Z][_a-zA-Z0-9]* ;	// match lower-case identifiers
-WS : [ \t\r\n]+ -> skip ;		// skip spaces, tabs, newlines
+unaryLogicalOperator
+    : NOT
+    ;
+binaryLogicalOperator
+    : AND
+    | OR
+    | XOR
+    ;
