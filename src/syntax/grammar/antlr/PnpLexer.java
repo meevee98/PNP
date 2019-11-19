@@ -1,4 +1,4 @@
-// Generated from C:/Workspace/PNP/src/syntax/grammar\pnp.g4 by ANTLR 4.7.2
+// Generated from D:/Workspace/PNP/src/syntax/grammar\Pnp.g4 by ANTLR 4.7.2
 package syntax.grammar.antlr;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
@@ -10,7 +10,7 @@ import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class pnpLexer extends Lexer {
+public class PnpLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
@@ -117,13 +117,13 @@ public class pnpLexer extends Lexer {
 	}
 
 
-	public pnpLexer(CharStream input) {
+	public PnpLexer(CharStream input) {
 		super(input);
 		_interp = new LexerATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	@Override
-	public String getGrammarFileName() { return "pnp.g4"; }
+	public String getGrammarFileName() { return "Pnp.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }

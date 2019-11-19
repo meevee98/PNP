@@ -2,7 +2,7 @@
  * Define list of tokens
  */
 
-lexer grammar tokens;
+lexer grammar Tokens;
 
 // palavras reservadas
 PROCEDIMENTO: 'procedimento';

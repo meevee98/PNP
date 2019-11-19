@@ -1,18 +1,21 @@
 /**
  * Define a grammar called PNP
  */
-grammar pnp;
+grammar Pnp;
 
-import tokens;
+import Tokens;
 
 // estrutura dos arquivos
 file
-    : typeDeclaration*            // criação de tipos abstratos
-      variableDeclarationBlock?   // declaração das variáveis globais
-      variableAssignmentBlock?    // atribuição das variáveis globais
-      procedure*                  // procedimentos
-      mainProcedure               // procedimento principal
+    : typeDeclaration*                          // criação de tipos abstratos
+      variableDeclarationAndAssignmentBlock?    // declaração e inicialização das variáveis globais
+      procedureDeclarationBlock?                // procedimentos
       EOF
+    ;
+
+procedureDeclarationBlock
+    : procedure*
+      mainProcedure                             // procedimento principal
     ;
 
 // procedimento
@@ -43,22 +46,23 @@ typeDeclaration
     : TIPO ID INICIO typeVariableDeclarationBlock FIM
     ;
 typeVariableDeclarationBlock
-    : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO typeDefinitionType FIM_COMANDO
+    : variableDeclaration+
     ;
 
 // bloco - declarações de variáveis sempre no começo do bloco
 block
-    : variableDeclarationBlock? (command | statement)*
+    : variableDeclarationAndAssignmentBlock? (command | statement)*
     ;
-variableDeclarationBlock
-    : variableDeclaration+
+variableDeclarationAndAssignmentBlock
+    : (variableDeclarationAndAssignment)+
     ;
-variableAssignmentBlock
-    : (variableAssignment FIM_COMANDO)+
+variableDeclarationAndAssignment
+    : variableDeclaration variableAssignment+
     ;
 
 command
-    : (function | variableAssignment) FIM_COMANDO
+    : function
+    | variableAssignment
     ;
 statement
     : ifStatement
@@ -73,37 +77,37 @@ statementCondition
 
 // operacao
 relationalOperation
-    : ABRE_PARENTESES relationalOperation FECHA_PARENTESES
-    | integerArithmeticOperation relationalOperator integerArithmeticOperation
-    | rationalArithmeticOperation comparisonOperator rationalArithmeticOperation
-    | characterExpression relationalOperator characterExpression
-    | booleanExpression
+    : ABRE_PARENTESES relationalOperation FECHA_PARENTESES                          #priorityRelationalOperation
+    | integerArithmeticOperation relationalOperator integerArithmeticOperation      #integerRelationalOperation
+    | rationalArithmeticOperation comparisonOperator rationalArithmeticOperation    #rationalRelationalOperation
+    | characterExpression relationalOperator characterExpression                    #characterRelationalOperation
+    | booleanExpression                                                             #expressionRelationalOperation
     ;
 logicalOperation
-    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES
-    | unaryLogicalOperator logicalOperation
-    | logicalOperation binaryLogicalOperator logicalOperation
-    | booleanExpression
-    | relationalOperation
+    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES         #priorityLogicalOperation
+    | unaryLogicalOperator logicalOperation                     #unaryLogicalOperation
+    | logicalOperation binaryLogicalOperator logicalOperation   #binaryLogicalOperation
+    | booleanExpression                                         #expressionLogicalOperation
+    | relationalOperation                                       #relationalLogicalOperation
     ;
 integerArithmeticOperation
-    : ABRE_PARENTESES integerArithmeticOperation FECHA_PARENTESES
-    | integerArithmeticOperation multiplicativeOperator integerArithmeticOperation
-    | integerArithmeticOperation additiveOperator integerArithmeticOperation
-    | integerExpression
+    : ABRE_PARENTESES integerArithmeticOperation FECHA_PARENTESES                   #priorityIntegerArithmeticOperation
+    | integerArithmeticOperation multiplicativeOperator integerArithmeticOperation  #integerMultiplicativeOperation
+    | integerArithmeticOperation additiveOperator integerArithmeticOperation        #integerAdditiveOperation
+    | integerExpression                                                             #expressionIntegerArithmeticOperation
     ;
 rationalArithmeticOperation
-    : integerArithmeticOperation
-    | ABRE_PARENTESES rationalArithmeticOperation FECHA_PARENTESES
-    | rationalArithmeticOperation rationalMultiplicativeOperator rationalArithmeticOperation
-    | rationalArithmeticOperation additiveOperator rationalArithmeticOperation
-    | rationalExpression
+    : integerArithmeticOperation                                                                #integerExpressionRationalArithmeticOperation
+    | ABRE_PARENTESES rationalArithmeticOperation FECHA_PARENTESES                              #priorityRationalArithmeticOperation
+    | rationalArithmeticOperation rationalMultiplicativeOperator rationalArithmeticOperation    #rationalMultiplicativeOperation
+    | rationalArithmeticOperation additiveOperator rationalArithmeticOperation                  #rationalAdditiveOperation
+    | rationalExpression                                                                        #rationalExpressionRationalArithmeticOperation
     ;
 concatenationOperation
-    : ABRE_PARENTESES concatenationOperation FECHA_PARENTESES
-    | concatenationOperation CONCATENACAO concatenationOperation
-    | characterExpression
-    | numericalExpression
+    : ABRE_PARENTESES concatenationOperation FECHA_PARENTESES       #priorityConcatenationOperation
+    | concatenationOperation CONCATENACAO concatenationOperation    #recursiveConcatenationOperation
+    | characterExpression                                           #characterExpressionConcatenationOperation
+    | numericalExpression                                           #numericalExpressionConcatenationOperation
     ;
 
 operation
@@ -122,7 +126,7 @@ variableDeclaration
     : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO type FIM_COMANDO
     ;
 variableAssignment
-    : variable ATRIBUICAO operation
+    : variable ATRIBUICAO operation FIM_COMANDO
     ;
 
 // expressao - separar depois em expressao de cada tipo
@@ -157,16 +161,16 @@ characterExpression
 function
     : readFunction
     | writeFunction
-    | ID ABRE_PARENTESES params? FECHA_PARENTESES
+    | ID ABRE_PARENTESES params? FECHA_PARENTESES FIM_COMANDO
     ;
 params
     : expression (SEPARADOR_VARIAVEL expression)*
     ;
 readFunction
-    : LEIA ABRE_PARENTESES FECHA_PARENTESES
+    : LEIA ABRE_PARENTESES FECHA_PARENTESES FIM_COMANDO
     ;
 writeFunction
-    : ESCREVA ABRE_PARENTESES params? FECHA_PARENTESES
+    : ESCREVA ABRE_PARENTESES params? FECHA_PARENTESES FIM_COMANDO
     ;
 
 
@@ -267,8 +271,8 @@ primitiveType
     ;
 
 arrayDimention
-    : ABRE_CHAVES variable FECHA_CHAVES
-    | arrayDimentionLiteral
+    : ABRE_CHAVES variable FECHA_CHAVES     #variableArrayDimention
+    | arrayDimentionLiteral                 #literalArrayDimention
     ;
 arrayDimentionLiteral
     : ABRE_CHAVES NATURAL_LITERAL FECHA_CHAVES
