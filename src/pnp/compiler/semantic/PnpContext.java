@@ -1,9 +1,21 @@
-package semantic;
+package pnp.compiler.semantic;
 
-import syntax.grammar.antlr.PnpBaseListener;
-import syntax.grammar.antlr.PnpParser;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import pnp.compiler.model.Construct;
+import pnp.compiler.model.Expression;
+import pnp.compiler.model.Operator;
+import pnp.compiler.model.Variable;
+import pnp.compiler.model.operation.BinaryOperation;
+import pnp.compiler.model.type.primitives.PrimitiveType;
+import pnp.compiler.syntax.grammar.antlr.PnpBaseListener;
+import pnp.compiler.syntax.grammar.antlr.PnpParser;
 
 public class PnpContext extends PnpBaseListener {
+    PnpContext(Analyser analyser) {
+        this.analyser = analyser;
+    }
+    private Analyser analyser;
+
     @Override public void enterFile(PnpParser.FileContext ctx) {
         //TODO
     }
@@ -225,11 +237,38 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitIntegerMultiplicativeOperation(PnpParser.IntegerMultiplicativeOperationContext ctx) {
-        //TODO
+        TerminalNode operator;
+        if (ctx.operator.getTokens(ctx.operator.start.getType()).isEmpty()) {
+            operator = ctx.operator.rationalMultiplicativeOperator().getTokens(ctx.operator.start.getType()).get(0);
+        }
+        else {
+            operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
+        }
+
+        Expression op1;
+        Expression op2;
+        BinaryOperation operation;
+
+        op2 = analyser.tryPop();
+        op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            if (operator.equals(ctx.operator.DIVISAO_INT())) {
+                operation = new BinaryOperation(Operator.DIVISION, op1, op2, PrimitiveType.Inteiro);
+            } else if (operator.equals(ctx.operator.MODULO())) {
+                operation = new BinaryOperation(Operator.MODULO, op1, op2, PrimitiveType.Inteiro);
+            } else if (operator.equals(ctx.operator.rationalMultiplicativeOperator().MULTIPLICACAO())) {
+                operation = new BinaryOperation(Operator.MULTIPLICATION, op1, op2, PrimitiveType.Inteiro);
+            } else {
+                operation = new BinaryOperation(Operator.DIVISION, op1, op2, PrimitiveType.Racional);
+            }
+
+            analyser.tryPush(operation);
+        }
     }
     
     @Override public void enterExpressionIntegerArithmeticOperation(PnpParser.ExpressionIntegerArithmeticOperationContext ctx) {
-        //TODO
+
     }
     
     @Override public void exitExpressionIntegerArithmeticOperation(PnpParser.ExpressionIntegerArithmeticOperationContext ctx) {
@@ -244,12 +283,23 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterIntegerAdditiveOperation(PnpParser.IntegerAdditiveOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitIntegerAdditiveOperation(PnpParser.IntegerAdditiveOperationContext ctx) {
-        //TODO
+        TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
+            if (operator.equals(ctx.operator.ADICAO())) {
+                operation = new BinaryOperation(Operator.ADDITION, op1, op2, PrimitiveType.Inteiro);
+            } else {
+                operation = new BinaryOperation(Operator.SUBTRACTION, op1, op2, PrimitiveType.Inteiro);
+            }
+
+            analyser.tryPush(operation);
+        }
     }
     
     @Override public void enterRationalAdditiveOperation(PnpParser.RationalAdditiveOperationContext ctx) {
@@ -337,7 +387,17 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitVariable(PnpParser.VariableContext ctx) {
-        //TODO
+        String identifier = ctx.id.getText();
+        TerminalNode id = ctx.getTokens(ctx.id.getType()).get(0);
+
+        Construct getVariable = analyser.tryGetConstruct(identifier);
+        if (getVariable instanceof Variable) {
+            Variable variable = (Variable)getVariable;
+            analyser.tryPush(variable);
+        }
+        else {
+            // TODO throw exception in compilation time
+        }
     }
     
     @Override public void enterVariableDeclaration(PnpParser.VariableDeclarationContext ctx) {
@@ -385,7 +445,17 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitIntegerExpression(PnpParser.IntegerExpressionContext ctx) {
-        //TODO
+        String expression = ctx.getText();
+        TerminalNode exp = ctx.getTokens(ctx.start.getType()).get(0);
+
+        try {
+            int op = Integer.parseInt(expression);
+            Variable variable = new Variable(PrimitiveType.Inteiro, op);
+            analyser.tryPush(variable);
+        }
+        catch (NumberFormatException e) {
+            // exitVariable
+        }
     }
     
     @Override public void enterRationalExpression(PnpParser.RationalExpressionContext ctx) {

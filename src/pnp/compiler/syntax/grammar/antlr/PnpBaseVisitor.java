@@ -1,5 +1,5 @@
-// Generated from D:/Workspace/PNP/src/syntax/grammar\Pnp.g4 by ANTLR 4.7.2
-package syntax.grammar.antlr;
+// Generated from D:/Workspace/PNP/src/pnp/compiler/syntax/grammar\Pnp.g4 by ANTLR 4.7.2
+package pnp.compiler.syntax.grammar.antlr;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**

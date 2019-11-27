@@ -1,5 +1,5 @@
-// Generated from D:/Workspace/PNP/src/syntax/grammar\Pnp.g4 by ANTLR 4.7.2
-package syntax.grammar.antlr;
+// Generated from D:/Workspace/PNP/src/pnp/compiler/syntax/grammar\Pnp.g4 by ANTLR 4.7.2
+package pnp.compiler.syntax.grammar.antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -1709,6 +1709,9 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class IntegerMultiplicativeOperationContext extends IntegerArithmeticOperationContext {
+		public IntegerArithmeticOperationContext operand1;
+		public MultiplicativeOperatorContext operator;
+		public IntegerArithmeticOperationContext operand2;
 		public List<IntegerArithmeticOperationContext> integerArithmeticOperation() {
 			return getRuleContexts(IntegerArithmeticOperationContext.class);
 		}
@@ -1774,6 +1777,9 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class IntegerAdditiveOperationContext extends IntegerArithmeticOperationContext {
+		public IntegerArithmeticOperationContext operand1;
+		public AdditiveOperatorContext operator;
+		public IntegerArithmeticOperationContext operand2;
 		public List<IntegerArithmeticOperationContext> integerArithmeticOperation() {
 			return getRuleContexts(IntegerArithmeticOperationContext.class);
 		}
@@ -1860,25 +1866,27 @@ public class PnpParser extends Parser {
 					case 1:
 						{
 						_localctx = new IntegerMultiplicativeOperationContext(new IntegerArithmeticOperationContext(_parentctx, _parentState));
+						((IntegerMultiplicativeOperationContext)_localctx).operand1 = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_integerArithmeticOperation);
 						setState(297);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(298);
-						multiplicativeOperator();
+						((IntegerMultiplicativeOperationContext)_localctx).operator = multiplicativeOperator();
 						setState(299);
-						integerArithmeticOperation(4);
+						((IntegerMultiplicativeOperationContext)_localctx).operand2 = integerArithmeticOperation(4);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new IntegerAdditiveOperationContext(new IntegerArithmeticOperationContext(_parentctx, _parentState));
+						((IntegerAdditiveOperationContext)_localctx).operand1 = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_integerArithmeticOperation);
 						setState(301);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(302);
-						additiveOperator();
+						((IntegerAdditiveOperationContext)_localctx).operator = additiveOperator();
 						setState(303);
-						integerArithmeticOperation(3);
+						((IntegerAdditiveOperationContext)_localctx).operand2 = integerArithmeticOperation(3);
 						}
 						break;
 					}
@@ -2403,6 +2411,7 @@ public class PnpParser extends Parser {
 	}
 
 	public static class VariableContext extends ParserRuleContext {
+		public Token id;
 		public TerminalNode ID() { return getToken(PnpParser.ID, 0); }
 		public ArrayDimentionContext arrayDimention() {
 			return getRuleContext(ArrayDimentionContext.class,0);
@@ -2437,7 +2446,7 @@ public class PnpParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(356);
-			match(ID);
+			((VariableContext)_localctx).id = match(ID);
 			setState(358);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,29,_ctx) ) {

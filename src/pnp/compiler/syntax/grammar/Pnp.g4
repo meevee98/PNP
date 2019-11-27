@@ -92,8 +92,8 @@ logicalOperation
     ;
 integerArithmeticOperation
     : ABRE_PARENTESES integerArithmeticOperation FECHA_PARENTESES                   #priorityIntegerArithmeticOperation
-    | integerArithmeticOperation multiplicativeOperator integerArithmeticOperation  #integerMultiplicativeOperation
-    | integerArithmeticOperation additiveOperator integerArithmeticOperation        #integerAdditiveOperation
+    | operand1=integerArithmeticOperation operator=multiplicativeOperator operand2=integerArithmeticOperation  #integerMultiplicativeOperation
+    | operand1=integerArithmeticOperation operator=additiveOperator operand2=integerArithmeticOperation        #integerAdditiveOperation
     | integerExpression                                                             #expressionIntegerArithmeticOperation
     ;
 rationalArithmeticOperation
@@ -119,7 +119,7 @@ operation
     ;
 
 variable
-    : ID arrayDimention? (SEPARADOR_TIPO_VARIAVEL variable)?
+    : id=ID arrayDimention? (SEPARADOR_TIPO_VARIAVEL variable)?
     ;
 
 variableDeclaration
