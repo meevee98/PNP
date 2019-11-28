@@ -1,12 +1,14 @@
 package pnp.compiler.semantic;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
+import pnp.compiler.exception.SemanticException;
 import pnp.compiler.model.Construct;
 import pnp.compiler.model.Expression;
 import pnp.compiler.model.Operator;
 import pnp.compiler.model.Variable;
 import pnp.compiler.model.operation.BinaryOperation;
 import pnp.compiler.model.operation.UnaryOperation;
+import pnp.compiler.model.type.Type;
 import pnp.compiler.model.type.primitives.PrimitiveType;
 import pnp.compiler.syntax.grammar.antlr.PnpBaseListener;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
@@ -152,100 +154,101 @@ public class PnpContext extends PnpBaseListener {
     @Override public void exitStatementCondition(PnpParser.StatementConditionContext ctx) {
         //TODO
     }
-    
+
     @Override public void exitIntegerRelationalOperation(PnpParser.IntegerRelationalOperationContext ctx) {
-        TerminalNode operator;
+        Type expectedType = PrimitiveType.Inteiro;
+        Type resultType = PrimitiveType.Booleano;
+        int operator = ctx.start.getType();
 
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 != null && op2 != null) {
-            BinaryOperation operation;
-
+        if (op1 == null || op2 == null) {
+            throw new SemanticException(ctx.start, "os operandos devem ser do tipo Inteiro");
+        }
+        if (op1.getType() == PrimitiveType.Racional && op2.getType() == PrimitiveType.Racional) {
+            // Relational equality operations with Racional values are not allowed
             if (ctx.operator.equalityOperator() != null) {
-                operator = ctx.operator.equalityOperator().getTokens(ctx.operator.start.getType()).get(0);
-
-                if (operator.equals(ctx.operator.equalityOperator().IGUALDADE())) {
-                    operation = new BinaryOperation(Operator.EQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
-                } else if (operator.equals(ctx.operator.equalityOperator().DESIGUALDADE())) {
-                    operation = new BinaryOperation(Operator.INEQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
-                } else if (operator.equals(ctx.operator.equalityOperator().MAIOR_IGUAL())) {
-                    operation = new BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
-                } else {
-                    operation = new BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
-                }
-
-                analyser.tryPush(operation);
+                throw new SemanticException(ctx.start, "mismatched input '!=' expecting {'+', '-', '*', '/', ';'}");
             }
-            else {
-                operator = ctx.operator.comparisonOperator().getTokens(ctx.operator.start.getType()).get(0);
+            expectedType = PrimitiveType.Racional;
+        }
+        if (op1.getType() != expectedType || op2.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "os operandos devem ser do mesmo tipo");
+        }
 
-                if (operator.equals(ctx.operator.comparisonOperator().MAIOR())) {
-                    operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
-                } else {
-                    operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
-                }
+        BinaryOperation operation = createBinaryRelationalOperation(expectedType, resultType, op2, op1, ctx.operator, operator);
+        analyser.tryPush(operation);
+    }
 
-                analyser.tryPush(operation);
+    private BinaryOperation createBinaryRelationalOperation(Type expectedType, Type resultType, Expression op2, Expression op1, PnpParser.RelationalOperatorContext ctx, int token) {
+        TerminalNode operator;
+        BinaryOperation operation;
+
+        if (ctx.equalityOperator() != null) {
+            operator = ctx.equalityOperator().getTokens(token).get(0);
+
+            if (operator.equals(ctx.equalityOperator().IGUALDADE())) {
+                operation = new BinaryOperation(Operator.EQUALITY, op1, op2, resultType, expectedType);
+            } else if (operator.equals(ctx.equalityOperator().DESIGUALDADE())) {
+                operation = new BinaryOperation(Operator.INEQUALITY, op1, op2, resultType, expectedType);
+            } else if (operator.equals(ctx.equalityOperator().MAIOR_IGUAL())) {
+                operation = new BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, resultType, expectedType);
+            } else {
+                operation = new BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, resultType, expectedType);
             }
         }
+        else {
+            operator = ctx.comparisonOperator().getTokens(ctx.start.getType()).get(0);
+
+            if (operator.equals(ctx.comparisonOperator().MAIOR())) {
+                operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType, expectedType);
+            } else {
+                operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, resultType, expectedType);
+            }
+        }
+
+        return operation;
     }
-    
+
+    @Override public void exitCharacterRelationalOperation(PnpParser.CharacterRelationalOperationContext ctx) {
+        Type expectedType = PrimitiveType.Caractere;
+        Type resultType = PrimitiveType.Caractere;
+        int operator = ctx.start.getType();
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 == null || op2 == null ||
+                !expectedType.isTypeOf(op1) || !expectedType.isTypeOf(op2)) {
+            throw new SemanticException(ctx.start, "os operandos devem ser do mesmo tipo");
+        }
+
+        BinaryOperation operation = createBinaryRelationalOperation(expectedType, resultType, op2, op1, ctx.operator, operator);
+        analyser.tryPush(operation);
+    }
+
     @Override public void exitRationalRelationalOperation(PnpParser.RationalRelationalOperationContext ctx) {
+        Type expectedType = PrimitiveType.Racional;
+        Type resultType = PrimitiveType.Booleano;
         TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
 
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 != null && op2 != null) {
-            BinaryOperation operation;
-
-            if (operator.equals(ctx.operator.MAIOR())) {
-                operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Racional);
-            } else {
-                operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Racional);
-            }
-
-            analyser.tryPush(operation);
+        if (op1 == null || op2 == null ||
+                op1.getType() != expectedType || op2.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "os operandos devem ser do mesmo tipo");
         }
-    }
-    
-    @Override public void exitCharacterRelationalOperation(PnpParser.CharacterRelationalOperationContext ctx) {
-        TerminalNode operator;
+        BinaryOperation operation;
 
-        Expression op2 = analyser.tryPop();
-        Expression op1 = analyser.tryPop();
-
-        if (op1 != null && op2 != null) {
-            BinaryOperation operation;
-
-            if (ctx.operator.equalityOperator() != null) {
-                operator = ctx.operator.equalityOperator().getTokens(ctx.operator.start.getType()).get(0);
-
-                if (operator.equals(ctx.operator.equalityOperator().IGUALDADE())) {
-                    operation = new BinaryOperation(Operator.EQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
-                } else if (operator.equals(ctx.operator.equalityOperator().DESIGUALDADE())) {
-                    operation = new BinaryOperation(Operator.INEQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
-                } else if (operator.equals(ctx.operator.equalityOperator().MAIOR_IGUAL())) {
-                    operation = new BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
-                } else {
-                    operation = new BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
-                }
-
-                analyser.tryPush(operation);
-            }
-            else {
-                operator = ctx.operator.comparisonOperator().getTokens(ctx.operator.start.getType()).get(0);
-
-                if (operator.equals(ctx.operator.comparisonOperator().MAIOR())) {
-                    operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
-                } else {
-                    operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
-                }
-
-                analyser.tryPush(operation);
-            }
+        if (operator.equals(ctx.operator.MAIOR())) {
+            operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType, expectedType);
+        } else {
+            operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, resultType, expectedType);
         }
+
+        analyser.tryPush(operation);
     }
     
     @Override public void enterExpressionRelationalOperation(PnpParser.ExpressionRelationalOperationContext ctx) {
@@ -273,24 +276,27 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitBinaryLogicalOperation(PnpParser.BinaryLogicalOperationContext ctx) {
+        Type expectedType = PrimitiveType.Booleano;
         TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
 
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 != null && op2 != null) {
-            BinaryOperation operation;
-
-            if (operator.equals(ctx.operator.AND())) {
-                operation = new BinaryOperation(Operator.AND, op1, op2, PrimitiveType.Booleano);
-            } else if (operator.equals(ctx.operator.OR())) {
-                operation = new BinaryOperation(Operator.OR, op1, op2, PrimitiveType.Booleano);
-            } else {
-                operation = new BinaryOperation(Operator.XOR, op1, op2, PrimitiveType.Booleano);
-            }
-
-            analyser.tryPush(operation);
+        if (op1 == null || op2 == null ||
+                op1.getType() != expectedType || op2.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "os operandos devem ser do tipo Booleano");
         }
+        BinaryOperation operation;
+
+        if (operator.equals(ctx.operator.AND())) {
+            operation = new BinaryOperation(Operator.AND, op1, op2, expectedType);
+        } else if (operator.equals(ctx.operator.OR())) {
+            operation = new BinaryOperation(Operator.OR, op1, op2, expectedType);
+        } else {
+            operation = new BinaryOperation(Operator.XOR, op1, op2, expectedType);
+        }
+
+        analyser.tryPush(operation);
     }
     
     @Override public void enterRelationalLogicalOperation(PnpParser.RelationalLogicalOperationContext ctx) {
@@ -302,12 +308,15 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitUnaryLogicalOperation(PnpParser.UnaryLogicalOperationContext ctx) {
+        Type expectedType = PrimitiveType.Booleano;
         Expression op = analyser.tryPop();
 
-        if (op != null) {
-            UnaryOperation operation = new UnaryOperation(Operator.NOT, op, PrimitiveType.Booleano);
-            analyser.tryPush(operation);
+        if (op == null || op.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "os operandos devem ser do tipo Booleano");
         }
+
+        UnaryOperation operation = new UnaryOperation(Operator.NOT, op, PrimitiveType.Booleano);
+        analyser.tryPush(operation);
     }
     
     @Override public void exitIntegerMultiplicativeOperation(PnpParser.IntegerMultiplicativeOperationContext ctx) {
@@ -454,7 +463,7 @@ public class PnpContext extends PnpBaseListener {
         }
         else {
             // TODO throw exception in compilation time
-            System.out.println("Só pq o compilador tava dando warning aqui de bloco vazio");
+            System.out.print("");
         }
     }
     
@@ -543,7 +552,7 @@ public class PnpContext extends PnpBaseListener {
             Variable variable = new Variable(PrimitiveType.Caractere, op);
             analyser.tryPush(variable);
         }
-        catch (NumberFormatException e) {
+        catch (StringIndexOutOfBoundsException e) {
             // exitVariable
         }
     }

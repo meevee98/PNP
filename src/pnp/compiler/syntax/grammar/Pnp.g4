@@ -123,7 +123,7 @@ variable
     ;
 
 variableDeclaration
-    : ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO type FIM_COMANDO
+    : identifier=ID (SEPARADOR_VARIAVEL ID)* SEPARADOR_VARIAVEL_TIPO t=type FIM_COMANDO
     ;
 variableAssignment
     : variable ATRIBUICAO operation FIM_COMANDO

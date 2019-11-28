@@ -77,7 +77,7 @@ public class WebAssemblyGenerator {
             return type + ".const " + valueToWat(variable);
         }
         else {
-            return "get_local $" + valueToWat(variable);
+            return "get_local $" + variable.getName();
         }
     }
 
@@ -150,7 +150,7 @@ public class WebAssemblyGenerator {
             int value = (char)var.getValue();
             return "" + value;
         }
-        return var.toString();
+        return var.getValue().toString();
     }
 
     private String cast(Type from, Type to) {

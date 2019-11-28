@@ -1,5 +1,6 @@
 package pnp.compiler.webassembly;
 
+import pnp.compiler.exception.CompilationException;
 import pnp.compiler.semantic.Analyser;
 
 public class WebAssemblyCompiler {
@@ -10,7 +11,7 @@ public class WebAssemblyCompiler {
     Analyser analyser;
 
 
-    void analisar(String fonte) {
+    void analisar(String fonte) throws CompilationException {
         analyser.analyse(fonte);
     }
 
@@ -22,10 +23,17 @@ public class WebAssemblyCompiler {
         if (args.length > 0) {
             fonte = args[0];
         }
-        m.analisar(fonte);
+        try {
+            m.analisar(fonte);
 
-        WebAssemblyGenerator gerador = new WebAssemblyGenerator();
-        String codigo = gerador.toWAT(m.analyser.tryPop());
-        System.out.println(codigo);
+            WebAssemblyGenerator gerador = new WebAssemblyGenerator();
+            String codigo = gerador.toWAT(m.analyser.tryPop());
+            System.out.println(codigo);
+        }
+        catch (CompilationException ex) {
+            if (ex.getMessage() != null) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 }

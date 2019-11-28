@@ -236,7 +236,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -303,7 +304,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -352,7 +354,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -423,7 +426,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -468,7 +472,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -548,7 +553,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -612,7 +618,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -662,7 +669,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -712,7 +720,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -768,7 +777,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -828,7 +838,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -929,7 +940,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -995,7 +1007,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -1066,7 +1079,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -1126,7 +1140,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -1218,7 +1233,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -1268,7 +1284,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -1474,7 +1491,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -1694,7 +1712,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			unrollRecursionContexts(_parentctx);
@@ -1900,7 +1919,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			unrollRecursionContexts(_parentctx);
@@ -2130,7 +2150,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			unrollRecursionContexts(_parentctx);
@@ -2313,7 +2334,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			unrollRecursionContexts(_parentctx);
@@ -2403,7 +2425,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2475,7 +2498,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2552,7 +2576,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2607,7 +2632,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2677,7 +2703,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2737,7 +2764,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2797,7 +2825,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2865,7 +2894,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2925,7 +2955,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -2993,7 +3024,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3086,7 +3118,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3154,7 +3187,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3205,7 +3239,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3270,7 +3305,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3324,7 +3360,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3371,7 +3408,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3418,7 +3456,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3468,7 +3507,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3536,7 +3576,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3583,7 +3624,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3664,7 +3706,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3714,7 +3757,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3790,7 +3834,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3837,7 +3882,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3905,7 +3951,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -3952,7 +3999,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4007,7 +4055,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4054,7 +4103,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4104,7 +4154,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4153,7 +4204,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4200,7 +4252,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4250,7 +4303,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4299,7 +4353,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4346,7 +4401,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4399,7 +4455,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4502,7 +4559,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			unrollRecursionContexts(_parentctx);
@@ -4605,7 +4663,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			unrollRecursionContexts(_parentctx);
@@ -4660,7 +4719,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4752,7 +4812,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4800,7 +4861,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4884,7 +4946,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -4950,7 +5013,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5004,7 +5068,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5056,7 +5121,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5122,7 +5188,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5174,7 +5241,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5243,7 +5311,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5295,7 +5364,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5337,7 +5407,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
@@ -5390,7 +5461,8 @@ public class PnpParser extends Parser {
 		catch (RecognitionException re) {
 			_localctx.exception = re;
 			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
+//			_errHandler.recover(this, re);
+			throw re;
 		}
 		finally {
 			exitRule();
