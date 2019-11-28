@@ -4,6 +4,7 @@ import pnp.compiler.model.Expression;
 import pnp.compiler.model.Operator;
 import pnp.compiler.model.Variable;
 import pnp.compiler.model.operation.BinaryOperation;
+import pnp.compiler.model.operation.UnaryOperation;
 import pnp.compiler.model.type.Type;
 import pnp.compiler.model.type.primitives.PrimitiveType;
 
@@ -28,10 +29,26 @@ public class WebAssemblyGenerator {
         if (expression instanceof BinaryOperation) {
             return binaryOperationToWat((BinaryOperation) expression);
         }
+        if (expression instanceof UnaryOperation) {
+            return unaryOperationToWat((UnaryOperation) expression);
+        }
         if (expression instanceof Variable) {
             return variableToWat((Variable)expression);
         }
         return null;
+    }
+
+    private String unaryOperationToWat(UnaryOperation op) {
+        String operand = expressionToWat(op.operand);
+        String operator = operatorToWat(op.resultType, op.operator, op.operandType);
+
+        if (operand == null || operator == null) {
+            return null;
+        }
+        if (op.operand.getType() != op.operandType) {
+            operand = operand + '\n' + cast(op.operand.getType(), op.operandType);
+        }
+        return operand + '\n' + operator;
     }
 
     private String binaryOperationToWat(BinaryOperation op) {
@@ -39,9 +56,14 @@ public class WebAssemblyGenerator {
         String op2 = expressionToWat(op.op2);
         String operator = operatorToWat(op.resultType, op.operator, op.operandType);
 
-        // TODO check if needs to cast i32 to f32 or f32 to i32
         if (op1 == null || op2 == null || operator == null) {
             return null;
+        }
+        if (op.op1.getType() != op.operandType) {
+            op1 = op1 + '\n' + cast(op.op1.getType(), op.operandType);
+        }
+        if (op.op2.getType() != op.operandType) {
+            op2 = op2 + '\n' + cast(op.op2.getType(), op.operandType);
         }
         return op1 + '\n' + op2 + '\n' + operator;
     }
@@ -52,10 +74,10 @@ public class WebAssemblyGenerator {
             return null;
         }
         if (variable.isLiteral()) {
-            return type + ".const " + variable.getValue();
+            return type + ".const " + valueToWat(variable);
         }
         else {
-            return "get_local $" + variable.getName();
+            return "get_local $" + valueToWat(variable);
         }
     }
 
@@ -95,18 +117,51 @@ public class WebAssemblyGenerator {
             case LESS_THAN_EQUAL: operatorStr = "le_s"; break;
             case EQUALITY: operatorStr = "eq"; break;
             case INEQUALITY: operatorStr = "ne"; break;
+            case NOT: operatorStr = "eqz"; break;
+            case AND: operatorStr = "and"; break;
+            case OR: operatorStr = "or"; break;
+            case XOR: operatorStr = "xor"; break;
         }
         return operand + "." + operatorStr;
     }
 
     private String primitiveTypeToWat(Type type) {
         if (type == PrimitiveType.Inteiro ||
-            type == PrimitiveType.Booleano) {
+            type == PrimitiveType.Booleano ||
+            type == PrimitiveType.Caractere) {
             return "i32";
         }
         if (type == PrimitiveType.Racional) {
             return "f32";
         }
         return null;
+    }
+
+    private String valueToWat(Variable var) {
+        if (PrimitiveType.Booleano.isTypeOf(var)) {
+            if ((boolean)var.getValue()) {
+               return "1";
+            }
+            else {
+                return "0";
+            }
+        }
+        if (PrimitiveType.Caractere.isTypeOf(var)) {
+            int value = (char)var.getValue();
+            return "" + value;
+        }
+        return var.toString();
+    }
+
+    private String cast(Type from, Type to) {
+        String fromType = primitiveTypeToWat(from);
+        String toType = primitiveTypeToWat(to);
+
+        if (PrimitiveType.Racional.isTypeOf(to)) {
+            return toType + ".convert_s/" + fromType;
+        }
+        else {
+            return toType + ".trunc_s/" + fromType;
+        }
     }
 }

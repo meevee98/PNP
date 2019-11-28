@@ -6,6 +6,7 @@ import pnp.compiler.model.Expression;
 import pnp.compiler.model.Operator;
 import pnp.compiler.model.Variable;
 import pnp.compiler.model.operation.BinaryOperation;
+import pnp.compiler.model.operation.UnaryOperation;
 import pnp.compiler.model.type.primitives.PrimitiveType;
 import pnp.compiler.syntax.grammar.antlr.PnpBaseListener;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
@@ -271,12 +272,25 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterBinaryLogicalOperation(PnpParser.BinaryLogicalOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitBinaryLogicalOperation(PnpParser.BinaryLogicalOperationContext ctx) {
-        //TODO
+        TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
+            if (operator.equals(ctx.operator.AND())) {
+                operation = new BinaryOperation(Operator.AND, op1, op2, PrimitiveType.Booleano);
+            } else if (operator.equals(ctx.operator.OR())) {
+                operation = new BinaryOperation(Operator.OR, op1, op2, PrimitiveType.Booleano);
+            } else {
+                operation = new BinaryOperation(Operator.XOR, op1, op2, PrimitiveType.Booleano);
+            }
+
+            analyser.tryPush(operation);
+        }
     }
     
     @Override public void enterRelationalLogicalOperation(PnpParser.RelationalLogicalOperationContext ctx) {
@@ -287,12 +301,13 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterUnaryLogicalOperation(PnpParser.UnaryLogicalOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitUnaryLogicalOperation(PnpParser.UnaryLogicalOperationContext ctx) {
-        //TODO
+        Expression op = analyser.tryPop();
+
+        if (op != null) {
+            UnaryOperation operation = new UnaryOperation(Operator.NOT, op, PrimitiveType.Booleano);
+            analyser.tryPush(operation);
+        }
     }
     
     @Override public void exitIntegerMultiplicativeOperation(PnpParser.IntegerMultiplicativeOperationContext ctx) {
@@ -405,15 +420,7 @@ public class PnpContext extends PnpBaseListener {
         }
     }
     
-    @Override public void enterRecursiveConcatenationOperation(PnpParser.RecursiveConcatenationOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitRecursiveConcatenationOperation(PnpParser.RecursiveConcatenationOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterCharacterExpressionConcatenationOperation(PnpParser.CharacterExpressionConcatenationOperationContext ctx) {
         //TODO
     }
     
@@ -421,23 +428,11 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterPriorityConcatenationOperation(PnpParser.PriorityConcatenationOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitPriorityConcatenationOperation(PnpParser.PriorityConcatenationOperationContext ctx) {
         //TODO
     }
     
-    @Override public void enterNumericalExpressionConcatenationOperation(PnpParser.NumericalExpressionConcatenationOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitNumericalExpressionConcatenationOperation(PnpParser.NumericalExpressionConcatenationOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterOperation(PnpParser.OperationContext ctx) {
         //TODO
     }
     

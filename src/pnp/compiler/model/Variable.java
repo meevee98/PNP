@@ -40,6 +40,7 @@ public class Variable implements Expression {
         }
     }
 
+    @Override
     public Type getType() {
         return type;
     }
@@ -50,9 +51,5 @@ public class Variable implements Expression {
 
     public boolean isLiteral() {
         return name == null;
-    }
-
-    public Variable castTo(Type type) {
-        return new Variable(type, name, value);
     }
 }
