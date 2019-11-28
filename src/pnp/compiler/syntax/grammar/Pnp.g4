@@ -77,31 +77,31 @@ statementCondition
 
 // operacao
 relationalOperation
-    : ABRE_PARENTESES relationalOperation FECHA_PARENTESES                          #priorityRelationalOperation
-    | integerArithmeticOperation relationalOperator integerArithmeticOperation      #integerRelationalOperation
-    | rationalArithmeticOperation comparisonOperator rationalArithmeticOperation    #rationalRelationalOperation
-    | characterExpression relationalOperator characterExpression                    #characterRelationalOperation
-    | booleanExpression                                                             #expressionRelationalOperation
+    : ABRE_PARENTESES relationalOperation FECHA_PARENTESES                                  #priorityRelationalOperation
+    | integerArithmeticOperation operator=relationalOperator integerArithmeticOperation     #integerRelationalOperation
+    | rationalArithmeticOperation operator=comparisonOperator rationalArithmeticOperation   #rationalRelationalOperation
+    | characterExpression operator=relationalOperator characterExpression                   #characterRelationalOperation
+    | booleanExpression                                                                     #expressionRelationalOperation
     ;
 logicalOperation
-    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES         #priorityLogicalOperation
-    | unaryLogicalOperator logicalOperation                     #unaryLogicalOperation
-    | logicalOperation binaryLogicalOperator logicalOperation   #binaryLogicalOperation
-    | booleanExpression                                         #expressionLogicalOperation
-    | relationalOperation                                       #relationalLogicalOperation
+    : ABRE_PARENTESES logicalOperation FECHA_PARENTESES                 #priorityLogicalOperation
+    | operator=unaryLogicalOperator logicalOperation                    #unaryLogicalOperation
+    | logicalOperation operator=binaryLogicalOperator logicalOperation  #binaryLogicalOperation
+    | booleanExpression                                                 #expressionLogicalOperation
+    | relationalOperation                                               #relationalLogicalOperation
     ;
 integerArithmeticOperation
-    : ABRE_PARENTESES integerArithmeticOperation FECHA_PARENTESES                   #priorityIntegerArithmeticOperation
-    | operand1=integerArithmeticOperation operator=multiplicativeOperator operand2=integerArithmeticOperation  #integerMultiplicativeOperation
-    | operand1=integerArithmeticOperation operator=additiveOperator operand2=integerArithmeticOperation        #integerAdditiveOperation
-    | integerExpression                                                             #expressionIntegerArithmeticOperation
+    : ABRE_PARENTESES integerArithmeticOperation FECHA_PARENTESES                           #priorityIntegerArithmeticOperation
+    | integerArithmeticOperation operator=multiplicativeOperator integerArithmeticOperation #integerMultiplicativeOperation
+    | integerArithmeticOperation operator=additiveOperator integerArithmeticOperation       #integerAdditiveOperation
+    | integerExpression                                                                     #expressionIntegerArithmeticOperation
     ;
 rationalArithmeticOperation
-    : integerArithmeticOperation                                                                #integerExpressionRationalArithmeticOperation
-    | ABRE_PARENTESES rationalArithmeticOperation FECHA_PARENTESES                              #priorityRationalArithmeticOperation
-    | rationalArithmeticOperation rationalMultiplicativeOperator rationalArithmeticOperation    #rationalMultiplicativeOperation
-    | rationalArithmeticOperation additiveOperator rationalArithmeticOperation                  #rationalAdditiveOperation
-    | rationalExpression                                                                        #rationalExpressionRationalArithmeticOperation
+    : integerArithmeticOperation                                                                        #integerExpressionRationalArithmeticOperation
+    | ABRE_PARENTESES rationalArithmeticOperation FECHA_PARENTESES                                      #priorityRationalArithmeticOperation
+    | rationalArithmeticOperation operator=rationalMultiplicativeOperator rationalArithmeticOperation   #rationalMultiplicativeOperation
+    | rationalArithmeticOperation operator=additiveOperator rationalArithmeticOperation                 #rationalAdditiveOperation
+    | rationalExpression                                                                                #rationalExpressionRationalArithmeticOperation
     ;
 concatenationOperation
     : ABRE_PARENTESES concatenationOperation FECHA_PARENTESES       #priorityConcatenationOperation

@@ -23,4 +23,10 @@ public class SymbolTable {
         }
         return null;
     }
+
+    public void tryPutValue(String key, Construct value) {
+        if (!symbols.containsKey(key)) {
+            symbols.put(key, value);
+        }
+    }
 }

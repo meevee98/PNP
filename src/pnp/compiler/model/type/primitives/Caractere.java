@@ -3,8 +3,7 @@ package pnp.compiler.model.type.primitives;
 import pnp.compiler.model.type.Type;
 import pnp.compiler.model.Variable;
 
-public class Caractere implements Type {
-
+class Caractere implements Type {
     @Override
     public boolean isTypeOf(Object value) {
         if (value instanceof Character) {

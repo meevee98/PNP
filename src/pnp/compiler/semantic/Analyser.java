@@ -5,6 +5,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import pnp.compiler.model.Construct;
 import pnp.compiler.model.Expression;
+import pnp.compiler.model.Variable;
+import pnp.compiler.model.type.primitives.PrimitiveType;
 import pnp.compiler.syntax.grammar.antlr.PnpLexer;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
 
@@ -18,6 +20,7 @@ public class Analyser {
     SymbolTable symbolTable = new SymbolTable();
 
     public void analyse(String sourceFile) {
+        initialValueToTest();
         try {
             PnpLexer lexical = new PnpLexer(CharStreams.fromFileName(sourceFile));
             CommonTokenStream tokens = new CommonTokenStream(lexical);
@@ -56,9 +59,18 @@ public class Analyser {
         return symbolTable.tryGetValue(key);
     }
 
+    public void tryPutConstruct(String key, Construct value) {
+        symbolTable.tryPutValue(key, value);
+    }
+
     public List<Expression> getList() {
-        List<Expression> list = new ArrayList<>();
         List<Expression> test = (List<Expression>) executionStack.clone();
         return test;
+    }
+
+    private void initialValueToTest() {
+        String key = "j";
+        Variable test = new Variable(PrimitiveType.Inteiro, key, 60);
+        symbolTable.tryPutValue(key, test);
     }
 }

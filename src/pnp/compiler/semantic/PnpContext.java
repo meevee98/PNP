@@ -152,36 +152,99 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterPriorityRelationalOperation(PnpParser.PriorityRelationalOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void exitPriorityRelationalOperation(PnpParser.PriorityRelationalOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterIntegerRelationalOperation(PnpParser.IntegerRelationalOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitIntegerRelationalOperation(PnpParser.IntegerRelationalOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterRationalRelationalOperation(PnpParser.RationalRelationalOperationContext ctx) {
-        //TODO
+        TerminalNode operator;
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
+            if (ctx.operator.equalityOperator() != null) {
+                operator = ctx.operator.equalityOperator().getTokens(ctx.operator.start.getType()).get(0);
+
+                if (operator.equals(ctx.operator.equalityOperator().IGUALDADE())) {
+                    operation = new BinaryOperation(Operator.EQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
+                } else if (operator.equals(ctx.operator.equalityOperator().DESIGUALDADE())) {
+                    operation = new BinaryOperation(Operator.INEQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
+                } else if (operator.equals(ctx.operator.equalityOperator().MAIOR_IGUAL())) {
+                    operation = new BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
+                } else {
+                    operation = new BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
+                }
+
+                analyser.tryPush(operation);
+            }
+            else {
+                operator = ctx.operator.comparisonOperator().getTokens(ctx.operator.start.getType()).get(0);
+
+                if (operator.equals(ctx.operator.comparisonOperator().MAIOR())) {
+                    operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
+                } else {
+                    operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Inteiro);
+                }
+
+                analyser.tryPush(operation);
+            }
+        }
     }
     
     @Override public void exitRationalRelationalOperation(PnpParser.RationalRelationalOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterCharacterRelationalOperation(PnpParser.CharacterRelationalOperationContext ctx) {
-        //TODO
+        TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
+            if (operator.equals(ctx.operator.MAIOR())) {
+                operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Racional);
+            } else {
+                operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Racional);
+            }
+
+            analyser.tryPush(operation);
+        }
     }
     
     @Override public void exitCharacterRelationalOperation(PnpParser.CharacterRelationalOperationContext ctx) {
-        //TODO
+        TerminalNode operator;
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
+            if (ctx.operator.equalityOperator() != null) {
+                operator = ctx.operator.equalityOperator().getTokens(ctx.operator.start.getType()).get(0);
+
+                if (operator.equals(ctx.operator.equalityOperator().IGUALDADE())) {
+                    operation = new BinaryOperation(Operator.EQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
+                } else if (operator.equals(ctx.operator.equalityOperator().DESIGUALDADE())) {
+                    operation = new BinaryOperation(Operator.INEQUALITY, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
+                } else if (operator.equals(ctx.operator.equalityOperator().MAIOR_IGUAL())) {
+                    operation = new BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
+                } else {
+                    operation = new BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
+                }
+
+                analyser.tryPush(operation);
+            }
+            else {
+                operator = ctx.operator.comparisonOperator().getTokens(ctx.operator.start.getType()).get(0);
+
+                if (operator.equals(ctx.operator.comparisonOperator().MAIOR())) {
+                    operation = new BinaryOperation(Operator.GREATER_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
+                } else {
+                    operation = new BinaryOperation(Operator.LESS_THAN, op1, op2, PrimitiveType.Booleano, PrimitiveType.Caractere);
+                }
+
+                analyser.tryPush(operation);
+            }
+        }
     }
     
     @Override public void enterExpressionRelationalOperation(PnpParser.ExpressionRelationalOperationContext ctx) {
@@ -232,10 +295,6 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterIntegerMultiplicativeOperation(PnpParser.IntegerMultiplicativeOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitIntegerMultiplicativeOperation(PnpParser.IntegerMultiplicativeOperationContext ctx) {
         TerminalNode operator;
         if (ctx.operator.getTokens(ctx.operator.start.getType()).isEmpty()) {
@@ -245,14 +304,12 @@ public class PnpContext extends PnpBaseListener {
             operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
         }
 
-        Expression op1;
-        Expression op2;
-        BinaryOperation operation;
-
-        op2 = analyser.tryPop();
-        op1 = analyser.tryPop();
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
 
         if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
             if (operator.equals(ctx.operator.DIVISAO_INT())) {
                 operation = new BinaryOperation(Operator.DIVISION, op1, op2, PrimitiveType.Inteiro);
             } else if (operator.equals(ctx.operator.MODULO())) {
@@ -265,22 +322,6 @@ public class PnpContext extends PnpBaseListener {
 
             analyser.tryPush(operation);
         }
-    }
-    
-    @Override public void enterExpressionIntegerArithmeticOperation(PnpParser.ExpressionIntegerArithmeticOperationContext ctx) {
-
-    }
-    
-    @Override public void exitExpressionIntegerArithmeticOperation(PnpParser.ExpressionIntegerArithmeticOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterPriorityIntegerArithmeticOperation(PnpParser.PriorityIntegerArithmeticOperationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void exitPriorityIntegerArithmeticOperation(PnpParser.PriorityIntegerArithmeticOperationContext ctx) {
-        //TODO
     }
     
     @Override public void exitIntegerAdditiveOperation(PnpParser.IntegerAdditiveOperationContext ctx) {
@@ -302,12 +343,23 @@ public class PnpContext extends PnpBaseListener {
         }
     }
     
-    @Override public void enterRationalAdditiveOperation(PnpParser.RationalAdditiveOperationContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitRationalAdditiveOperation(PnpParser.RationalAdditiveOperationContext ctx) {
-        //TODO
+        TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
+            if (operator.equals(ctx.operator.ADICAO())) {
+                operation = new BinaryOperation(Operator.ADDITION, op1, op2, PrimitiveType.Racional);
+            } else {
+                operation = new BinaryOperation(Operator.SUBTRACTION, op1, op2, PrimitiveType.Racional);
+            }
+
+            analyser.tryPush(operation);
+        }
     }
     
     @Override public void enterIntegerExpressionRationalArithmeticOperation(PnpParser.IntegerExpressionRationalArithmeticOperationContext ctx) {
@@ -333,13 +385,24 @@ public class PnpContext extends PnpBaseListener {
     @Override public void exitPriorityRationalArithmeticOperation(PnpParser.PriorityRationalArithmeticOperationContext ctx) {
         //TODO
     }
-    
-    @Override public void enterRationalMultiplicativeOperation(PnpParser.RationalMultiplicativeOperationContext ctx) {
-        //TODO
-    }
-    
+
     @Override public void exitRationalMultiplicativeOperation(PnpParser.RationalMultiplicativeOperationContext ctx) {
-        //TODO
+        TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
+
+        Expression op2 = analyser.tryPop();
+        Expression op1 = analyser.tryPop();
+
+        if (op1 != null && op2 != null) {
+            BinaryOperation operation;
+
+            if (operator.equals(ctx.operator.MULTIPLICACAO())) {
+                operation = new BinaryOperation(Operator.MULTIPLICATION, op1, op2, PrimitiveType.Racional);
+            } else {
+                operation = new BinaryOperation(Operator.DIVISION, op1, op2, PrimitiveType.Racional);
+            }
+
+            analyser.tryPush(operation);
+        }
     }
     
     @Override public void enterRecursiveConcatenationOperation(PnpParser.RecursiveConcatenationOperationContext ctx) {
@@ -388,7 +451,6 @@ public class PnpContext extends PnpBaseListener {
     
     @Override public void exitVariable(PnpParser.VariableContext ctx) {
         String identifier = ctx.id.getText();
-        TerminalNode id = ctx.getTokens(ctx.id.getType()).get(0);
 
         Construct getVariable = analyser.tryGetConstruct(identifier);
         if (getVariable instanceof Variable) {
@@ -397,6 +459,7 @@ public class PnpContext extends PnpBaseListener {
         }
         else {
             // TODO throw exception in compilation time
+            System.out.println("Só pq o compilador tava dando warning aqui de bloco vazio");
         }
     }
     
@@ -424,12 +487,17 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterBooleanExpression(PnpParser.BooleanExpressionContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitBooleanExpression(PnpParser.BooleanExpressionContext ctx) {
-        //TODO
+        String expression = ctx.getText();
+
+        try {
+            boolean op = Boolean.parseBoolean(expression);
+            Variable variable = new Variable(PrimitiveType.Booleano, op);
+            analyser.tryPush(variable);
+        }
+        catch (NumberFormatException e) {
+            // exitVariable
+        }
     }
     
     @Override public void enterNumericalExpression(PnpParser.NumericalExpressionContext ctx) {
@@ -440,13 +508,8 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterIntegerExpression(PnpParser.IntegerExpressionContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitIntegerExpression(PnpParser.IntegerExpressionContext ctx) {
         String expression = ctx.getText();
-        TerminalNode exp = ctx.getTokens(ctx.start.getType()).get(0);
 
         try {
             int op = Integer.parseInt(expression);
@@ -458,20 +521,47 @@ public class PnpContext extends PnpBaseListener {
         }
     }
     
-    @Override public void enterRationalExpression(PnpParser.RationalExpressionContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitRationalExpression(PnpParser.RationalExpressionContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterCharacterExpression(PnpParser.CharacterExpressionContext ctx) {
-        //TODO
+        String expression = ctx.getText();
+
+        try {
+            float op = Float.parseFloat(expression);
+            Variable variable = new Variable(PrimitiveType.Racional, op);
+            analyser.tryPush(variable);
+        }
+        catch (NumberFormatException e) {
+            // exitVariable
+        }
     }
     
     @Override public void exitCharacterExpression(PnpParser.CharacterExpressionContext ctx) {
-        //TODO
+        String expression = ctx.getText();
+
+        try {
+            char op;
+            if (expression.charAt(1) == '\\') {
+                op = getEscapedChar(expression.charAt(2));
+            }
+            else {
+                op = expression.charAt(1);
+            }
+            Variable variable = new Variable(PrimitiveType.Caractere, op);
+            analyser.tryPush(variable);
+        }
+        catch (NumberFormatException e) {
+            // exitVariable
+        }
+    }
+
+    private char getEscapedChar(char escape) {
+        switch (escape) {
+            case 'b': return '\b';
+            case 't': return '\t';
+            case 'n': return '\n';
+            case 'f': return '\f';
+            case 'r': return '\r';
+        }
+        return escape;
     }
     
     @Override public void enterFunction(PnpParser.FunctionContext ctx) {

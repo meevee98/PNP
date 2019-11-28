@@ -1288,6 +1288,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class RationalRelationalOperationContext extends RelationalOperationContext {
+		public ComparisonOperatorContext operator;
 		public List<RationalArithmeticOperationContext> rationalArithmeticOperation() {
 			return getRuleContexts(RationalArithmeticOperationContext.class);
 		}
@@ -1313,6 +1314,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class CharacterRelationalOperationContext extends RelationalOperationContext {
+		public RelationalOperatorContext operator;
 		public List<CharacterExpressionContext> characterExpression() {
 			return getRuleContexts(CharacterExpressionContext.class);
 		}
@@ -1359,6 +1361,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class IntegerRelationalOperationContext extends RelationalOperationContext {
+		public RelationalOperatorContext operator;
 		public List<IntegerArithmeticOperationContext> integerArithmeticOperation() {
 			return getRuleContexts(IntegerArithmeticOperationContext.class);
 		}
@@ -1429,7 +1432,7 @@ public class PnpParser extends Parser {
 				setState(253);
 				integerArithmeticOperation(0);
 				setState(254);
-				relationalOperator();
+				((IntegerRelationalOperationContext)_localctx).operator = relationalOperator();
 				setState(255);
 				integerArithmeticOperation(0);
 				}
@@ -1441,7 +1444,7 @@ public class PnpParser extends Parser {
 				setState(257);
 				rationalArithmeticOperation(0);
 				setState(258);
-				comparisonOperator();
+				((RationalRelationalOperationContext)_localctx).operator = comparisonOperator();
 				setState(259);
 				rationalArithmeticOperation(0);
 				}
@@ -1453,7 +1456,7 @@ public class PnpParser extends Parser {
 				setState(261);
 				characterExpression();
 				setState(262);
-				relationalOperator();
+				((CharacterRelationalOperationContext)_localctx).operator = relationalOperator();
 				setState(263);
 				characterExpression();
 				}
@@ -1531,6 +1534,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class BinaryLogicalOperationContext extends LogicalOperationContext {
+		public BinaryLogicalOperatorContext operator;
 		public List<LogicalOperationContext> logicalOperation() {
 			return getRuleContexts(LogicalOperationContext.class);
 		}
@@ -1575,11 +1579,12 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class UnaryLogicalOperationContext extends LogicalOperationContext {
-		public UnaryLogicalOperatorContext unaryLogicalOperator() {
-			return getRuleContext(UnaryLogicalOperatorContext.class,0);
-		}
+		public UnaryLogicalOperatorContext operator;
 		public LogicalOperationContext logicalOperation() {
 			return getRuleContext(LogicalOperationContext.class,0);
+		}
+		public UnaryLogicalOperatorContext unaryLogicalOperator() {
+			return getRuleContext(UnaryLogicalOperatorContext.class,0);
 		}
 		public UnaryLogicalOperationContext(LogicalOperationContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1635,7 +1640,7 @@ public class PnpParser extends Parser {
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(273);
-				unaryLogicalOperator();
+				((UnaryLogicalOperationContext)_localctx).operator = unaryLogicalOperator();
 				setState(274);
 				logicalOperation(4);
 				}
@@ -1674,7 +1679,7 @@ public class PnpParser extends Parser {
 					setState(280);
 					if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 					setState(281);
-					binaryLogicalOperator();
+					((BinaryLogicalOperationContext)_localctx).operator = binaryLogicalOperator();
 					setState(282);
 					logicalOperation(4);
 					}
@@ -1709,9 +1714,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class IntegerMultiplicativeOperationContext extends IntegerArithmeticOperationContext {
-		public IntegerArithmeticOperationContext operand1;
 		public MultiplicativeOperatorContext operator;
-		public IntegerArithmeticOperationContext operand2;
 		public List<IntegerArithmeticOperationContext> integerArithmeticOperation() {
 			return getRuleContexts(IntegerArithmeticOperationContext.class);
 		}
@@ -1777,9 +1780,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class IntegerAdditiveOperationContext extends IntegerArithmeticOperationContext {
-		public IntegerArithmeticOperationContext operand1;
 		public AdditiveOperatorContext operator;
-		public IntegerArithmeticOperationContext operand2;
 		public List<IntegerArithmeticOperationContext> integerArithmeticOperation() {
 			return getRuleContexts(IntegerArithmeticOperationContext.class);
 		}
@@ -1866,27 +1867,25 @@ public class PnpParser extends Parser {
 					case 1:
 						{
 						_localctx = new IntegerMultiplicativeOperationContext(new IntegerArithmeticOperationContext(_parentctx, _parentState));
-						((IntegerMultiplicativeOperationContext)_localctx).operand1 = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_integerArithmeticOperation);
 						setState(297);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(298);
 						((IntegerMultiplicativeOperationContext)_localctx).operator = multiplicativeOperator();
 						setState(299);
-						((IntegerMultiplicativeOperationContext)_localctx).operand2 = integerArithmeticOperation(4);
+						integerArithmeticOperation(4);
 						}
 						break;
 					case 2:
 						{
 						_localctx = new IntegerAdditiveOperationContext(new IntegerArithmeticOperationContext(_parentctx, _parentState));
-						((IntegerAdditiveOperationContext)_localctx).operand1 = _prevctx;
 						pushNewRecursionContext(_localctx, _startState, RULE_integerArithmeticOperation);
 						setState(301);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(302);
 						((IntegerAdditiveOperationContext)_localctx).operator = additiveOperator();
 						setState(303);
-						((IntegerAdditiveOperationContext)_localctx).operand2 = integerArithmeticOperation(3);
+						integerArithmeticOperation(3);
 						}
 						break;
 					}
@@ -1921,6 +1920,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class RationalAdditiveOperationContext extends RationalArithmeticOperationContext {
+		public AdditiveOperatorContext operator;
 		public List<RationalArithmeticOperationContext> rationalArithmeticOperation() {
 			return getRuleContexts(RationalArithmeticOperationContext.class);
 		}
@@ -2005,6 +2005,7 @@ public class PnpParser extends Parser {
 		}
 	}
 	public static class RationalMultiplicativeOperationContext extends RationalArithmeticOperationContext {
+		public RationalMultiplicativeOperatorContext operator;
 		public List<RationalArithmeticOperationContext> rationalArithmeticOperation() {
 			return getRuleContexts(RationalArithmeticOperationContext.class);
 		}
@@ -2100,7 +2101,7 @@ public class PnpParser extends Parser {
 						setState(319);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
 						setState(320);
-						rationalMultiplicativeOperator();
+						((RationalMultiplicativeOperationContext)_localctx).operator = rationalMultiplicativeOperator();
 						setState(321);
 						rationalArithmeticOperation(4);
 						}
@@ -2112,7 +2113,7 @@ public class PnpParser extends Parser {
 						setState(323);
 						if (!(precpred(_ctx, 2))) throw new FailedPredicateException(this, "precpred(_ctx, 2)");
 						setState(324);
-						additiveOperator();
+						((RationalAdditiveOperationContext)_localctx).operator = additiveOperator();
 						setState(325);
 						rationalArithmeticOperation(3);
 						}

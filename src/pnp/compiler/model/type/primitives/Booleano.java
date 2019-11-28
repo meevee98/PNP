@@ -3,8 +3,7 @@ package pnp.compiler.model.type.primitives;
 import pnp.compiler.model.Variable;
 import pnp.compiler.model.type.Type;
 
-public class Booleano implements Type {
-
+class Booleano implements Type {
     @Override
     public boolean isTypeOf(Object value) {
         if (value instanceof Boolean) {

@@ -44,6 +44,10 @@ public class Variable implements Expression {
         return type;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public boolean isLiteral() {
         return name == null;
     }
