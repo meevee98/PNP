@@ -3,7 +3,9 @@ package pnp.compiler.model.construct;
 import pnp.compiler.model.construct.type.Type;
 import pnp.compiler.model.construct.type.primitives.PrimitiveType;
 import pnp.compiler.model.expression.Expression;
+import pnp.compiler.model.instruction.AssignmentInstruction;
 import pnp.compiler.model.instruction.DeclarationInstruction;
+import pnp.compiler.model.instruction.Instruction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +46,18 @@ public class Procedure extends Block implements Expression {
         return declarations;
     }
 
+    public List<Variable> getInput() {
+        return input;
+    }
+
+    public Variable getOutput() {
+        return output;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void addDeclarationCommand(Variable variable) {
         DeclarationInstruction declaration = new DeclarationInstruction(variable);
@@ -66,15 +80,18 @@ public class Procedure extends Block implements Expression {
         return false;
     }
 
-    public List<Variable> getInput() {
-        return input;
-    }
+    public boolean isOutputAssigned() {
+        if (output == null) {
+            return true;
+        }
+        for (Instruction instruction : instructions) {
+            if (instruction instanceof AssignmentInstruction) {
+                if ( ((AssignmentInstruction) instruction).getVariable().getName().equals(output.getName()) ) {
+                    return true;
+                }
+            }
+        }
 
-    public Variable getOutput() {
-        return output;
-    }
-
-    public String getName() {
-        return name;
+        return false;
     }
 }

@@ -3,7 +3,7 @@ package pnp.compiler.model.instruction;
 import pnp.compiler.model.construct.Variable;
 import pnp.compiler.model.expression.Expression;
 
-public class AssignmentInstruction implements Instruction {
+public class AssignmentInstruction extends Instruction {
     private Variable variable;
     private Expression expression;
 

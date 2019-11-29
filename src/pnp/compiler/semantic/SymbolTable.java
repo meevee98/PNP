@@ -7,7 +7,7 @@ import java.util.*;
 
 public class SymbolTable {
     private SymbolTable parent = null;
-    private HashMap<String, Construct> symbols = new HashMap<>();
+    private HashMap<String, Construct> symbols = new LinkedHashMap<>();
 
     SymbolTable() { }
 

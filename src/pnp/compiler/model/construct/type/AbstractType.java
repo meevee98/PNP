@@ -1,11 +1,12 @@
 package pnp.compiler.model.construct.type;
 
+import pnp.compiler.model.construct.Construct;
 import pnp.compiler.model.construct.Variable;
 import pnp.compiler.model.expression.Expression;
 
 import java.util.List;
 
-public class AbstractType extends Type {
+public class AbstractType extends Type implements Construct {
     final private List<Variable> attributes;
     final String name;
 

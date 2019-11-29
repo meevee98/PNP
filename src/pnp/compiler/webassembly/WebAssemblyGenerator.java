@@ -10,19 +10,26 @@ import pnp.compiler.model.expression.operation.BinaryOperation;
 import pnp.compiler.model.expression.operation.UnaryOperation;
 import pnp.compiler.model.construct.type.Type;
 import pnp.compiler.model.construct.type.primitives.PrimitiveType;
+import pnp.compiler.model.instruction.AssignmentInstruction;
 import pnp.compiler.model.instruction.DeclarationInstruction;
+import pnp.compiler.model.instruction.Instruction;
+import pnp.compiler.model.instruction.ProcedureInstruction;
 import pnp.compiler.semantic.SymbolTable;
+
+import java.util.List;
 
 public class WebAssemblyGenerator implements Generator {
     @Override
     public String convert(SymbolTable symbols) {
         StringBuilder wat = new StringBuilder();
 
+        wat.append("(module");
         for (Construct value : symbols.getValues()) {
             if (value instanceof Expression) {
-                wat.append(tryToAppendExpression((Expression) value) + '\n');
+                wat.append('\n' + tryToAppendExpression((Expression) value));
             }
         }
+        wat.append(")");
 
         return wat.toString();
     }
@@ -36,6 +43,9 @@ public class WebAssemblyGenerator implements Generator {
     }
 
     private String expressionToWat(Expression expression) {
+        if (expression instanceof ProcedureInstruction) {
+            return callToWat((ProcedureInstruction) expression);
+        }
         if (expression instanceof Procedure) {
             return procedureToWat((Procedure) expression);
         }
@@ -46,12 +56,13 @@ public class WebAssemblyGenerator implements Generator {
             return unaryOperationToWat((UnaryOperation) expression);
         }
         if (expression instanceof Variable) {
-            return variableToWat((Variable)expression);
+            return variableToWat((Variable)expression, true);
         }
         return null;
     }
 
     private String procedureToWat(Procedure proc) {
+        String name;
         String params = "";
         String result = "";
         String locals = "";
@@ -62,7 +73,7 @@ public class WebAssemblyGenerator implements Generator {
         if (output != null) {
             result = " (result " + typeToWat(proc.getType()) + ")";
             locals += " (local $" + output.getName() + " " + typeToWat(output.getType()) + ")";
-            body = "(" + variableToWat(output) + ")";
+            body = variableToWat(output, true);
         }
 
         // Procedure inputs
@@ -77,11 +88,56 @@ public class WebAssemblyGenerator implements Generator {
             locals += " (local $" + var.getName() + " " + typeToWat(var.getType()) + ")";
         }
 
-        if (!body.isEmpty()) {
-            body = '\n' + body;
-        }
-        return "(func $" + proc.getName() + params + result + locals + body + ")";
+        // Procedure instructions;
+        body = bodyToWat(proc.getInstructions()) + body;
 
+        if (proc.getName().equals("principal")) {
+            name = "(export \"main\")";
+        }
+        else {
+            name = '$' + proc.getName();
+        }
+        return "(func " + name + params + result + locals + body + ")";
+
+    }
+
+    private String bodyToWat(List<Instruction> instructions) {
+        String body = "\n";
+        String inst;
+        for (Instruction instruction : instructions) {
+            if (instruction instanceof AssignmentInstruction) {
+                inst = assignmentToWat((AssignmentInstruction) instruction);
+                if (inst != null) {
+                    body += inst + '\n';
+                }
+            }
+            if (instruction instanceof ProcedureInstruction) {
+                inst = callToWat((ProcedureInstruction) instruction);
+                if (inst != null) {
+                    body += inst + '\n';
+                }
+            }
+        }
+        return body;
+    }
+
+    private String assignmentToWat(AssignmentInstruction assignment) {
+        String variable = variableToWat(assignment.getVariable(), false);
+        String expression = expressionToWat(assignment.getExpression());
+
+        if (variable == null || expression == null) {
+            return null;
+        }
+        return expression + '\n' + variable;
+    }
+
+    private String callToWat(ProcedureInstruction call) {
+        String params = "";
+        for (Expression var : call.getParams()) {
+            params += expressionToWat(var) + '\n';
+        }
+
+        return params + "call $" + call.getProcedure().getName() + "\nreturn";
     }
 
     private String unaryOperationToWat(UnaryOperation op) {
@@ -114,7 +170,7 @@ public class WebAssemblyGenerator implements Generator {
         return op1 + '\n' + op2 + '\n' + operator;
     }
 
-    private String variableToWat(Variable variable) {
+    private String variableToWat(Variable variable, boolean get) {
         String type = typeToWat(variable.getType());
         if (type == null || type.isEmpty()) {
             return null;
@@ -122,8 +178,11 @@ public class WebAssemblyGenerator implements Generator {
         if (variable.isLiteral()) {
             return type + ".const " + valueToWat(variable);
         }
-        else {
+        else if (get) {
             return "get_local $" + variable.getName();
+        }
+        else {
+            return "set_local $" + variable.getName();
         }
     }
 

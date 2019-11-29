@@ -61,7 +61,7 @@ variableDeclarationAndAssignment
     ;
 
 command
-    : function
+    : function FIM_COMANDO
     | variableAssignment
     ;
 statement
@@ -138,6 +138,7 @@ expression
 booleanExpression
     : BOOLEANO_LITERAL
     | variable
+    | function
     ;
 numericalExpression
     : integerExpression
@@ -147,30 +148,33 @@ integerExpression
     : NATURAL_LITERAL
     | INTEIRO_LITERAL
     | variable
+    | function
     ;
 rationalExpression
     : RACIONAL_LITERAL
     | variable
+    | function
     ;
 characterExpression
     : CARACTERE_LITERAL
     | STRING_LITERAL
     | variable
+    | function
     ;
 
 function
     : readFunction
     | writeFunction
-    | ID ABRE_PARENTESES params? FECHA_PARENTESES FIM_COMANDO
+    | identifier=ID ABRE_PARENTESES params? FECHA_PARENTESES
     ;
 params
     : expression (SEPARADOR_VARIAVEL expression)*
     ;
 readFunction
-    : LEIA ABRE_PARENTESES FECHA_PARENTESES FIM_COMANDO
+    : LEIA ABRE_PARENTESES FECHA_PARENTESES
     ;
 writeFunction
-    : ESCREVA ABRE_PARENTESES params? FECHA_PARENTESES FIM_COMANDO
+    : ESCREVA ABRE_PARENTESES parameters=params? FECHA_PARENTESES
     ;
 
 

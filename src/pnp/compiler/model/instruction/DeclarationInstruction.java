@@ -2,7 +2,7 @@ package pnp.compiler.model.instruction;
 
 import pnp.compiler.model.construct.Variable;
 
-public class DeclarationInstruction implements Instruction {
+public class DeclarationInstruction extends Instruction {
     private Variable variable;
 
     public DeclarationInstruction(Variable variable) {

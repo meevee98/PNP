@@ -12,6 +12,7 @@ import pnp.compiler.model.expression.operation.BinaryOperation;
 import pnp.compiler.model.expression.operation.UnaryOperation;
 import pnp.compiler.model.construct.type.Type;
 import pnp.compiler.model.construct.type.primitives.PrimitiveType;
+import pnp.compiler.model.instruction.ProcedureInstruction;
 import pnp.compiler.syntax.grammar.antlr.PnpBaseListener;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
 
@@ -51,7 +52,14 @@ public class PnpContext extends PnpBaseListener {
     @Override public void exitProcedure(PnpParser.ProcedureContext ctx) {
         String identifier = ctx.procedureDeclaration().identifier.getText();
 
-        analyser.tryGetConstruct(identifier);
+        Construct cons = analyser.tryGetConstruct(identifier);
+        if (!(cons instanceof Procedure)) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+
+        if (!((Procedure) cons).isOutputAssigned()) {
+            throw new SemanticException(ctx.start, "Missing return assignment");
+        }
     }
     
     @Override public void enterProcedureBody(PnpParser.ProcedureBodyContext ctx) {
@@ -132,7 +140,14 @@ public class PnpContext extends PnpBaseListener {
     @Override public void exitMainProcedure(PnpParser.MainProcedureContext ctx) {
         String identifier = ctx.identifier.getText();
 
-        analyser.tryGetConstruct(identifier);
+        Construct cons = analyser.tryGetConstruct(identifier);
+        if (!(cons instanceof Procedure)) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+
+        if (!((Procedure) cons).isOutputAssigned()) {
+            throw new SemanticException(ctx.stop, "Missing return assignment");
+        }
     }
     
     @Override public void enterTypeDeclaration(PnpParser.TypeDeclarationContext ctx) {
@@ -373,6 +388,8 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitIntegerMultiplicativeOperation(PnpParser.IntegerMultiplicativeOperationContext ctx) {
+        Type racional = PrimitiveType.Racional;
+        Type result = PrimitiveType.Inteiro;
         TerminalNode operator;
         if (ctx.operator.getTokens(ctx.operator.start.getType()).isEmpty()) {
             operator = ctx.operator.rationalMultiplicativeOperator().getTokens(ctx.operator.start.getType()).get(0);
@@ -384,40 +401,57 @@ public class PnpContext extends PnpBaseListener {
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 != null && op2 != null) {
-            BinaryOperation operation;
-
-            if (operator.equals(ctx.operator.DIVISAO_INT())) {
-                operation = new BinaryOperation(Operator.DIVISION, op1, op2, PrimitiveType.Inteiro);
-            } else if (operator.equals(ctx.operator.MODULO())) {
-                operation = new BinaryOperation(Operator.MODULO, op1, op2, PrimitiveType.Inteiro);
-            } else if (operator.equals(ctx.operator.rationalMultiplicativeOperator().MULTIPLICACAO())) {
-                operation = new BinaryOperation(Operator.MULTIPLICATION, op1, op2, PrimitiveType.Inteiro);
-            } else {
-                operation = new BinaryOperation(Operator.DIVISION, op1, op2, PrimitiveType.Racional);
+        if (op1 == null || op2 == null) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+        if (op1.getType() != result || op2.getType() != result) {
+            if (op1.getType() != result && op1.getType() != racional) {
+                throw new SemanticException(ctx.start, "Operator '" + ctx.start.getText() + "' cannot be applied to '" + op1.getType() + "', '" + op2.getType() + "'");
+            }
+            if (op2.getType() != result && op2.getType() != racional) {
+                throw new SemanticException(ctx.start, "Operator '" + ctx.start.getText() + "' cannot be applied to '" + op1.getType() + "', '" + op2.getType() + "'");
             }
 
-            analyser.tryPush(operation);
+            result = racional;
         }
+        BinaryOperation operation;
+
+        if (operator.equals(ctx.operator.DIVISAO_INT()) && result != racional) {
+            operation = new BinaryOperation(Operator.DIVISION, op1, op2, result);
+        } else if (operator.equals(ctx.operator.MODULO()) && result != racional) {
+            operation = new BinaryOperation(Operator.MODULO, op1, op2, result);
+        } else if (operator.equals(ctx.operator.rationalMultiplicativeOperator().MULTIPLICACAO())) {
+            operation = new BinaryOperation(Operator.MULTIPLICATION, op1, op2, result);
+        } else {
+            operation = new BinaryOperation(Operator.DIVISION, op1, op2, PrimitiveType.Racional);
+        }
+
+        analyser.tryPush(operation);
     }
     
     @Override public void exitIntegerAdditiveOperation(PnpParser.IntegerAdditiveOperationContext ctx) {
+        Type result = PrimitiveType.Inteiro;
         TerminalNode operator = ctx.operator.getTokens(ctx.operator.start.getType()).get(0);
 
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 != null && op2 != null) {
-            BinaryOperation operation;
-
-            if (operator.equals(ctx.operator.ADICAO())) {
-                operation = new BinaryOperation(Operator.ADDITION, op1, op2, PrimitiveType.Inteiro);
-            } else {
-                operation = new BinaryOperation(Operator.SUBTRACTION, op1, op2, PrimitiveType.Inteiro);
-            }
-
-            analyser.tryPush(operation);
+        if (op1 == null || op2 == null) {
+            throw new SemanticException(ctx.start, "Something went wrong");
         }
+
+        BinaryOperation operation;
+        if (op1.getType() == PrimitiveType.Racional || op2.getType() == PrimitiveType.Racional) {
+            result = PrimitiveType.Racional;
+        }
+
+        if (operator.equals(ctx.operator.ADICAO())) {
+            operation = new BinaryOperation(Operator.ADDITION, op1, op2, result);
+        } else {
+            operation = new BinaryOperation(Operator.SUBTRACTION, op1, op2, result);
+        }
+
+        analyser.tryPush(operation);
     }
     
     @Override public void exitRationalAdditiveOperation(PnpParser.RationalAdditiveOperationContext ctx) {
@@ -553,12 +587,18 @@ public class PnpContext extends PnpBaseListener {
         Expression exp = analyser.tryPop();
 
         if (!(exp instanceof Variable)) {
+            analyser.tryPush(exp);
+        }
+
+        String identifier = ctx.variable().id.getText();
+        Construct cons = analyser.tryGetConstruct(identifier);
+        if (!(cons instanceof Variable)) {
             throw new SemanticException(ctx.start, "Something went wrong");
         }
 
-        Variable variable = (Variable)exp;
+        Variable variable = (Variable)cons;
         if (!assignment.getType().isTypeOf(variable)) {
-            throw new SemanticException(ctx.start, "Incompatible type between '" + variable.getType() + "' and '" + assignment.getType() + "'");
+            throw new SemanticException(ctx.start, "Incompatible types between '" + variable.getType() + "' and '" + assignment.getType() + "'");
         }
 
         analyser.newAssignment(variable, assignment);
@@ -576,13 +616,15 @@ public class PnpContext extends PnpBaseListener {
     @Override public void exitBooleanExpression(PnpParser.BooleanExpressionContext ctx) {
         String expression = ctx.getText();
 
-        try {
-            boolean op = Boolean.parseBoolean(expression);
-            Variable variable = new Variable(PrimitiveType.Booleano, op);
-            analyser.tryPush(variable);
-        }
-        catch (NumberFormatException e) {
-            // exitVariable
+
+        if (ctx.function() == null && (expression.equals("true") || expression.equals("false"))) {
+            try {
+                boolean op = Boolean.parseBoolean(expression);
+                Variable variable = new Variable(PrimitiveType.Booleano, op);
+                analyser.tryPush(variable);
+            } catch (NumberFormatException e) {
+                // exitVariable
+            }
         }
     }
     
@@ -597,45 +639,47 @@ public class PnpContext extends PnpBaseListener {
     @Override public void exitIntegerExpression(PnpParser.IntegerExpressionContext ctx) {
         String expression = ctx.getText();
 
-        try {
-            int op = Integer.parseInt(expression);
-            Variable variable = new Variable(PrimitiveType.Inteiro, op);
-            analyser.tryPush(variable);
-        }
-        catch (NumberFormatException e) {
-            // exitVariable
+        if (ctx.function() == null) {
+            try {
+                int op = Integer.parseInt(expression);
+                Variable variable = new Variable(PrimitiveType.Inteiro, op);
+                analyser.tryPush(variable);
+            } catch (NumberFormatException e) {
+                // exitVariable
+            }
         }
     }
     
     @Override public void exitRationalExpression(PnpParser.RationalExpressionContext ctx) {
         String expression = ctx.getText();
 
-        try {
-            float op = Float.parseFloat(expression);
-            Variable variable = new Variable(PrimitiveType.Racional, op);
-            analyser.tryPush(variable);
-        }
-        catch (NumberFormatException e) {
-            // exitVariable
+        if (ctx.function() == null) {
+            try {
+                float op = Float.parseFloat(expression);
+                Variable variable = new Variable(PrimitiveType.Racional, op);
+                analyser.tryPush(variable);
+            } catch (NumberFormatException e) {
+                // exitVariable
+            }
         }
     }
     
     @Override public void exitCharacterExpression(PnpParser.CharacterExpressionContext ctx) {
         String expression = ctx.getText();
 
-        try {
-            char op;
-            if (expression.charAt(1) == '\\') {
-                op = getEscapedChar(expression.charAt(2));
+        if (ctx.function() == null) {
+            try {
+                char op;
+                if (expression.charAt(1) == '\\') {
+                    op = getEscapedChar(expression.charAt(2));
+                } else {
+                    op = expression.charAt(1);
+                }
+                Variable variable = new Variable(PrimitiveType.Caractere, op);
+                analyser.tryPush(variable);
+            } catch (StringIndexOutOfBoundsException e) {
+                // exitVariable
             }
-            else {
-                op = expression.charAt(1);
-            }
-            Variable variable = new Variable(PrimitiveType.Caractere, op);
-            analyser.tryPush(variable);
-        }
-        catch (StringIndexOutOfBoundsException e) {
-            // exitVariable
         }
     }
 
@@ -650,12 +694,41 @@ public class PnpContext extends PnpBaseListener {
         return escape;
     }
     
-    @Override public void enterFunction(PnpParser.FunctionContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitFunction(PnpParser.FunctionContext ctx) {
-        //TODO
+        String identifier = ctx.identifier.getText();
+        List<PnpParser.ExpressionContext> params;
+        if (ctx.params() != null) {
+            params = ctx.params().expression();
+        }
+        else {
+            params = new ArrayList<>();
+        }
+
+        Construct cons = analyser.tryGetConstruct(identifier);
+        if (!(cons instanceof Procedure)) {
+            throw new SemanticException(ctx.start, "Cannot resolve procedure '" + identifier + "'");
+        }
+
+        Procedure proc = (Procedure)cons;
+        if (params.size() != proc.getInput().size()) {
+            throw new SemanticException(ctx.start, proc.getName() + " cannot be applied to assigned parametes");
+        }
+
+        List<Variable> input = proc.getInput();
+        List<Expression> inputParams = new ArrayList<>();
+        for(int i = params.size(); i > 0; i--) {
+            int index = i - 1;
+            Expression popped = analyser.tryPop();
+            if (!(popped instanceof Variable) && !(popped instanceof Procedure)) {
+                throw new SemanticException(ctx.start, "something went wrong");
+            }
+            if (input.get(index).getType() != popped.getType()) {
+                throw new SemanticException(ctx.start, "Incompatible types between '" + input.get(index).getType() + "' and '" + popped.getType() + "'");
+            }
+            inputParams.add(0, popped);
+        }
+        ProcedureInstruction instruction = new ProcedureInstruction(proc, inputParams);
+        analyser.tryPush(instruction);
     }
     
     @Override public void enterParams(PnpParser.ParamsContext ctx) {

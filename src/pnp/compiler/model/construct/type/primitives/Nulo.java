@@ -7,4 +7,9 @@ public class Nulo extends Type {
     public boolean isTypeOf(Object value) {
         return false;
     }
+
+    @Override
+    public java.lang.String toString() {
+        return "void";
+    }
 }

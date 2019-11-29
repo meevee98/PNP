@@ -1,4 +1,4 @@
 package pnp.compiler.model.instruction;
 
-public interface Instruction {
+public abstract class Instruction {
 }

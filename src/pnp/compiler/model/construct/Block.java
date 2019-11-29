@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Block implements Construct {
-    private List<Instruction> instructions = new ArrayList<>();
+    protected List<Instruction> instructions = new ArrayList<>();
 
     public void addDeclarationCommand(Variable variable) {
         DeclarationInstruction declaration = new DeclarationInstruction(variable);

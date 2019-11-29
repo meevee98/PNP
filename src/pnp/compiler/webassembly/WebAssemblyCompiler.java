@@ -18,7 +18,8 @@ public class WebAssemblyCompiler {
     public static void main(String[] args) {
         WebAssemblyCompiler m = new WebAssemblyCompiler();
 //        String projectPath = System.getProperty("user.dir");
-        String fonte = "C:\\Users\\Dell\\Documents\\test.pnp";
+        String fonte = "C:\\Users\\mirel\\Documents\\test.pnp";
+//        String fonte = "C:\\Users\\Dell\\Documents\\test.pnp";
 //        String fonte = args[0];
         if (args.length > 0) {
             fonte = args[0];
