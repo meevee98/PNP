@@ -1,4 +1,4 @@
-package pnp.compiler.model;
+package pnp.compiler.model.expression.operation;
 
 public enum Operator {
     ADDITION, SUBTRACTION, MULTIPLICATION, DIVISION, MODULO,

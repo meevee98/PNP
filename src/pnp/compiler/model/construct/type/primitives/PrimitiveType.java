@@ -1,8 +1,8 @@
-package pnp.compiler.model.type.primitives;
+package pnp.compiler.model.construct.type.primitives;
 
-import pnp.compiler.model.type.Type;
+import pnp.compiler.model.construct.type.Type;
 
-public abstract class PrimitiveType {
+final public class PrimitiveType {
     static public Type Inteiro = new Inteiro();
     static public Type Racional = new Racional();
     static public Type Caractere = new Caractere();

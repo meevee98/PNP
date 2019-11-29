@@ -1,8 +1,7 @@
-package pnp.compiler.model.operation;
+package pnp.compiler.model.expression.operation;
 
-import pnp.compiler.model.Expression;
-import pnp.compiler.model.Operator;
-import pnp.compiler.model.type.Type;
+import pnp.compiler.model.expression.Expression;
+import pnp.compiler.model.construct.type.Type;
 
 public class UnaryOperation implements Operation {
     public Expression operand;

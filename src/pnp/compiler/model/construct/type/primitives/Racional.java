@@ -1,7 +1,7 @@
-package pnp.compiler.model.type.primitives;
+package pnp.compiler.model.construct.type.primitives;
 
-import pnp.compiler.model.type.Type;
-import pnp.compiler.model.Variable;
+import pnp.compiler.model.construct.type.Type;
+import pnp.compiler.model.construct.Variable;
 
 class Racional implements Type {
     @Override
@@ -16,5 +16,10 @@ class Racional implements Type {
             return ((Variable) value).getType() instanceof Racional;
         }
         return false;
+    }
+
+    @Override
+    public java.lang.String toString() {
+        return "racional";
     }
 }

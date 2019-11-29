@@ -1,6 +1,6 @@
-package pnp.compiler.model.type;
+package pnp.compiler.model.construct.type;
 
-import pnp.compiler.model.Variable;
+import pnp.compiler.model.construct.Variable;
 
 import java.util.List;
 
@@ -19,5 +19,10 @@ public class AbstractType implements Type {
             return ((Variable) value).getType().equals(this);
         }
         return false;
+    }
+
+    @Override
+    public java.lang.String toString() {
+        return name;
     }
 }

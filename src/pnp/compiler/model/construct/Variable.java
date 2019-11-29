@@ -1,6 +1,7 @@
-package pnp.compiler.model;
+package pnp.compiler.model.construct;
 
-import pnp.compiler.model.type.Type;
+import pnp.compiler.model.expression.Expression;
+import pnp.compiler.model.construct.type.Type;
 
 public class Variable implements Expression {
     final private Type type;
@@ -38,6 +39,9 @@ public class Variable implements Expression {
         if (type.isTypeOf(value)) {
             this.value = value;
         }
+        else if ( (value instanceof Expression) && type.isTypeOf(((Expression) value).getType())) {
+            this.value = value;
+        }
     }
 
     @Override
@@ -50,6 +54,6 @@ public class Variable implements Expression {
     }
 
     public boolean isLiteral() {
-        return name == null;
+        return name == null || !(value instanceof Expression);
     }
 }

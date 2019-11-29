@@ -1,12 +1,12 @@
 package pnp.compiler.webassembly;
 
-import pnp.compiler.model.Expression;
-import pnp.compiler.model.Operator;
-import pnp.compiler.model.Variable;
-import pnp.compiler.model.operation.BinaryOperation;
-import pnp.compiler.model.operation.UnaryOperation;
-import pnp.compiler.model.type.Type;
-import pnp.compiler.model.type.primitives.PrimitiveType;
+import pnp.compiler.model.expression.Expression;
+import pnp.compiler.model.expression.operation.Operator;
+import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.expression.operation.BinaryOperation;
+import pnp.compiler.model.expression.operation.UnaryOperation;
+import pnp.compiler.model.construct.type.Type;
+import pnp.compiler.model.construct.type.primitives.PrimitiveType;
 
 public class WebAssemblyGenerator {
     public String toWAT(Expression expression) {

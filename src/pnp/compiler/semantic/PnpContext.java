@@ -2,14 +2,14 @@ package pnp.compiler.semantic;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 import pnp.compiler.exception.SemanticException;
-import pnp.compiler.model.Construct;
-import pnp.compiler.model.Expression;
-import pnp.compiler.model.Operator;
-import pnp.compiler.model.Variable;
-import pnp.compiler.model.operation.BinaryOperation;
-import pnp.compiler.model.operation.UnaryOperation;
-import pnp.compiler.model.type.Type;
-import pnp.compiler.model.type.primitives.PrimitiveType;
+import pnp.compiler.model.construct.Construct;
+import pnp.compiler.model.expression.Expression;
+import pnp.compiler.model.expression.operation.Operator;
+import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.expression.operation.BinaryOperation;
+import pnp.compiler.model.expression.operation.UnaryOperation;
+import pnp.compiler.model.construct.type.Type;
+import pnp.compiler.model.construct.type.primitives.PrimitiveType;
 import pnp.compiler.syntax.grammar.antlr.PnpBaseListener;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
 
@@ -164,7 +164,7 @@ public class PnpContext extends PnpBaseListener {
         Expression op1 = analyser.tryPop();
 
         if (op1 == null || op2 == null) {
-            throw new SemanticException(ctx.start, "os operandos devem ser do tipo Inteiro");
+            throw new SemanticException(ctx.start, "Something went wrong");
         }
         if (op1.getType() == PrimitiveType.Racional && op2.getType() == PrimitiveType.Racional) {
             // Relational equality operations with Racional values are not allowed
@@ -174,7 +174,7 @@ public class PnpContext extends PnpBaseListener {
             expectedType = PrimitiveType.Racional;
         }
         if (op1.getType() != expectedType || op2.getType() != expectedType) {
-            throw new SemanticException(ctx.start, "os operandos devem ser do mesmo tipo");
+            throw new SemanticException(ctx.start, "Operator '" + ctx.start.getText() + "' cannot be applied to '" + op1.getType() + "', '" + op2.getType() + "'");
         }
 
         BinaryOperation operation = createBinaryRelationalOperation(expectedType, resultType, op2, op1, ctx.operator, operator);
@@ -219,9 +219,11 @@ public class PnpContext extends PnpBaseListener {
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 == null || op2 == null ||
-                !expectedType.isTypeOf(op1) || !expectedType.isTypeOf(op2)) {
-            throw new SemanticException(ctx.start, "os operandos devem ser do mesmo tipo");
+        if (op1 == null || op2 == null) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+        if (op1.getType() != expectedType || op2.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "Operator '" + ctx.start.getText() + "' cannot be applied to '" + op1.getType() + "', '" + op2.getType() + "'");
         }
 
         BinaryOperation operation = createBinaryRelationalOperation(expectedType, resultType, op2, op1, ctx.operator, operator);
@@ -236,9 +238,11 @@ public class PnpContext extends PnpBaseListener {
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 == null || op2 == null ||
-                op1.getType() != expectedType || op2.getType() != expectedType) {
-            throw new SemanticException(ctx.start, "os operandos devem ser do mesmo tipo");
+        if (op1 == null || op2 == null) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+        if (op1.getType() != expectedType || op2.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "Operator '" + ctx.start.getText() + "' cannot be applied to '" + op1.getType() + "', '" + op2.getType() + "'");
         }
         BinaryOperation operation;
 
@@ -282,9 +286,11 @@ public class PnpContext extends PnpBaseListener {
         Expression op2 = analyser.tryPop();
         Expression op1 = analyser.tryPop();
 
-        if (op1 == null || op2 == null ||
-                op1.getType() != expectedType || op2.getType() != expectedType) {
-            throw new SemanticException(ctx.start, "os operandos devem ser do tipo Booleano");
+        if (op1 == null || op2 == null) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+        if (op1.getType() != expectedType || op2.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "Operator '" + ctx.start.getText() + "' cannot be applied to '" + op1.getType() + "', '" + op2.getType() + "'");
         }
         BinaryOperation operation;
 
@@ -311,8 +317,11 @@ public class PnpContext extends PnpBaseListener {
         Type expectedType = PrimitiveType.Booleano;
         Expression op = analyser.tryPop();
 
-        if (op == null || op.getType() != expectedType) {
-            throw new SemanticException(ctx.start, "os operandos devem ser do tipo Booleano");
+        if (op == null) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+        if (op.getType() != expectedType) {
+            throw new SemanticException(ctx.start, "Operator '" + ctx.start.getText() + "' cannot be applied to '" + op.getType() + "'");
         }
 
         UnaryOperation operation = new UnaryOperation(Operator.NOT, op, PrimitiveType.Booleano);
@@ -457,30 +466,58 @@ public class PnpContext extends PnpBaseListener {
         String identifier = ctx.id.getText();
 
         Construct getVariable = analyser.tryGetConstruct(identifier);
-        if (getVariable instanceof Variable) {
+        if (!(getVariable instanceof Variable)) {
+            throw new SemanticException(ctx.start, "Cannot resolve symbol '" + identifier + "'");
+            // TODO throw exception in compilation time
+        }
+        else {
             Variable variable = (Variable)getVariable;
             analyser.tryPush(variable);
         }
-        else {
-            // TODO throw exception in compilation time
-            System.out.print("");
-        }
-    }
-    
-    @Override public void enterVariableDeclaration(PnpParser.VariableDeclarationContext ctx) {
-        //TODO
     }
     
     @Override public void exitVariableDeclaration(PnpParser.VariableDeclarationContext ctx) {
-        //TODO
-    }
-    
-    @Override public void enterVariableAssignment(PnpParser.VariableAssignmentContext ctx) {
-        //TODO
+        String identifier = ctx.identifier.getText();
+        String typeToken = ctx.t.getText();
+        Type type;
+
+        if (analyser.existsInThisScope(identifier)) {
+            throw new SemanticException(ctx.start, "variable '" + identifier + "' is already defined in the scope");
+        }
+
+        switch (typeToken) {
+            case "inteiro": type = PrimitiveType.Inteiro; break;
+            case "racional": type = PrimitiveType.Racional; break;
+            case "booleano": type = PrimitiveType.Booleano; break;
+            case "caractere": type = PrimitiveType.Caractere; break;
+            case "string": type = PrimitiveType.String; break;
+            default: {
+                Construct fromAnalyser = analyser.tryGetConstruct(typeToken);
+                if (!(fromAnalyser instanceof Type)) {
+                    throw new SemanticException(ctx.start, "Cannot resolve symbol '" + typeToken + "'");
+                }
+                type = (Type)fromAnalyser;
+            }
+        }
+        Variable variable = new Variable(type, identifier);
+
+        analyser.tryPutConstruct(identifier, variable);
     }
     
     @Override public void exitVariableAssignment(PnpParser.VariableAssignmentContext ctx) {
-        //TODO
+        Expression assignment = analyser.tryPop();
+        Expression exp = analyser.tryPop();
+
+        if (!(exp instanceof Variable)) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+
+        Variable variable = (Variable)exp;
+        if (!assignment.getType().isTypeOf(variable)) {
+            throw new SemanticException(ctx.start, "Incompatible type between '" + variable.getType() + "' and '" + assignment.getType() + "'");
+        }
+
+        ((Variable) exp).setValue(assignment);
     }
     
     @Override public void enterExpression(PnpParser.ExpressionContext ctx) {

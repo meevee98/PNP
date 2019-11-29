@@ -6,10 +6,10 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import pnp.compiler.exception.CompilationException;
 import pnp.compiler.exception.SemanticException;
-import pnp.compiler.model.Construct;
-import pnp.compiler.model.Expression;
-import pnp.compiler.model.Variable;
-import pnp.compiler.model.type.primitives.PrimitiveType;
+import pnp.compiler.model.construct.Construct;
+import pnp.compiler.model.expression.Expression;
+import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.construct.type.primitives.PrimitiveType;
 import pnp.compiler.syntax.grammar.antlr.PnpLexer;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
 
@@ -19,7 +19,8 @@ import java.util.Stack;
 
 public class Analyser {
     Stack<Expression> executionStack = new Stack<Expression>();
-    SymbolTable symbolTable = new SymbolTable();
+    private SymbolTable mainTable = new SymbolTable();
+    SymbolTable currentTable = mainTable;
 
     public void analyse(String sourceFile) throws CompilationException {
         initialValueToTest();
@@ -59,11 +60,19 @@ public class Analyser {
     }
 
     public Construct tryGetConstruct(String key) {
-        return symbolTable.tryGetValue(key);
+        return currentTable.tryGetValue(key);
     }
 
     public void tryPutConstruct(String key, Construct value) {
-        symbolTable.tryPutValue(key, value);
+        currentTable.tryPutValue(key, value);
+    }
+
+    public boolean exists(String key) {
+        return currentTable.exists(key);
+    }
+
+    public boolean existsInThisScope(String key) {
+        return currentTable.existsInThisScope(key);
     }
 
     public List<Expression> getList() {
@@ -74,6 +83,6 @@ public class Analyser {
     private void initialValueToTest() {
         String key = "j";
         Variable test = new Variable(PrimitiveType.Inteiro, key, 60);
-        symbolTable.tryPutValue(key, test);
+        currentTable.tryPutValue(key, test);
     }
 }
