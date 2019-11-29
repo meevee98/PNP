@@ -1,8 +1,9 @@
 package pnp.compiler.semantic;
 
 import pnp.compiler.model.construct.Construct;
+import pnp.compiler.model.construct.Variable;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class SymbolTable {
     private SymbolTable parent = null;
@@ -12,6 +13,14 @@ public class SymbolTable {
 
     private SymbolTable(SymbolTable parent) {
         this.parent = parent;
+    }
+
+    public SymbolTable startNewScope() {
+        return new SymbolTable(this);
+    }
+
+    public SymbolTable lastScope() {
+        return parent;
     }
 
     public Construct tryGetValue(String key) {
@@ -39,5 +48,21 @@ public class SymbolTable {
             return parent.exists(key);
         }
         return true;
+    }
+
+    public List<Variable> getVariables() {
+        List<Variable> variables = new ArrayList<>();
+
+        for (Construct entry : symbols.values()) {
+            if (entry instanceof Variable) {
+                variables.add((Variable)entry);
+            }
+        }
+
+        return variables;
+    }
+
+    public Collection<Construct> getValues() {
+        return symbols.values();
     }
 }

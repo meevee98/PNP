@@ -2,7 +2,9 @@ package pnp.compiler.semantic;
 
 import org.antlr.v4.runtime.tree.TerminalNode;
 import pnp.compiler.exception.SemanticException;
+import pnp.compiler.model.construct.Block;
 import pnp.compiler.model.construct.Construct;
+import pnp.compiler.model.construct.Procedure;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.expression.operation.Operator;
 import pnp.compiler.model.construct.Variable;
@@ -12,6 +14,9 @@ import pnp.compiler.model.construct.type.Type;
 import pnp.compiler.model.construct.type.primitives.PrimitiveType;
 import pnp.compiler.syntax.grammar.antlr.PnpBaseListener;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PnpContext extends PnpBaseListener {
     PnpContext(Analyser analyser) {
@@ -36,11 +41,17 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void enterProcedure(PnpParser.ProcedureContext ctx) {
-        //TODO
+        String identifier = ctx.procedureDeclaration().identifier.getText();
+
+        Procedure procedure = new Procedure(identifier);
+        analyser.tryPutConstruct(identifier, procedure);
+        analyser.newScope(procedure);
     }
     
     @Override public void exitProcedure(PnpParser.ProcedureContext ctx) {
-        //TODO
+        String identifier = ctx.procedureDeclaration().identifier.getText();
+
+        analyser.tryGetConstruct(identifier);
     }
     
     @Override public void enterProcedureBody(PnpParser.ProcedureBodyContext ctx) {
@@ -59,12 +70,29 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterProcedureInput(PnpParser.ProcedureInputContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitProcedureInput(PnpParser.ProcedureInputContext ctx) {
-        //TODO
+        String identifier;
+        List<PnpParser.VariableDeclarationContext> inputs = ctx.variableDeclaration();
+
+        if (inputs.size() > 0) {
+            Block block = analyser.getCurrentBlock();
+            if (block instanceof Procedure) {
+                Procedure proc = (Procedure) block;
+                ArrayList<Variable> variables = new ArrayList<>();
+
+                for (int i = 0; i < inputs.size(); i++) {
+                    identifier = inputs.get(i).identifier.getText();
+                    Construct cons = analyser.tryGetConstruct(identifier);
+                    if (!(cons instanceof Variable)) {
+                        throw new SemanticException(ctx.start, "something went wrong");
+                    }
+
+                    variables.add((Variable) cons);
+                }
+
+                proc.setInput(variables);
+            }
+        }
     }
     
     @Override public void enterProcedureOutput(PnpParser.ProcedureOutputContext ctx) {
@@ -72,11 +100,21 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitProcedureOutput(PnpParser.ProcedureOutputContext ctx) {
-        //TODO
+        String identifier = ctx.variableDeclaration().identifier.getText();
+        Block block = analyser.getCurrentBlock();
+        if (block instanceof Procedure) {
+            Procedure proc = (Procedure) block;
+            Construct cons = analyser.tryGetConstruct(identifier);
+
+            if (!(cons instanceof Variable)) {
+                throw new SemanticException(ctx.start, "something went wrong");
+            }
+
+            proc.setOutput((Variable) cons);
+        }
     }
     
     @Override public void enterProcedureBlock(PnpParser.ProcedureBlockContext ctx) {
-        //TODO
     }
     
     @Override public void exitProcedureBlock(PnpParser.ProcedureBlockContext ctx) {
@@ -84,11 +122,17 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void enterMainProcedure(PnpParser.MainProcedureContext ctx) {
-        //TODO
+        String identifier = ctx.identifier.getText();
+
+        Procedure procedure = new Procedure(identifier);
+        analyser.tryPutConstruct(identifier, procedure);
+        analyser.newScope(procedure);
     }
     
     @Override public void exitMainProcedure(PnpParser.MainProcedureContext ctx) {
-        //TODO
+        String identifier = ctx.identifier.getText();
+
+        analyser.tryGetConstruct(identifier);
     }
     
     @Override public void enterTypeDeclaration(PnpParser.TypeDeclarationContext ctx) {
@@ -108,11 +152,11 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void enterBlock(PnpParser.BlockContext ctx) {
-        //TODO
+//        analyser.newScope();
     }
     
     @Override public void exitBlock(PnpParser.BlockContext ctx) {
-        //TODO
+        analyser.endScope();
     }
     
     @Override public void enterVariableDeclarationAndAssignmentBlock(PnpParser.VariableDeclarationAndAssignmentBlockContext ctx) {
@@ -517,7 +561,8 @@ public class PnpContext extends PnpBaseListener {
             throw new SemanticException(ctx.start, "Incompatible type between '" + variable.getType() + "' and '" + assignment.getType() + "'");
         }
 
-        ((Variable) exp).setValue(assignment);
+        analyser.newAssignment(variable, assignment);
+//        analyser.tryPutConstruct(variable.getName(), variable);
     }
     
     @Override public void enterExpression(PnpParser.ExpressionContext ctx) {

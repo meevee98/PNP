@@ -1,9 +1,9 @@
 package pnp.compiler.model.construct.type.primitives;
 
 import pnp.compiler.model.construct.type.Type;
-import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.expression.Expression;
 
-class String implements Type {
+class String extends Type {
     @Override
     public boolean isTypeOf(Object value) {
         if (value instanceof java.lang.String) {
@@ -12,10 +12,15 @@ class String implements Type {
         if (value instanceof String) {
             return true;
         }
-        if (value instanceof Variable) {
-            return ((Variable) value).getType() instanceof String;
+        if (value instanceof Expression) {
+            return ((Expression) value).getType() instanceof String;
         }
         return false;
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return true;
     }
 
     @Override

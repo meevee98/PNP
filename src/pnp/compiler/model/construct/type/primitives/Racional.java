@@ -1,9 +1,9 @@
 package pnp.compiler.model.construct.type.primitives;
 
 import pnp.compiler.model.construct.type.Type;
-import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.expression.Expression;
 
-class Racional implements Type {
+class Racional extends Type {
     @Override
     public boolean isTypeOf(Object value) {
         if (value instanceof Float) {
@@ -12,10 +12,15 @@ class Racional implements Type {
         if (value instanceof Racional) {
             return true;
         }
-        if (value instanceof Variable) {
-            return ((Variable) value).getType() instanceof Racional;
+        if (value instanceof Expression) {
+            return ((Expression) value).getType() instanceof Racional;
         }
         return false;
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return true;
     }
 
     @Override

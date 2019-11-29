@@ -39,9 +39,6 @@ public class Variable implements Expression {
         if (type.isTypeOf(value)) {
             this.value = value;
         }
-        else if ( (value instanceof Expression) && type.isTypeOf(((Expression) value).getType())) {
-            this.value = value;
-        }
     }
 
     @Override
@@ -54,6 +51,6 @@ public class Variable implements Expression {
     }
 
     public boolean isLiteral() {
-        return name == null || !(value instanceof Expression);
+        return name == null;
     }
 }

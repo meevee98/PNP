@@ -1,10 +1,11 @@
 package pnp.compiler.model.construct.type;
 
 import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.expression.Expression;
 
 import java.util.List;
 
-public class AbstractType implements Type {
+public class AbstractType extends Type {
     final private List<Variable> attributes;
     final String name;
 
@@ -15,8 +16,8 @@ public class AbstractType implements Type {
 
     @Override
     public boolean isTypeOf(Object value) {
-        if (value instanceof Variable) {
-            return ((Variable) value).getType().equals(this);
+        if (value instanceof Expression) {
+            return ((Expression) value).getType().equals(this);
         }
         return false;
     }

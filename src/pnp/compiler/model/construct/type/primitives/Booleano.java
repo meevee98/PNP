@@ -1,9 +1,9 @@
 package pnp.compiler.model.construct.type.primitives;
 
-import pnp.compiler.model.construct.Variable;
 import pnp.compiler.model.construct.type.Type;
+import pnp.compiler.model.expression.Expression;
 
-class Booleano implements Type {
+class Booleano extends Type {
     @Override
     public boolean isTypeOf(Object value) {
         if (value instanceof Boolean) {
@@ -12,10 +12,15 @@ class Booleano implements Type {
         if (value instanceof Booleano) {
             return true;
         }
-        if (value instanceof Variable) {
-            return ((Variable) value).getType() instanceof Booleano;
+        if (value instanceof Expression) {
+            return ((Expression) value).getType() instanceof Booleano;
         }
         return false;
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return true;
     }
 
     @Override

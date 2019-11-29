@@ -1,5 +1,9 @@
 package pnp.compiler.model.construct.type;
 
-public interface Type {
-    boolean isTypeOf(Object value);
+public abstract class Type {
+    public boolean isPrimitive() {
+        return false;
+    }
+
+    public abstract boolean isTypeOf(Object value);
 }

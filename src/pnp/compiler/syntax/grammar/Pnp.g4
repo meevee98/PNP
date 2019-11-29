@@ -26,7 +26,7 @@ procedureBody
     : procedureInput? procedureOutput? procedureBlock
     ;
 procedureDeclaration
-    : PROCEDIMENTO ID
+    : PROCEDIMENTO identifier=ID
     ;
 procedureInput
     : ENTRADA (NULO | variableDeclaration+)
@@ -38,7 +38,7 @@ procedureBlock
     : INICIO block FIM
     ;
 mainProcedure
-    : PROCEDIMENTO PRINCIPAL procedureBody
+    : PROCEDIMENTO identifier=PRINCIPAL procedureBody
     ;
 
 // tipo abstrato

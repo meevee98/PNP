@@ -6,24 +6,25 @@ import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import pnp.compiler.exception.CompilationException;
 import pnp.compiler.exception.SemanticException;
+import pnp.compiler.model.construct.Block;
 import pnp.compiler.model.construct.Construct;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.construct.Variable;
-import pnp.compiler.model.construct.type.primitives.PrimitiveType;
 import pnp.compiler.syntax.grammar.antlr.PnpLexer;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Stack;
 
 public class Analyser {
-    Stack<Expression> executionStack = new Stack<Expression>();
+    private Stack<Expression> executionStack = new Stack<Expression>();
     private SymbolTable mainTable = new SymbolTable();
-    SymbolTable currentTable = mainTable;
+    private SymbolTable currentTable = mainTable;
+    private Block currentBlock = null;
 
     public void analyse(String sourceFile) throws CompilationException {
-        initialValueToTest();
         try {
             PnpLexer lexical = new PnpLexer(CharStreams.fromFileName(sourceFile));
             CommonTokenStream tokens = new CommonTokenStream(lexical);
@@ -42,6 +43,10 @@ public class Analyser {
         }
     }
 
+    public SymbolTable getMainSymbolTable() {
+        return mainTable;
+    }
+
     public boolean tryPush(Expression item) {
         try {
             executionStack.push(item);
@@ -57,6 +62,10 @@ public class Analyser {
             return executionStack.pop();
         }
         return null;
+    }
+
+    public Collection<Construct> tryGetValues() {
+        return currentTable.getValues();
     }
 
     public Construct tryGetConstruct(String key) {
@@ -80,9 +89,33 @@ public class Analyser {
         return test;
     }
 
-    private void initialValueToTest() {
-        String key = "j";
-        Variable test = new Variable(PrimitiveType.Inteiro, key, 60);
-        currentTable.tryPutValue(key, test);
+    public Block getCurrentBlock() {
+        return currentBlock;
+    }
+
+    public void newAssignment(Variable variable, Expression expression) {
+        if (currentBlock != null) {
+            currentBlock.addAssignmentCommand(variable, expression);
+        }
+    }
+
+
+    public void newScope(Block newBlock) {
+        currentBlock = newBlock;
+        currentTable = currentTable.startNewScope();
+    }
+
+    public void newScope() {
+        currentTable = currentTable.startNewScope();
+    }
+
+    public void endScope() {
+        if (currentBlock != null) {
+            for(Variable var : currentTable.getVariables()) {
+                currentBlock.addDeclarationCommand(var);
+            }
+        }
+        currentTable = currentTable.lastScope();
+        currentBlock = null;
     }
 }

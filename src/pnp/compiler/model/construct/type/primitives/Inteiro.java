@@ -1,9 +1,9 @@
 package pnp.compiler.model.construct.type.primitives;
 
 import pnp.compiler.model.construct.type.Type;
-import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.expression.Expression;
 
-class Inteiro implements Type {
+class Inteiro extends Type {
     @Override
     public boolean isTypeOf(Object value) {
         if (value instanceof Integer) {
@@ -12,10 +12,15 @@ class Inteiro implements Type {
         if (value instanceof Inteiro) {
             return true;
         }
-        if (value instanceof Variable) {
-            return ((Variable) value).getType() instanceof Inteiro;
+        if (value instanceof Expression) {
+            return ((Expression) value).getType() instanceof Inteiro;
         }
         return false;
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return true;
     }
 
     @Override

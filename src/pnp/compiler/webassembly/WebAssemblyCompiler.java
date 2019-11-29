@@ -27,7 +27,7 @@ public class WebAssemblyCompiler {
             m.analisar(fonte);
 
             WebAssemblyGenerator gerador = new WebAssemblyGenerator();
-            String codigo = gerador.toWAT(m.analyser.tryPop());
+            String codigo = gerador.convert(m.analyser.getMainSymbolTable());
             System.out.println(codigo);
         }
         catch (CompilationException ex) {

@@ -1,5 +1,8 @@
 package pnp.compiler.webassembly;
 
+import pnp.compiler.Generator;
+import pnp.compiler.model.construct.Construct;
+import pnp.compiler.model.construct.Procedure;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.expression.operation.Operator;
 import pnp.compiler.model.construct.Variable;
@@ -7,12 +10,19 @@ import pnp.compiler.model.expression.operation.BinaryOperation;
 import pnp.compiler.model.expression.operation.UnaryOperation;
 import pnp.compiler.model.construct.type.Type;
 import pnp.compiler.model.construct.type.primitives.PrimitiveType;
+import pnp.compiler.model.instruction.DeclarationInstruction;
+import pnp.compiler.semantic.SymbolTable;
 
-public class WebAssemblyGenerator {
-    public String toWAT(Expression expression) {
+public class WebAssemblyGenerator implements Generator {
+    @Override
+    public String convert(SymbolTable symbols) {
         StringBuilder wat = new StringBuilder();
 
-        wat.append(tryToAppendExpression(expression));
+        for (Construct value : symbols.getValues()) {
+            if (value instanceof Expression) {
+                wat.append(tryToAppendExpression((Expression) value) + '\n');
+            }
+        }
 
         return wat.toString();
     }
@@ -26,6 +36,9 @@ public class WebAssemblyGenerator {
     }
 
     private String expressionToWat(Expression expression) {
+        if (expression instanceof Procedure) {
+            return procedureToWat((Procedure) expression);
+        }
         if (expression instanceof BinaryOperation) {
             return binaryOperationToWat((BinaryOperation) expression);
         }
@@ -36,6 +49,39 @@ public class WebAssemblyGenerator {
             return variableToWat((Variable)expression);
         }
         return null;
+    }
+
+    private String procedureToWat(Procedure proc) {
+        String params = "";
+        String result = "";
+        String locals = "";
+        String body = "";
+
+        // Procedure output
+        Variable output = proc.getOutput();
+        if (output != null) {
+            result = " (result " + typeToWat(proc.getType()) + ")";
+            locals += " (local $" + output.getName() + " " + typeToWat(output.getType()) + ")";
+            body = "(" + variableToWat(output) + ")";
+        }
+
+        // Procedure inputs
+        for (Variable param : proc.getInput()) {
+            params += " (param $" + param.getName() + " " + typeToWat(param.getType()) + ")";
+        }
+
+        // Procedure local variables
+        for (DeclarationInstruction local : proc.getDeclarations()) {
+            Variable var = local.getVariable();
+
+            locals += " (local $" + var.getName() + " " + typeToWat(var.getType()) + ")";
+        }
+
+        if (!body.isEmpty()) {
+            body = '\n' + body;
+        }
+        return "(func $" + proc.getName() + params + result + locals + body + ")";
+
     }
 
     private String unaryOperationToWat(UnaryOperation op) {
@@ -69,7 +115,7 @@ public class WebAssemblyGenerator {
     }
 
     private String variableToWat(Variable variable) {
-        String type = primitiveTypeToWat(variable.getType());
+        String type = typeToWat(variable.getType());
         if (type == null || type.isEmpty()) {
             return null;
         }
@@ -82,8 +128,8 @@ public class WebAssemblyGenerator {
     }
 
     private String operatorToWat(Type resultType, Operator operator, Type operandType) {
-        String type = primitiveTypeToWat(resultType);
-        String operand = primitiveTypeToWat(operandType);
+        String type = typeToWat(resultType);
+        String operand = typeToWat(operandType);
         String operatorStr = "";
 
         if (type == null || operand == null || type.isEmpty() || operand.isEmpty()) {
@@ -125,6 +171,13 @@ public class WebAssemblyGenerator {
         return operand + "." + operatorStr;
     }
 
+    private String typeToWat(Type type) {
+        if (type.isPrimitive()) {
+            return primitiveTypeToWat(type);
+        }
+        return null; // TODO
+    }
+
     private String primitiveTypeToWat(Type type) {
         if (type == PrimitiveType.Inteiro ||
             type == PrimitiveType.Booleano ||
@@ -154,8 +207,8 @@ public class WebAssemblyGenerator {
     }
 
     private String cast(Type from, Type to) {
-        String fromType = primitiveTypeToWat(from);
-        String toType = primitiveTypeToWat(to);
+        String fromType = typeToWat(from);
+        String toType = typeToWat(to);
 
         if (PrimitiveType.Racional.isTypeOf(to)) {
             return toType + ".convert_s/" + fromType;

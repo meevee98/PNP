@@ -432,6 +432,7 @@ public class PnpParser extends Parser {
 	}
 
 	public static class ProcedureDeclarationContext extends ParserRuleContext {
+		public Token identifier;
 		public TerminalNode PROCEDIMENTO() { return getToken(PnpParser.PROCEDIMENTO, 0); }
 		public TerminalNode ID() { return getToken(PnpParser.ID, 0); }
 		public ProcedureDeclarationContext(ParserRuleContext parent, int invokingState) {
@@ -462,7 +463,7 @@ public class PnpParser extends Parser {
 			setState(177);
 			match(PROCEDIMENTO);
 			setState(178);
-			match(ID);
+			((ProcedureDeclarationContext)_localctx).identifier = match(ID);
 			}
 		}
 		catch (RecognitionException re) {
@@ -671,11 +672,12 @@ public class PnpParser extends Parser {
 	}
 
 	public static class MainProcedureContext extends ParserRuleContext {
+		public Token identifier;
 		public TerminalNode PROCEDIMENTO() { return getToken(PnpParser.PROCEDIMENTO, 0); }
-		public TerminalNode PRINCIPAL() { return getToken(PnpParser.PRINCIPAL, 0); }
 		public ProcedureBodyContext procedureBody() {
 			return getRuleContext(ProcedureBodyContext.class,0);
 		}
+		public TerminalNode PRINCIPAL() { return getToken(PnpParser.PRINCIPAL, 0); }
 		public MainProcedureContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -704,7 +706,7 @@ public class PnpParser extends Parser {
 			setState(198);
 			match(PROCEDIMENTO);
 			setState(199);
-			match(PRINCIPAL);
+			((MainProcedureContext)_localctx).identifier = match(PRINCIPAL);
 			setState(200);
 			procedureBody();
 			}
