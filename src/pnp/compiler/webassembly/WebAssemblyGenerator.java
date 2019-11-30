@@ -3,6 +3,7 @@ package pnp.compiler.webassembly;
 import pnp.compiler.Generator;
 import pnp.compiler.model.construct.Construct;
 import pnp.compiler.model.construct.Procedure;
+import pnp.compiler.model.construct.statement.IfStatement;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.expression.operation.Operator;
 import pnp.compiler.model.construct.Variable;
@@ -43,9 +44,6 @@ public class WebAssemblyGenerator implements Generator {
     }
 
     private String expressionToWat(Expression expression) {
-        if (expression instanceof ProcedureInstruction) {
-            return callToWat((ProcedureInstruction) expression);
-        }
         if (expression instanceof Procedure) {
             return procedureToWat((Procedure) expression);
         }
@@ -57,6 +55,9 @@ public class WebAssemblyGenerator implements Generator {
         }
         if (expression instanceof Variable) {
             return variableToWat((Variable)expression, true);
+        }
+        if (expression instanceof ProcedureInstruction) {
+            return callToWat((ProcedureInstruction) expression);
         }
         return null;
     }
@@ -104,21 +105,29 @@ public class WebAssemblyGenerator implements Generator {
     private String bodyToWat(List<Instruction> instructions) {
         String body = "\n";
         String inst;
+
         for (Instruction instruction : instructions) {
-            if (instruction instanceof AssignmentInstruction) {
-                inst = assignmentToWat((AssignmentInstruction) instruction);
-                if (inst != null) {
-                    body += inst + '\n';
-                }
-            }
-            if (instruction instanceof ProcedureInstruction) {
-                inst = callToWat((ProcedureInstruction) instruction);
-                if (inst != null) {
-                    body += inst + '\n';
-                }
+            inst = instructionToWat(instruction);
+            if (inst != null) {
+                body += inst + '\n';
             }
         }
+
         return body;
+    }
+
+    private String instructionToWat(Instruction instruction) {
+        if (instruction instanceof AssignmentInstruction) {
+            return assignmentToWat((AssignmentInstruction) instruction);
+        }
+        if (instruction instanceof ProcedureInstruction) {
+            return callToWat((ProcedureInstruction) instruction);
+        }
+        if (instruction instanceof IfStatement) {
+            return ifToWat((IfStatement) instruction);
+        }
+
+        return null;
     }
 
     private String assignmentToWat(AssignmentInstruction assignment) {
@@ -137,7 +146,37 @@ public class WebAssemblyGenerator implements Generator {
             params += expressionToWat(var) + '\n';
         }
 
-        return params + "call $" + call.getProcedure().getName() + "\nreturn";
+        if (call.getType() != PrimitiveType.Nulo) {
+            return params + "call $" + call.getProcedure().getName() + "\nreturn";
+        }
+
+        return params + "call $" + call.getProcedure().getName();
+    }
+
+    private String ifToWat(IfStatement statement) {
+        String condition = expressionToWat(statement.getCondition());
+        String ifBlock = bodyToWat(statement.getIfBlock().getInstructions());
+        String elseBlock = "";
+        if (statement.hasElseBranch()) {
+            if (statement.getElseStatement().hasElseBranch()) {
+                elseBlock = ifToWat(statement.getElseStatement());
+            }
+            else {
+                elseBlock = bodyToWat(statement.getElseBlock().getInstructions());
+            }
+        }
+
+        if (condition == null || ifBlock == null || elseBlock == null) {
+            return null;
+        }
+        int lastIndexIf = ifBlock.indexOf('\n', 1);
+        int lastIndexElse = elseBlock.indexOf('\n', 1);
+
+        // bug do webassembly studio
+        ifBlock = ifBlock.substring(0, lastIndexIf) + ifBlock;
+        elseBlock = "else " + elseBlock.substring(0, lastIndexElse) + elseBlock;
+
+        return condition + "\nif (result i32)" + ifBlock + elseBlock + "end\ndrop";
     }
 
     private String unaryOperationToWat(UnaryOperation op) {

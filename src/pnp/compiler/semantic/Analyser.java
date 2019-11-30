@@ -8,8 +8,10 @@ import pnp.compiler.exception.CompilationException;
 import pnp.compiler.exception.SemanticException;
 import pnp.compiler.model.construct.Block;
 import pnp.compiler.model.construct.Construct;
+import pnp.compiler.model.construct.statement.StatementBlock;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.construct.Variable;
+import pnp.compiler.model.instruction.Instruction;
 import pnp.compiler.syntax.grammar.antlr.PnpLexer;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
 
@@ -22,6 +24,7 @@ public class Analyser {
     private Stack<Expression> executionStack = new Stack<Expression>();
     private SymbolTable mainTable = new SymbolTable();
     private SymbolTable currentTable = mainTable;
+    private Stack<Block> blocks = new Stack<>();
     private Block currentBlock = null;
 
     public void analyse(String sourceFile) throws CompilationException {
@@ -99,13 +102,28 @@ public class Analyser {
         }
     }
 
+    public void newInstruction(Instruction statement) {
+        if (currentBlock != null) {
+            currentBlock.addSInstruction(statement);
+        }
+    }
+
+    public Instruction lastInstruction() {
+        if (currentBlock != null) {
+            return currentBlock.getLastInstruction();
+        }
+        return null;
+    }
 
     public void newScope(Block newBlock) {
+        blocks.push(currentBlock);
         currentBlock = newBlock;
         currentTable = currentTable.startNewScope();
     }
 
     public void newScope() {
+        blocks.push(currentBlock);
+        currentBlock = new StatementBlock();
         currentTable = currentTable.startNewScope();
     }
 
@@ -116,6 +134,11 @@ public class Analyser {
             }
         }
         currentTable = currentTable.lastScope();
-        currentBlock = null;
+        if (blocks.empty()) {
+            currentBlock = null;
+        }
+        else {
+            currentBlock = blocks.pop();
+        }
     }
 }

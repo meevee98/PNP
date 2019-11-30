@@ -1,5 +1,6 @@
 package pnp.compiler.model.construct;
 
+import pnp.compiler.model.construct.statement.Statement;
 import pnp.compiler.model.instruction.AssignmentInstruction;
 import pnp.compiler.model.instruction.Instruction;
 import pnp.compiler.model.instruction.DeclarationInstruction;
@@ -21,7 +22,19 @@ public abstract class Block implements Construct {
         instructions.add(assignment);
     }
 
+    public void addSInstruction(Instruction statement) {
+        instructions.add(statement);
+    }
+
     public List<Instruction> getInstructions() {
         return instructions;
+    }
+
+    public Instruction getLastInstruction() {
+        int lastIndex = instructions.size() - 1;
+        if (instructions.isEmpty()) {
+            return null;
+        }
+        return instructions.get(lastIndex);
     }
 }

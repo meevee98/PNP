@@ -5,6 +5,7 @@ import pnp.compiler.exception.SemanticException;
 import pnp.compiler.model.construct.Block;
 import pnp.compiler.model.construct.Construct;
 import pnp.compiler.model.construct.Procedure;
+import pnp.compiler.model.construct.statement.IfStatement;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.expression.operation.Operator;
 import pnp.compiler.model.construct.Variable;
@@ -12,6 +13,7 @@ import pnp.compiler.model.expression.operation.BinaryOperation;
 import pnp.compiler.model.expression.operation.UnaryOperation;
 import pnp.compiler.model.construct.type.Type;
 import pnp.compiler.model.construct.type.primitives.PrimitiveType;
+import pnp.compiler.model.instruction.Instruction;
 import pnp.compiler.model.instruction.ProcedureInstruction;
 import pnp.compiler.syntax.grammar.antlr.PnpBaseListener;
 import pnp.compiler.syntax.grammar.antlr.PnpParser;
@@ -126,7 +128,7 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitProcedureBlock(PnpParser.ProcedureBlockContext ctx) {
-        //TODO
+        analyser.endScope();
     }
     
     @Override public void enterMainProcedure(PnpParser.MainProcedureContext ctx) {
@@ -148,6 +150,7 @@ public class PnpContext extends PnpBaseListener {
         if (!((Procedure) cons).isOutputAssigned()) {
             throw new SemanticException(ctx.stop, "Missing return assignment");
         }
+        analyser.endScope();
     }
     
     @Override public void enterTypeDeclaration(PnpParser.TypeDeclarationContext ctx) {
@@ -171,7 +174,6 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitBlock(PnpParser.BlockContext ctx) {
-        analyser.endScope();
     }
     
     @Override public void enterVariableDeclarationAndAssignmentBlock(PnpParser.VariableDeclarationAndAssignmentBlockContext ctx) {
@@ -195,7 +197,10 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitCommand(PnpParser.CommandContext ctx) {
-        //TODO
+        Expression popped = analyser.tryPop();
+        if (popped instanceof ProcedureInstruction) {
+            analyser.newInstruction((Instruction) popped);
+        }
     }
     
     @Override public void enterStatement(PnpParser.StatementContext ctx) {
@@ -763,12 +768,16 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterIfStart(PnpParser.IfStartContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitIfStart(PnpParser.IfStartContext ctx) {
-        //TODO
+        Expression condition = analyser.tryPop();
+
+        if (condition.getType() != PrimitiveType.Booleano) {
+            throw new SemanticException(ctx.start, "Incompatible types between '" + condition.getType() + "' and '" + PrimitiveType.Booleano + "'");
+        }
+
+        IfStatement statement = new IfStatement(condition);
+        analyser.newInstruction(statement);
+        analyser.newScope(statement.getIfBlock());
     }
     
     @Override public void enterIfThen(PnpParser.IfThenContext ctx) {
@@ -776,19 +785,31 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitIfThen(PnpParser.IfThenContext ctx) {
-        //TODO
+        analyser.endScope();
     }
     
     @Override public void enterIfElse(PnpParser.IfElseContext ctx) {
-        //TODO
+        Instruction lastInstruction = analyser.lastInstruction();
+        if (lastInstruction == null) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+
+        if (!(lastInstruction instanceof IfStatement)) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+
+        Block block = ((IfStatement) lastInstruction).startElseBranch();
+        analyser.newScope(block);
     }
-    
+
     @Override public void exitIfElse(PnpParser.IfElseContext ctx) {
-        //TODO
+        analyser.endScope();
     }
     
     @Override public void enterIfElseIf(PnpParser.IfElseIfContext ctx) {
-        //TODO
+        if (ctx.elseIf() != null) {
+            throw new SemanticException(ctx.start, "does not support else if");
+        }
     }
     
     @Override public void exitIfElseIf(PnpParser.IfElseIfContext ctx) {
