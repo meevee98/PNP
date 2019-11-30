@@ -3,7 +3,9 @@ package pnp.compiler.webassembly;
 import pnp.compiler.Generator;
 import pnp.compiler.model.construct.Construct;
 import pnp.compiler.model.construct.Procedure;
+import pnp.compiler.model.construct.statement.DoWhileStatement;
 import pnp.compiler.model.construct.statement.IfStatement;
+import pnp.compiler.model.construct.statement.WhileStatement;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.expression.operation.Operator;
 import pnp.compiler.model.construct.Variable;
@@ -126,6 +128,12 @@ public class WebAssemblyGenerator implements Generator {
         if (instruction instanceof IfStatement) {
             return ifToWat((IfStatement) instruction);
         }
+        if (instruction instanceof WhileStatement) {
+            return whileToWat((WhileStatement) instruction);
+        }
+        if (instruction instanceof DoWhileStatement) {
+            return doWhileToWat((DoWhileStatement) instruction);
+        }
 
         return null;
     }
@@ -177,6 +185,35 @@ public class WebAssemblyGenerator implements Generator {
         elseBlock = "else " + elseBlock.substring(0, lastIndexElse) + elseBlock;
 
         return condition + "\nif (result i32)" + ifBlock + elseBlock + "end\ndrop";
+    }
+
+    private String whileToWat(WhileStatement statement) {
+        UnaryOperation not = new UnaryOperation(Operator.NOT, statement.getCondition(), PrimitiveType.Booleano);
+        String exitCondition = expressionToWat(statement.getCondition());
+        String enterCondition = expressionToWat(not);
+        String block = bodyToWat(statement.getWhileBlock().getInstructions());
+
+        if (enterCondition == null || exitCondition == null || block == null) {
+            return null;
+        }
+
+        String blockRef = "$B" + statement.hashCode() + '\n';
+        String loopRef = "$L" + block.hashCode();
+
+        return "block " + blockRef + enterCondition + "\nbr_if " + blockRef + "loop " + loopRef + block + exitCondition + "\nbr_if " + loopRef + "\nend\nend";
+    }
+
+    private String doWhileToWat(DoWhileStatement statement) {
+        UnaryOperation not = new UnaryOperation(Operator.NOT, statement.getCondition(), PrimitiveType.Booleano);
+        String exitCondition = expressionToWat(not);
+        String block = bodyToWat(statement.getDoWhileBlock().getInstructions());
+
+        if (exitCondition == null || block == null) {
+            return null;
+        }
+        String loopRef = "$L" + block.hashCode();
+
+        return "loop " + loopRef + block + exitCondition + "\nbr_if " + loopRef + "\nend";
     }
 
     private String unaryOperationToWat(UnaryOperation op) {
@@ -247,14 +284,14 @@ public class WebAssemblyGenerator implements Generator {
             case MODULO: operatorStr = "rem_s"; break;
             case GREATER_THAN:
                 operatorStr = "gt";
-                if (resultType.isTypeOf(PrimitiveType.Inteiro)) {
+                if (!resultType.isTypeOf(PrimitiveType.Racional)) {
                     operatorStr += "_s";
                 }
                 break;
             case GREATER_THAN_EQUAL: operatorStr = "ge_s"; break;
             case LESS_THAN:
                 operatorStr = "lt";
-                if (resultType.isTypeOf(PrimitiveType.Inteiro)) {
+                if (!resultType.isTypeOf(PrimitiveType.Racional)) {
                     operatorStr += "_s";
                 }
                 break;

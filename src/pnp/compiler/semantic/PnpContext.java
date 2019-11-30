@@ -5,7 +5,9 @@ import pnp.compiler.exception.SemanticException;
 import pnp.compiler.model.construct.Block;
 import pnp.compiler.model.construct.Construct;
 import pnp.compiler.model.construct.Procedure;
+import pnp.compiler.model.construct.statement.DoWhileStatement;
 import pnp.compiler.model.construct.statement.IfStatement;
+import pnp.compiler.model.construct.statement.WhileStatement;
 import pnp.compiler.model.expression.Expression;
 import pnp.compiler.model.expression.operation.Operator;
 import pnp.compiler.model.construct.Variable;
@@ -904,12 +906,16 @@ public class PnpContext extends PnpBaseListener {
         //TODO
     }
     
-    @Override public void enterWhileStart(PnpParser.WhileStartContext ctx) {
-        //TODO
-    }
-    
     @Override public void exitWhileStart(PnpParser.WhileStartContext ctx) {
-        //TODO
+        Expression condition = analyser.tryPop();
+
+        if (condition.getType() != PrimitiveType.Booleano) {
+            throw new SemanticException(ctx.start, "Incompatible types between '" + condition.getType() + "' and '" + PrimitiveType.Booleano + "'");
+        }
+
+        WhileStatement statement = new WhileStatement(condition);
+        analyser.newInstruction(statement);
+        analyser.newScope(statement.getWhileBlock());
     }
     
     @Override public void enterWhileBlock(PnpParser.WhileBlockContext ctx) {
@@ -917,7 +923,7 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitWhileBlock(PnpParser.WhileBlockContext ctx) {
-        //TODO
+        analyser.endScope();
     }
     
     @Override public void enterDoWhileStatement(PnpParser.DoWhileStatementContext ctx) {
@@ -929,11 +935,13 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void enterDoWhileBlock(PnpParser.DoWhileBlockContext ctx) {
-        //TODO
+        DoWhileStatement statement = new DoWhileStatement();
+        analyser.newInstruction(statement);
+        analyser.newScope(statement.getDoWhileBlock());
     }
     
     @Override public void exitDoWhileBlock(PnpParser.DoWhileBlockContext ctx) {
-        //TODO
+        analyser.endScope();
     }
     
     @Override public void enterDoWhileEnd(PnpParser.DoWhileEndContext ctx) {
@@ -941,7 +949,20 @@ public class PnpContext extends PnpBaseListener {
     }
     
     @Override public void exitDoWhileEnd(PnpParser.DoWhileEndContext ctx) {
-        //TODO
+        Instruction instruction = analyser.lastInstruction();
+
+        if (instruction == null || !(instruction instanceof DoWhileStatement)) {
+            throw new SemanticException(ctx.start, "Something went wrong");
+        }
+
+        Expression condition = analyser.tryPop();
+
+        if (condition.getType() != PrimitiveType.Booleano) {
+            throw new SemanticException(ctx.start, "Incompatible types between '" + condition.getType() + "' and '" + PrimitiveType.Booleano + "'");
+        }
+
+        DoWhileStatement statement = (DoWhileStatement) instruction;
+        statement.setCondition(condition);
     }
     
     @Override public void enterTypeDefinitionType(PnpParser.TypeDefinitionTypeContext ctx) {

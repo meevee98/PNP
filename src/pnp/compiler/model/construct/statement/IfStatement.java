@@ -4,8 +4,6 @@ import pnp.compiler.model.construct.Block;
 import pnp.compiler.model.construct.type.Type;
 import pnp.compiler.model.construct.type.primitives.PrimitiveType;
 import pnp.compiler.model.expression.Expression;
-import pnp.compiler.model.expression.operation.Operator;
-import pnp.compiler.model.expression.operation.UnaryOperation;
 
 public class IfStatement extends Statement {
     private Block block;
