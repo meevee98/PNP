@@ -125,9 +125,6 @@ public class WebAssemblyGenerator implements Generator {
         if (instruction instanceof ProcedureInstruction) {
             return callToWat((ProcedureInstruction) instruction);
         }
-        if (instruction instanceof IfStatement) {
-            return ifToWat((IfStatement) instruction);
-        }
         if (instruction instanceof WhileStatement) {
             return whileToWat((WhileStatement) instruction);
         }
@@ -159,32 +156,6 @@ public class WebAssemblyGenerator implements Generator {
         }
 
         return params + "call $" + call.getProcedure().getName();
-    }
-
-    private String ifToWat(IfStatement statement) {
-        String condition = expressionToWat(statement.getCondition());
-        String ifBlock = bodyToWat(statement.getIfBlock().getInstructions());
-        String elseBlock = "";
-        if (statement.hasElseBranch()) {
-            if (statement.getElseStatement().hasElseBranch()) {
-                elseBlock = ifToWat(statement.getElseStatement());
-            }
-            else {
-                elseBlock = bodyToWat(statement.getElseBlock().getInstructions());
-            }
-        }
-
-        if (condition == null || ifBlock == null || elseBlock == null) {
-            return null;
-        }
-        int lastIndexIf = ifBlock.indexOf('\n', 1);
-        int lastIndexElse = elseBlock.indexOf('\n', 1);
-
-        // bug do webassembly studio
-        ifBlock = ifBlock.substring(0, lastIndexIf) + ifBlock;
-        elseBlock = "else " + elseBlock.substring(0, lastIndexElse) + elseBlock;
-
-        return condition + "\nif (result i32)" + ifBlock + elseBlock + "end\ndrop";
     }
 
     private String whileToWat(WhileStatement statement) {
