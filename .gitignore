@@ -700,3 +700,4 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/java,bluej,windows,eclipse,intellij,java-web,sublimetext,intellij+all,intellij+iml,visualstudio
+classes/
