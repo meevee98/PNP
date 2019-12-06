@@ -4,7 +4,7 @@ import br.com.pnp.compiler.model.construct.Variable
 import br.com.pnp.model.construct.Construct
 import java.util.ArrayList
 
-class SymbolTable {
+class SymbolTable() {
     private var parent: SymbolTable? = null
     private val symbols = LinkedHashMap<String, Construct>()
 
@@ -21,7 +21,7 @@ class SymbolTable {
             return variables
         }
 
-    private constructor(parent: SymbolTable) {
+    private constructor(parent: SymbolTable): this() {
         this.parent = parent
     }
 
