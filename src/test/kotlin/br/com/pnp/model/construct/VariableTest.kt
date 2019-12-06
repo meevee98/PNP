@@ -4,7 +4,7 @@ import br.com.pnp.AppTest
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 
 class VariableTest: AppTest() {
-    private val subject = Variable(PrimitiveType.integer, "x", 10)
+    override val subject = Variable(PrimitiveType.integer, "x", 10)
 
     fun testIsLiteralSuccess() {
         val literal = Variable.literal(PrimitiveType.integer, 10)

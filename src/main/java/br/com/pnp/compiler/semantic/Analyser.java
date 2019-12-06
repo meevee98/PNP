@@ -104,7 +104,7 @@ public class Analyser {
 
     public void newInstruction(Instruction statement) {
         if (currentBlock != null) {
-            currentBlock.addSInstruction(statement);
+            currentBlock.addInstruction(statement);
         }
     }
 

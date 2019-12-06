@@ -6,4 +6,5 @@ object PrimitiveType {
     val character = Character()
     val boolean = Boolean()
     val string = String()
+    val none = None()
 }

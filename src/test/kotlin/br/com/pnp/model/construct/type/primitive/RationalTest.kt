@@ -3,7 +3,7 @@ package br.com.pnp.model.construct.type.primitive
 import br.com.pnp.AppTest
 
 class RationalTest: AppTest() {
-    private val subject = Rational()
+    override val subject = Rational()
 
     fun testIsTypeOfSuccess() {
         val result = subject.isTypeOf(10.0)

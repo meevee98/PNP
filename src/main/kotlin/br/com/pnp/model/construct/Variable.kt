@@ -28,4 +28,11 @@ class Variable (
     fun isLiteral(): Boolean {
         return name.isBlank()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (other is Variable) {
+            return other.name == this.name && this.type.isTypeOf(other.type)
+        }
+        return super.equals(other)
+    }
 }

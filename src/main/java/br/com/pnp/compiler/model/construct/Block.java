@@ -22,7 +22,7 @@ public abstract class Block implements Construct {
         instructions.add(assignment);
     }
 
-    public void addSInstruction(Instruction statement) {
+    public void addInstruction(Instruction statement) {
         instructions.add(statement);
     }
 

@@ -5,7 +5,7 @@ import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 
 class AbstractTypeTest: AppTest() {
-    private val subject: AbstractType
+    override val subject: AbstractType
 
     init {
         val attributes = listOf (

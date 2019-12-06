@@ -3,7 +3,7 @@ package br.com.pnp.model.construct.type.primitive
 import br.com.pnp.AppTest
 
 class StringTest: AppTest() {
-    private val subject = String()
+    override val subject = String()
 
     fun testIsTypeOfSuccess() {
         val result = subject.isTypeOf("a")
