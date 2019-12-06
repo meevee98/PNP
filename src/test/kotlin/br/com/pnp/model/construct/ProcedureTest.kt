@@ -3,6 +3,7 @@ package br.com.pnp.model.construct
 import br.com.pnp.AppTest
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.instruction.AssignmentInstruction
+import org.junit.Test
 
 class ProcedureTest: AppTest() {
     private val outputVariable = Variable(PrimitiveType.boolean, "output")
@@ -15,17 +16,20 @@ class ProcedureTest: AppTest() {
         this.output = outputVariable
     }
 
+    @Test
     fun testGetTypeWithOutput() {
         val procedureType = subject.type
         assertEquals(outputVariable.type, procedureType)
     }
 
+    @Test
     fun testGetTypeWithoutOutput() {
         val procedure = Procedure("getTypeTest")
         val procedureType = procedure.type
         assertEquals(PrimitiveType.none, procedureType)
     }
 
+    @Test
     fun testAddDeclarationInstructionSuccess() {
         val numInstructions = subject.instructions.size
         val numDeclarations = subject.declarations.size
@@ -36,6 +40,7 @@ class ProcedureTest: AppTest() {
         assertEquals(numInstructions, subject.instructions.size)
     }
 
+    @Test
     fun testAddDeclarationInstructionFail() {
         val numInstructions = subject.instructions.size
         val numDeclarations = subject.declarations.size
@@ -47,25 +52,25 @@ class ProcedureTest: AppTest() {
         assertEquals(numInstructions, subject.instructions.size)
     }
 
+    @Test
     fun testAddAssignmentInstruction() {
-        val type = PrimitiveType.integer
         val numInstructions = subject.instructions.size
         val numDeclarations = subject.declarations.size
 
-        val variable = Variable(type, "number")
-        val expression = Variable.literal(type, 10)
+        val variable = Variable(PrimitiveType.integer, "number")
+        val expression = Variable.literalInteger(10)
         subject.addAssignmentInstruction(variable, expression)
 
         assertEquals(numDeclarations, subject.declarations.size)
         assertEquals(numInstructions + 1, subject.instructions.size)
     }
 
+    @Test
     fun testLastInstructionSuccess() {
-        val type = PrimitiveType.integer
         val procedure = Procedure("getLastInstructionTest")
 
-        val variable = Variable(type, "number")
-        val expression = Variable.literal(type, 10)
+        val variable = Variable(PrimitiveType.integer, "number")
+        val expression = Variable.literalInteger(10)
         procedure.addAssignmentInstruction(variable, expression)
 
         val result = procedure.lastInstruction
@@ -77,6 +82,7 @@ class ProcedureTest: AppTest() {
         assertEquals(expression, instruction.expression)
     }
 
+    @Test
     fun testLastInstructionFail() {
         val procedure = Procedure("getLastInstructionTest")
 
@@ -84,6 +90,7 @@ class ProcedureTest: AppTest() {
         assertNull(result)
     }
 
+    @Test
     fun testIsOutputAssignedSuccessHasOutput() {
         val variable = subject.output ?: outputVariable
         val type = variable.type
@@ -95,6 +102,7 @@ class ProcedureTest: AppTest() {
         assertEquals(true, result)
     }
 
+    @Test
     fun testIsOutputAssignedSuccessNoOutput() {
         val procedure = Procedure("testIsOutputAssigned")
 
@@ -103,6 +111,7 @@ class ProcedureTest: AppTest() {
         assertEquals(true, result)
     }
 
+    @Test
     fun testIsOutputAssignedFail() {
         val procedure = Procedure("testIsOutputAssigned").apply {
             output = outputVariable
@@ -113,6 +122,7 @@ class ProcedureTest: AppTest() {
         assertEquals(false, result)
     }
 
+    @Test
     fun testIsInputOrOutputSuccess() {
         val privateMethod = getPrivateMethod("isInputOrOutput", Variable::class.java)
 
@@ -123,6 +133,7 @@ class ProcedureTest: AppTest() {
         assertEquals(true, result)
     }
 
+    @Test
     fun testIsInputOrOutputFail() {
         val privateMethod = getPrivateMethod("isInputOrOutput", Variable::class.java)
 

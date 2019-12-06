@@ -1,6 +1,7 @@
 package br.com.pnp.model.construct
 
 import br.com.pnp.model.construct.type.Type
+import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
 
 class Variable (
@@ -20,6 +21,26 @@ class Variable (
     }
 
     companion object {
+        fun literalInteger(value: Any? = null): Variable {
+            return Variable(PrimitiveType.integer, "", value)
+        }
+
+        fun literalRational(value: Any? = null): Variable {
+            return Variable(PrimitiveType.rational, "", value)
+        }
+
+        fun literalBoolean(value: Any? = null): Variable {
+            return Variable(PrimitiveType.boolean, "", value)
+        }
+
+        fun literalCharacter(value: Any? = null): Variable {
+            return Variable(PrimitiveType.character, "", value)
+        }
+
+        fun literalString(value: Any? = null): Variable {
+            return Variable(PrimitiveType.string, "", value)
+        }
+
         fun literal(type: Type, value: Any? = null): Variable {
             return Variable(type, "", value)
         }

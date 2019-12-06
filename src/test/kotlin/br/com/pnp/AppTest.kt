@@ -7,10 +7,14 @@ import java.lang.reflect.Method
 abstract class AppTest: TestCase() {
     protected abstract val subject: Any
 
-    fun getPrivateMethod(name: String, parameterTypes: Class<*>): Method? {
+    protected fun getPrivateMethod(name: String, parameterTypes: Class<*>? = null): Method? {
         try {
-            val privateMethod = subject.javaClass.getDeclaredMethod(name, parameterTypes)
-            privateMethod.isAccessible = true
+            val privateMethod = if (parameterTypes == null) {
+                subject.javaClass.getDeclaredMethod(name)
+            } else {
+                subject.javaClass.getDeclaredMethod(name, parameterTypes)
+            }
+            privateMethod?.isAccessible = true
 
             return privateMethod
         }
