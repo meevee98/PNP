@@ -1,10 +1,8 @@
 package br.com.pnp.compiler.webassembly;
 
-import br.com.pnp.compiler.Generator;
 import br.com.pnp.compiler.model.construct.Construct;
 import br.com.pnp.compiler.model.construct.Procedure;
 import br.com.pnp.compiler.model.construct.statement.DoWhileStatement;
-import br.com.pnp.compiler.model.construct.statement.IfStatement;
 import br.com.pnp.compiler.model.construct.statement.WhileStatement;
 import br.com.pnp.compiler.model.expression.Expression;
 import br.com.pnp.compiler.model.expression.operation.Operator;

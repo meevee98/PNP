@@ -6,7 +6,7 @@ import br.com.pnp.model.expression.Expression
 
 class Variable (
         override val type: Type,
-        private val name: String,
+        val name: String,
         value: Any? = null
 ): Construct, Expression {
     var value: Any? private set
@@ -14,7 +14,12 @@ class Variable (
     init {
         value?.let {
             if (!type.isTypeOf(it)) {
-                TODO ("not implemented")
+                throw IllegalArgumentException(
+                        """
+                        Type mismatch in ${this.javaClass.simpleName} constructor:
+                        Required: $type
+                        Found: ${Type.typeOf(it)}
+                    """.trimIndent())
             }
         }
         this.value = value

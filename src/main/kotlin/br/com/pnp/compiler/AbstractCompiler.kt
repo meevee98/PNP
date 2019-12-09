@@ -1,6 +1,5 @@
 package br.com.pnp.compiler
 
-import br.com.pnp.compiler.generator.Generator
 import br.com.pnp.semantic.Analyser
 import java.io.File
 

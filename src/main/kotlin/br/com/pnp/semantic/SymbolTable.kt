@@ -1,25 +1,16 @@
 package br.com.pnp.semantic
 
-import br.com.pnp.compiler.model.construct.Variable
+import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.Construct
-import java.util.ArrayList
 
 class SymbolTable() {
     private var parent: SymbolTable? = null
-    private val symbols = LinkedHashMap<String, Construct>()
+    val symbols = LinkedHashMap<String, Construct>()
 
     val variables: List<Variable>
-        get() {
-            val variables = ArrayList<Variable>()
-
-            for (entry in symbols.values) {
-                if (entry is Variable) {
-                    variables.add(entry)
-                }
-            }
-
-            return variables
-        }
+        get() = symbols.values.filterIsInstance<Variable>()
+    val values: List<Construct>
+        get() = symbols.values.toList()
 
     private constructor(parent: SymbolTable): this() {
         this.parent = parent
@@ -40,10 +31,12 @@ class SymbolTable() {
         return parent?.tryGetValue(key)
     }
 
-    fun tryPutValue(key: String, value: Construct) {
+    fun tryPutValue(key: String, value: Construct): Boolean {
         if (!symbols.containsKey(key)) {
             symbols[key] = value
+            return true
         }
+        return false
     }
 
     fun existsInThisScope(key: String): Boolean {

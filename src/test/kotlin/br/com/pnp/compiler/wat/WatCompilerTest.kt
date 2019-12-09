@@ -9,8 +9,7 @@ class WatCompilerTest: AppTest() {
 
     @Test
     fun testAnalyseSourceFile() {
-        val relativePath = "src/test/kotlin/br/com/pnp/compiler/wat/watTestFile.pnp"
-
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/smallestTest.pnp"
         val sourceFile = File(relativePath)
         subject.analyse(sourceFile)
     }
@@ -22,6 +21,7 @@ class WatCompilerTest: AppTest() {
             inicio
             fim
         """.trimIndent()
+        
         subject.analyse(source)
     }
 
@@ -38,7 +38,25 @@ class WatCompilerTest: AppTest() {
             (func (export "main")
             ))
         """.trimIndent()
+
         subject.analyse(source)
+        val result = subject.generateCode()
+
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testConvertSmallestCodeFromFile() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/smallestTest.pnp"
+        val sourceFile = File(relativePath)
+
+        val expectedResult = """
+            (module
+            (func (export "main")
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
         val result = subject.generateCode()
 
         assertEquals(expectedResult, result)

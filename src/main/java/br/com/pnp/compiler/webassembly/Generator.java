@@ -1,4 +1,4 @@
-package br.com.pnp.compiler;
+package br.com.pnp.compiler.webassembly;
 
 import br.com.pnp.compiler.semantic.SymbolTable;
 
