@@ -32,6 +32,9 @@ abstract class Generator {
             is ProcedureInstruction -> {
                 convertProcedureCall(expression)
             }
+            is Variable -> {
+                convertVariable(expression)
+            }
             else -> null
         }
     }

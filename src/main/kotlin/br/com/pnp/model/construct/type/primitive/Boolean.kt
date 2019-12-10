@@ -1,6 +1,7 @@
 package br.com.pnp.model.construct.type.primitive
 
 import br.com.pnp.model.construct.type.Type
+import br.com.pnp.model.expression.Expression
 
 class Boolean : Type() {
     override val isPrimitiveType = true
@@ -12,9 +13,9 @@ class Boolean : Type() {
         if (value is Boolean) {
             return true
         }
-//        return if (value is Expression) {
-//            (value as Expression).getType() is Boolean
-//        }
+        if (value is Expression) {
+            return value.type is Boolean
+        }
         return false
     }
 }

@@ -1,6 +1,7 @@
 package br.com.pnp.model.construct.type.primitive
 
 import br.com.pnp.model.construct.type.Type
+import br.com.pnp.model.expression.Expression
 
 class Integer : Type() {
     override val isPrimitiveType = true
@@ -12,9 +13,9 @@ class Integer : Type() {
         if (value is Integer) {
             return true
         }
-//        return if (value is Expression) {
-//            (value as Expression).getType() is Integer
-//        }
+        if (value is Expression) {
+            return value.type is Integer
+        }
         return false
     }
 }
