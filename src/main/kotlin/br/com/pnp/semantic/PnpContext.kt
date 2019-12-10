@@ -2,7 +2,6 @@ package br.com.pnp.semantic
 
 import br.com.pnp.exception.SemanticException
 import br.com.pnp.grammar.antlr.PnpBaseListener
-import br.com.pnp.grammar.antlr.PnpLexer
 import br.com.pnp.grammar.antlr.PnpParser
 import br.com.pnp.model.construct.Procedure
 
