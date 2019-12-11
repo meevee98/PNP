@@ -1,10 +1,10 @@
 package br.com.pnp.compiler.wat
 
 import br.com.pnp.AppTest
-import org.junit.Test
 import java.io.File
+import org.junit.Test
 
-class WatCompilerTest: AppTest() {
+class WatCompilerTest : AppTest() {
     override val subject = WatCompiler()
 
     @Test
@@ -21,7 +21,7 @@ class WatCompilerTest: AppTest() {
             inicio
             fim
         """.trimIndent()
-        
+
         subject.analyse(source)
     }
 

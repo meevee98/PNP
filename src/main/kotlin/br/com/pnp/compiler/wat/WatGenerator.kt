@@ -17,7 +17,7 @@ import br.com.pnp.model.instruction.ProcedureInstruction
 import br.com.pnp.semantic.SymbolTable
 import java.lang.StringBuilder
 
-class WatGenerator: Generator() {
+class WatGenerator : Generator() {
     override fun convert(symbols: SymbolTable): String {
         val wat = StringBuilder()
 
@@ -43,8 +43,7 @@ class WatGenerator: Generator() {
 
         val name = if (procedure.name == "principal") {
             "(export \"main\")"
-        }
-        else {
+        } else {
             "\$procedure.name"
         }
 
@@ -72,15 +71,15 @@ class WatGenerator: Generator() {
     }
 
     override fun convertUnaryOperation(operation: UnaryOperation): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertBinaryOperation(operation: BinaryOperation): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertProcedureCall(call: ProcedureInstruction): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertBody(instructions: List<Instruction>): String {
@@ -96,34 +95,34 @@ class WatGenerator: Generator() {
     }
 
     override fun convertAssignment(assignment: AssignmentInstruction): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertWhile(statement: WhileStatement): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertDoWhile(statement: DoWhileStatement): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertIf(statement: IfStatement): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertOperator(operator: Operator): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertVariable(variable: Variable, get: Boolean): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertPrimitiveType(type: Type): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertAbstractType(type: Type): String {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

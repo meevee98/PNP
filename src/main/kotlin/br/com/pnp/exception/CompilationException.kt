@@ -1,4 +1,4 @@
 package br.com.pnp.exception
 
-class CompilationException(message: String?)
-    : Exception(message)
+class CompilationException(message: String?) :
+    Exception(message)

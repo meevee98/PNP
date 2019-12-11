@@ -5,7 +5,7 @@ import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.instruction.AssignmentInstruction
 import org.junit.Test
 
-class ProcedureTest: AppTest() {
+class ProcedureTest : AppTest() {
     private val outputVariable = Variable(PrimitiveType.boolean, "output")
     override val subject = Procedure("test").apply {
         input = listOf(

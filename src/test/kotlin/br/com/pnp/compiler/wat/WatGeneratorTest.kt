@@ -5,7 +5,7 @@ import br.com.pnp.model.construct.Procedure
 import br.com.pnp.semantic.SymbolTable
 import org.junit.Test
 
-class WatGeneratorTest: AppTest() {
+class WatGeneratorTest : AppTest() {
     override val subject = WatGenerator()
 
     @Test

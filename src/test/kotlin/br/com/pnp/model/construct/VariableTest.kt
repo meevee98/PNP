@@ -2,10 +2,10 @@ package br.com.pnp.model.construct
 
 import br.com.pnp.AppTest
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
-import org.junit.Test
 import kotlin.test.assertFailsWith
+import org.junit.Test
 
-class VariableTest: AppTest() {
+class VariableTest : AppTest() {
     override val subject = Variable(PrimitiveType.integer, "x", 10)
 
     @Test

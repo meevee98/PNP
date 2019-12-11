@@ -2,11 +2,10 @@ package br.com.pnp.semantic
 
 import br.com.pnp.exception.SemanticException
 import br.com.pnp.grammar.antlr.PnpBaseListener
-import br.com.pnp.grammar.antlr.PnpLexer
 import br.com.pnp.grammar.antlr.PnpParser
 import br.com.pnp.model.construct.Procedure
 
-class PnpContext(val analyser: Analyser): PnpBaseListener() {
+class PnpContext(val analyser: Analyser) : PnpBaseListener() {
     override fun enterMainProcedure(ctx: PnpParser.MainProcedureContext) {
         val identifier = ctx.identifier.text
 
@@ -28,5 +27,4 @@ class PnpContext(val analyser: Analyser): PnpBaseListener() {
         }
         analyser.endScope()
     }
-
 }

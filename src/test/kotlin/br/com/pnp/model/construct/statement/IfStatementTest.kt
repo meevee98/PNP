@@ -2,10 +2,10 @@ package br.com.pnp.model.construct.statement
 
 import br.com.pnp.AppTest
 import br.com.pnp.model.construct.Variable
-import org.junit.Test
 import kotlin.test.assertFailsWith
+import org.junit.Test
 
-class IfStatementTest: AppTest() {
+class IfStatementTest : AppTest() {
     override val subject = IfStatement(Variable.literalBoolean(true))
 
     @Test

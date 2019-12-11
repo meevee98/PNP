@@ -5,7 +5,7 @@ import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
 
-class IfStatement(condition: Expression): Statement {
+class IfStatement(condition: Expression) : Statement {
     val ifBlock: Block = StatementBlock()
     val elseBlock: Block? get() = elseStatement?.ifBlock
     val hasElseBranch: Boolean get() = elseStatement != null
@@ -30,7 +30,7 @@ class IfStatement(condition: Expression): Statement {
         this.condition = condition
     }
 
-    private constructor(): this(Variable.literalBoolean(true))
+    private constructor() : this(Variable.literalBoolean(true))
 
     fun startElseStatement(): Block {
         val newStatement = IfStatement()
