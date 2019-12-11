@@ -5,7 +5,7 @@ import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
 
-class WhileStatement(condition: Expression): Statement {
+class WhileStatement(condition: Expression) : Statement {
     val block: Block = StatementBlock()
     var condition: Expression = Variable.literalBoolean(false)
         set(value) {

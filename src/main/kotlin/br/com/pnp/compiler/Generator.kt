@@ -1,17 +1,17 @@
 package br.com.pnp.compiler
 
-import br.com.pnp.model.instruction.Instruction
-import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.statement.DoWhileStatement
 import br.com.pnp.model.construct.statement.IfStatement
 import br.com.pnp.model.construct.statement.WhileStatement
+import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.expression.Expression
 import br.com.pnp.model.expression.operation.BinaryOperation
 import br.com.pnp.model.expression.operation.Operator
 import br.com.pnp.model.expression.operation.UnaryOperation
 import br.com.pnp.model.instruction.AssignmentInstruction
+import br.com.pnp.model.instruction.Instruction
 import br.com.pnp.model.instruction.ProcedureInstruction
 import br.com.pnp.semantic.SymbolTable
 
@@ -41,9 +41,9 @@ abstract class Generator {
     protected abstract fun convertProcedureCall(call: ProcedureInstruction): String
 
     protected abstract fun convertBody(instructions: List<Instruction>): String
-    
+
     protected fun convertInstruction(instruction: Instruction): String? {
-        return when(instruction) {
+        return when (instruction) {
             is AssignmentInstruction -> {
                 convertAssignment(instruction)
             }
@@ -73,8 +73,7 @@ abstract class Generator {
     protected fun convertType(type: Type): String {
         return if (type.isPrimitive()) {
             convertPrimitiveType(type)
-        }
-        else {
+        } else {
             convertAbstractType(type)
         }
     }

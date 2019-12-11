@@ -1,7 +1,7 @@
 package br.com.pnp.semantic
 
-import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.Construct
+import br.com.pnp.model.construct.Variable
 
 class SymbolTable() {
     private var parent: SymbolTable? = null
@@ -12,7 +12,7 @@ class SymbolTable() {
     val values: List<Construct>
         get() = symbols.values.toList()
 
-    private constructor(parent: SymbolTable): this() {
+    private constructor(parent: SymbolTable) : this() {
         this.parent = parent
     }
 

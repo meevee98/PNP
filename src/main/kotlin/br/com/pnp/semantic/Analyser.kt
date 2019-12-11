@@ -10,14 +10,14 @@ import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.statement.StatementBlock
 import br.com.pnp.model.expression.Expression
 import br.com.pnp.model.instruction.Instruction
-import java.io.File
-import java.io.IOException
-import java.util.Stack
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.RecognitionException
 import org.antlr.v4.runtime.tree.ParseTreeWalker
+import java.io.File
+import java.io.IOException
+import java.util.Stack
 
 class Analyser {
     val mainSymbolTable = SymbolTable()
@@ -33,8 +33,7 @@ class Analyser {
     fun analyse(file: File) {
         try {
             analyse(CharStreams.fromFileName(file.absolutePath))
-        }
-        catch (ex: IOException) {
+        } catch (ex: IOException) {
             println(ex.message)
         }
     }
@@ -53,11 +52,9 @@ class Analyser {
             val rules = PnpContext(this)
 
             ParseTreeWalker().walk(rules, tree)
-        }
-        catch (ex: RecognitionException) {
+        } catch (ex: RecognitionException) {
             throw CompilationException(ex.message)
-        }
-        catch (ex: SemanticException) {
+        } catch (ex: SemanticException) {
             throw CompilationException(ex.message)
         }
     }
@@ -66,8 +63,7 @@ class Analyser {
         try {
             executionStack.push(item)
             return true
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             return false
         }
     }

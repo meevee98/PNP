@@ -1,10 +1,10 @@
 package br.com.pnp
 
-import junit.framework.TestCase
 import java.lang.Exception
 import java.lang.reflect.Method
+import junit.framework.TestCase
 
-abstract class AppTest: TestCase() {
+abstract class AppTest : TestCase() {
     protected abstract val subject: Any
 
     protected fun getPrivateMethod(name: String, parameterTypes: Class<*>? = null): Method? {
@@ -17,8 +17,7 @@ abstract class AppTest: TestCase() {
             privateMethod?.isAccessible = true
 
             return privateMethod
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             return null
         }
     }

@@ -2,10 +2,10 @@ package br.com.pnp.model.construct.statement
 
 import br.com.pnp.AppTest
 import br.com.pnp.model.construct.Variable
-import org.junit.Test
 import kotlin.test.assertFailsWith
+import org.junit.Test
 
-class DoWhileStatementTest: AppTest() {
+class DoWhileStatementTest : AppTest() {
     override val subject = DoWhileStatement(Variable.literalBoolean(true))
 
     @Test

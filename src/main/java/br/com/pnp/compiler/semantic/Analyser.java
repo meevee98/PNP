@@ -87,11 +87,6 @@ public class Analyser {
         return currentTable.existsInThisScope(key);
     }
 
-    public List<Expression> getList() {
-        List<Expression> test = (List<Expression>) executionStack.clone();
-        return test;
-    }
-
     public Block getCurrentBlock() {
         return currentBlock;
     }

@@ -4,7 +4,7 @@ import br.com.pnp.AppTest
 import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 
-class SymbolTableTest: AppTest() {
+class SymbolTableTest : AppTest() {
     override val subject = SymbolTable()
     private val testVariable = Variable.literal(PrimitiveType.integer, 10)
 

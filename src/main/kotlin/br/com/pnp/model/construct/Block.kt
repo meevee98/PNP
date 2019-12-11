@@ -13,8 +13,7 @@ abstract class Block {
         get() {
             try {
                 return blockInstructions.last()
-            }
-            catch (e: NoSuchElementException) {
+            } catch (e: NoSuchElementException) {
                 return null
             }
         }

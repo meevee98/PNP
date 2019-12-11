@@ -2,7 +2,7 @@ package br.com.pnp.model.construct.type.primitive
 
 import br.com.pnp.model.construct.type.Type
 
-class Rational: Type() {
+class Rational : Type() {
     override val isPrimitiveType = true
 
     override fun isTypeOf(value: Any): kotlin.Boolean {

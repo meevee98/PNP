@@ -3,7 +3,7 @@ package br.com.pnp.model.construct.type.primitive
 import br.com.pnp.AppTest
 import org.junit.Test
 
-class CharacterTest: AppTest() {
+class CharacterTest : AppTest() {
     override val subject = Character()
 
     @Test

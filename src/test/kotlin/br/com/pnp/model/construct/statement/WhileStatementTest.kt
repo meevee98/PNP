@@ -5,7 +5,7 @@ import br.com.pnp.model.construct.Variable
 import kotlin.test.assertFailsWith
 import org.junit.Test
 
-class WhileStatementTest: AppTest() {
+class WhileStatementTest : AppTest() {
     override val subject = WhileStatement(Variable.literalBoolean(true))
 
     @Test

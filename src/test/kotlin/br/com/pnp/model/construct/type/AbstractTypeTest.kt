@@ -5,11 +5,11 @@ import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import org.junit.Test
 
-class AbstractTypeTest: AppTest() {
+class AbstractTypeTest : AppTest() {
     override val subject: AbstractType
 
     init {
-        val attributes = listOf (
+        val attributes = listOf(
                 Variable(PrimitiveType.integer, "inteiro"),
                 Variable(PrimitiveType.rational, "racional")
         )

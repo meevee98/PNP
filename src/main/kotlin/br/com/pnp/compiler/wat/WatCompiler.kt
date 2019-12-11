@@ -5,7 +5,7 @@ import br.com.pnp.exception.CompilationException
 import java.io.File
 import java.io.PrintWriter
 
-class WatCompiler: AbstractCompiler() {
+class WatCompiler : AbstractCompiler() {
     override val generator = WatGenerator()
 
     companion object {
@@ -27,17 +27,13 @@ class WatCompiler: AbstractCompiler() {
                 val generatedCode = compiler.generateCode()
                 println(generatedCode)
                 PrintWriter(generatePath).write(generatedCode)
-            }
-            catch (ex: IndexOutOfBoundsException) {
+            } catch (ex: IndexOutOfBoundsException) {
                 println("Invalid argument: Missing source file path")
-            }
-            catch (ex: CompilationException) {
+            } catch (ex: CompilationException) {
                 println(ex.message)
-            }
-            catch (ex: Exception) {
+            } catch (ex: Exception) {
                 println(ex.message)
             }
         }
     }
-
 }
