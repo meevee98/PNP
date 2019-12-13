@@ -6,7 +6,7 @@ import br.com.pnp.model.expression.Expression
 import br.com.pnp.model.instruction.AssignmentInstruction
 import br.com.pnp.model.instruction.DeclarationInstruction
 
-class Procedure(val name: String) : Block(), Construct, Expression {
+class Procedure(override val name: String) : Block(), Construct, Expression {
     override val type: Type
         get() = output?.type ?: PrimitiveType.none
 

@@ -49,4 +49,8 @@ class SymbolTable() {
         }
         return true
     }
+
+    fun resetTable() {
+        symbols.clear()
+    }
 }
