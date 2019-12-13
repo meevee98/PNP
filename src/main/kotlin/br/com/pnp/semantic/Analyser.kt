@@ -12,6 +12,7 @@ import br.com.pnp.model.expression.Expression
 import br.com.pnp.model.instruction.Instruction
 import java.io.File
 import java.io.IOException
+import java.util.EmptyStackException
 import java.util.Stack
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams

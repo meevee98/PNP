@@ -16,7 +16,6 @@ import br.com.pnp.model.instruction.AssignmentInstruction
 import br.com.pnp.model.instruction.Instruction
 import br.com.pnp.model.instruction.ProcedureInstruction
 import br.com.pnp.semantic.SymbolTable
-import java.lang.StringBuilder
 
 class WatGenerator : Generator() {
     override fun convert(symbols: SymbolTable): String {
@@ -51,7 +50,7 @@ class WatGenerator : Generator() {
         // Procedure output
         procedure.output?.let {
             result = " (result ${convertType(procedure.type)})"
-            locals += " (local ${it.name} ${convertType(it.type)})"
+            locals += " (local \$${it.name} ${convertType(it.type)})"
             body = convertVariable(it)
         }
 
@@ -62,7 +61,7 @@ class WatGenerator : Generator() {
 
         // Procedure local variables
         for (local in procedure.declarations) {
-            locals += " local ${local.variable.name} ${convertType(local.variable.type)}"
+            locals += " (local \$${local.variable.name} ${convertType(local.variable.type)})"
         }
 
         // Procedure instructions
@@ -112,7 +111,8 @@ class WatGenerator : Generator() {
     }
 
     override fun convertAssignment(assignment: AssignmentInstruction): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return convertExpression(assignment.expression) ?: ""
+        // TODO ("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertWhile(statement: WhileStatement): String {
