@@ -7,6 +7,7 @@ import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.operation.BinaryOperation
 import br.com.pnp.model.expression.operation.Operator
+import br.com.pnp.model.expression.operation.UnaryOperation
 import br.com.pnp.semantic.SymbolTable
 import org.junit.Test
 
@@ -163,6 +164,85 @@ class WatGeneratorTest : AppTest() {
         assertEquals(expectedResult, result)
     }
 
+    fun testConvertOperatorNotBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.NOT
+        val type = PrimitiveType.boolean
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.eqz", result)
+    }
+
+    @Test
+    fun testConvertOperatorNotNonBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.NOT
+        val type = PrimitiveType.rational
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.eqz", result)
+    }
+
+    @Test
+    fun testConvertOperatorAndBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.AND
+        val type = PrimitiveType.boolean
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.and", result)
+    }
+
+    @Test
+    fun testConvertOperatorAndNonBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.AND
+        val type = PrimitiveType.rational
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.and", result)
+    }
+
+    @Test
+    fun testConvertOperatorOrBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.OR
+        val type = PrimitiveType.boolean
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.or", result)
+    }
+
+    @Test
+    fun testConvertOperatorORNonBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.OR
+        val type = PrimitiveType.rational
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.or", result)
+    }
+
+    @Test
+    fun testConvertOperatorXorBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.XOR
+        val type = PrimitiveType.boolean
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.xor", result)
+    }
+
+    @Test
+    fun testConvertOperatorXorNonBooleanOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.XOR
+        val type = PrimitiveType.rational
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.xor", result)
+    }
+
     @Test
     fun testConvertBinaryOperationIntegerWithOneRationalOperand() {
         val convertBinaryOperationMethod = getPrivateMethod("convertBinaryOperation", BinaryOperation::class.java)
@@ -266,6 +346,43 @@ class WatGeneratorTest : AppTest() {
         val operation = BinaryOperation(operator, op1, op2, type)
 
         val result = convertBinaryOperationMethod?.invoke(subject, operation) as String
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testConvertBinaryOperationBoolean() {
+        val convertBinaryOperationMethod = getPrivateMethod("convertBinaryOperation", BinaryOperation::class.java)
+
+        val expectedResult = """
+            i32.const 1
+            i32.const 0
+            i32.and
+        """.trimIndent()
+
+        val op1 = Variable.literalBoolean(true)
+        val op2 = Variable.literalBoolean(false)
+        val operator = Operator.AND
+        val type = PrimitiveType.boolean
+        val operation = BinaryOperation(operator, op1, op2, type)
+
+        val result = convertBinaryOperationMethod?.invoke(subject, operation) as String
+        assertEquals(expectedResult, result)
+    }
+
+    fun testConvertUnaryOperationBoolean() {
+        val convertUnaryOperationMethod = getPrivateMethod("convertUnaryOperation", UnaryOperation::class.java)
+
+        val expectedResult = """
+            i32.const 1
+            i32.eqz
+        """.trimIndent()
+
+        val op = Variable.literalBoolean(true)
+        val operator = Operator.NOT
+        val type = PrimitiveType.boolean
+        val operation = UnaryOperation(operator, op, type)
+
+        val result = convertUnaryOperationMethod?.invoke(subject, operation) as String?
         assertEquals(expectedResult, result)
     }
 }

@@ -71,7 +71,17 @@ class WatGenerator : Generator() {
     }
 
     override fun convertUnaryOperation(operation: UnaryOperation): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return convertOperator(operation.operator, operation.operandType)?.let { operator ->
+            convertExpression(operation.operand)?.let { operand ->
+                var op = operand
+
+                if (!operation.operandType.isTypeOf(operation.operand)) {
+                    op += "\n${cast(operation.operand.type, operation.operandType)}"
+                }
+
+                "$op\n$operator"
+            }
+        } ?: ""
     }
 
     override fun convertBinaryOperation(operation: BinaryOperation): String {
@@ -95,7 +105,7 @@ class WatGenerator : Generator() {
     }
 
     override fun convertProcedureCall(call: ProcedureInstruction): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun convertBody(instructions: List<Instruction>): String {
@@ -112,19 +122,19 @@ class WatGenerator : Generator() {
 
     override fun convertAssignment(assignment: AssignmentInstruction): String {
         return convertExpression(assignment.expression) ?: ""
-        // TODO ("not implemented") //To change body of created functions use File | Settings | File Templates.
+        // TODO ("not implemented")
     }
 
     override fun convertWhile(statement: WhileStatement): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun convertDoWhile(statement: DoWhileStatement): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun convertIf(statement: IfStatement): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     override fun convertOperator(operator: Operator): String {
@@ -135,7 +145,11 @@ class WatGenerator : Generator() {
             Operator.RATIONAL_DIVISION -> "div"
             Operator.INTEGER_DIVISION -> "div_s"
             Operator.MODULO -> "rem_s"
-            else -> TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+            Operator.NOT -> "eqz"
+            Operator.AND -> "and"
+            Operator.OR -> "or"
+            Operator.XOR -> "xor"
+            else -> TODO("not implemented")
         }
     }
 
@@ -180,12 +194,12 @@ class WatGenerator : Generator() {
             PrimitiveType.rational -> "f32"
             PrimitiveType.boolean -> "i32"
             PrimitiveType.character -> "i32"
-            else -> TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+            else -> TODO("not implemented")
         }
     }
 
     override fun convertAbstractType(type: Type): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented")
     }
 
     private fun cast(from: Type, to: Type): String {
@@ -202,7 +216,13 @@ class WatGenerator : Generator() {
             PrimitiveType.rational.isTypeOf(from) && PrimitiveType.integer.isTypeOf(to) -> {
                 "$toType.trunc_s/$fromType"
             }
-            else -> TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+            PrimitiveType.rational.isTypeOf(from) && PrimitiveType.boolean.isTypeOf(to) -> {
+                "$toType.trunc_s/$fromType"
+            }
+            PrimitiveType.integer.isTypeOf(from) && PrimitiveType.boolean.isTypeOf(to) -> {
+                ""
+            }
+            else -> TODO("not implemented")
         }
     }
 }

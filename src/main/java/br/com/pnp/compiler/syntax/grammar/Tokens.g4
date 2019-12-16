@@ -85,7 +85,7 @@ fragment NAO_ZERO: [1-9];
 fragment DIGITO: ZERO | NAO_ZERO;
 fragment ALFA: [_a-zA-Z];
 fragment CARACTER: ~['\\\n\r]   // qualquer caractere, menos \n, \r, ' e \
-                 | ESCAPE;
+       | ESCAPE;
 fragment ESCAPE: '\\''b'     // backspace
                | '\\''t'     // tabulation
                | '\\''n'     // new line

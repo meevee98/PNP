@@ -1,0 +1,14 @@
+procedimento principal
+inicio
+    test1: booleano;
+    test1 <- true e false;
+
+    test2: booleano;
+    test2 <- true ou false;
+
+    test3: booleano;
+    test3 <- true oux false;
+
+    test4: booleano;
+    test4 <- nao false;
+fim

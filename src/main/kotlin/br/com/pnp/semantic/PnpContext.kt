@@ -12,6 +12,7 @@ import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
 import br.com.pnp.model.expression.operation.BinaryOperation
 import br.com.pnp.model.expression.operation.Operator
+import br.com.pnp.model.expression.operation.UnaryOperation
 import org.antlr.v4.runtime.Token
 
 class PnpContext(val analyser: Analyser) : PnpBaseListener() {
@@ -55,6 +56,17 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         expression.toDoubleOrNull()?.let { value ->
             val variable = Variable.literalRational(value)
             analyser.tryPush(variable)
+        }
+    }
+
+    override fun exitBooleanExpression(ctx: PnpParser.BooleanExpressionContext) {
+        val expression = ctx.text
+
+        if (ctx.start.type == PnpParser.BOOLEANO_LITERAL) {
+            expression?.toBoolean()?.let { value ->
+                val variable = Variable.literalBoolean(value)
+                analyser.tryPush(variable)
+            }
         }
     }
 
@@ -226,6 +238,64 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
                         PnpParser.DIVISAO_INT,
                         PnpParser.MODULO
                     ))
+            }
+        }
+
+        analyser.tryPush(operation)
+    }
+
+    override fun exitUnaryLogicalOperation(ctx: PnpParser.UnaryLogicalOperationContext) {
+        analyser.tryPop()?.let { op1 ->
+            pushLogicalOperation(ctx.operator.start, ctx.operator.text, op1)
+        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+    }
+
+    override fun exitBinaryLogicalOperation(ctx: PnpParser.BinaryLogicalOperationContext) {
+        analyser.tryPop()?.let { op2 ->
+            analyser.tryPop()?.let { op1 ->
+                pushLogicalOperation(ctx.operator.start, ctx.operator.text, op1, op2)
+            }
+        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+    }
+
+    private fun pushLogicalOperation(token: Token, symbol: String, op1: Expression, op2: Expression? = null) {
+        val resultType: Type = PrimitiveType.boolean
+
+        if (!isBoolean(op1) || !isBoolean(op2 ?: resultType)) {
+            op2?.let {
+                throw OperatorNotApplicable(token, symbol, op1.type, it.type)
+            } ?: throw OperatorNotApplicable(token, symbol, op1.type)
+        }
+
+        val operation = op2?.let {
+            // binary logical operations
+            when (token.type) {
+                PnpParser.AND -> {
+                    BinaryOperation(Operator.AND, op1, it, resultType)
+                }
+                PnpParser.OR -> {
+                    BinaryOperation(Operator.OR, op1, it, resultType)
+                }
+                PnpParser.XOR -> {
+                    BinaryOperation(Operator.XOR, op1, it, resultType)
+                }
+                else -> {
+                    throw MismatchedInput(token, symbol, literalNames(
+                        PnpParser.AND,
+                        PnpParser.OR,
+                        PnpParser.XOR
+                    ))
+                }
+            }
+        } ?: when (token.type) {
+            // unary logical operations
+            PnpParser.NOT -> {
+                UnaryOperation(Operator.NOT, op1, resultType)
+            }
+            else -> {
+                throw MismatchedInput(token, symbol, literalNames(
+                    PnpParser.NOT
+                ))
             }
         }
 
