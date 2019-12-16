@@ -5,6 +5,10 @@ import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.statement.WhileStatement
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
+import br.com.pnp.model.expression.operation.BinaryOperation
+import br.com.pnp.model.expression.operation.Operator
+import br.com.pnp.model.expression.operation.UnaryOperation
+import br.com.pnp.model.instruction.AssignmentInstruction
 import org.junit.Test
 
 class AnalyserTest : AppTest() {
@@ -249,5 +253,118 @@ class AnalyserTest : AppTest() {
         val result = subject.newInstruction(instruction)
 
         assertEquals(false, result)
+    }
+
+    @Test
+    fun testAnalyseLogicalAndOperation() {
+        val operationText = "true e false"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.AND, andOperation.operator)
+        assertEquals(true, op1.value)
+        assertEquals(false, op2.value)
+    }
+
+    @Test
+    fun testAnalyseLogicalOrOperation() {
+        val operationText = "true ou false"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.OR, andOperation.operator)
+        assertEquals(true, op1.value)
+        assertEquals(false, op2.value)
+    }
+
+    @Test
+    fun testAnalyseLogicalXorOperation() {
+        val operationText = "true oux false"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.XOR, andOperation.operator)
+        assertEquals(true, op1.value)
+        assertEquals(false, op2.value)
+    }
+
+    @Test
+    fun testAnalyseLogicalNotOperation() {
+        val operationText = "nao true"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is UnaryOperation)
+        val andOperation = assignments[0].expression as UnaryOperation
+
+        assertTrue(andOperation.operand is Variable)
+        val operand = andOperation.operand as Variable
+
+        assertEquals(Operator.NOT, andOperation.operator)
+        assertEquals(true, operand.value)
     }
 }
