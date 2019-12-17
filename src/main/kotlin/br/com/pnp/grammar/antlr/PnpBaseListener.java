@@ -268,6 +268,18 @@ public class PnpBaseListener implements PnpListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBooleanRelationalOperation(PnpParser.BooleanRelationalOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBooleanRelationalOperation(PnpParser.BooleanRelationalOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExpressionRelationalOperation(PnpParser.ExpressionRelationalOperationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -1019,6 +1031,18 @@ public class PnpBaseListener implements PnpListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitEqualityOperator(PnpParser.EqualityOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEqualityComparisonOperator(PnpParser.EqualityComparisonOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEqualityComparisonOperator(PnpParser.EqualityComparisonOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

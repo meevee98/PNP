@@ -226,6 +226,18 @@ public interface PnpListener extends ParseTreeListener {
 	 */
 	void exitCharacterRelationalOperation(PnpParser.CharacterRelationalOperationContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code booleanRelationalOperation}
+	 * labeled alternative in {@link PnpParser#relationalOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterBooleanRelationalOperation(PnpParser.BooleanRelationalOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code booleanRelationalOperation}
+	 * labeled alternative in {@link PnpParser#relationalOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitBooleanRelationalOperation(PnpParser.BooleanRelationalOperationContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code expressionRelationalOperation}
 	 * labeled alternative in {@link PnpParser#relationalOperation}.
 	 * @param ctx the parse tree
@@ -897,6 +909,16 @@ public interface PnpListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqualityOperator(PnpParser.EqualityOperatorContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PnpParser#equalityComparisonOperator}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqualityComparisonOperator(PnpParser.EqualityComparisonOperatorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PnpParser#equalityComparisonOperator}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqualityComparisonOperator(PnpParser.EqualityComparisonOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link PnpParser#comparisonOperator}.
 	 * @param ctx the parse tree
