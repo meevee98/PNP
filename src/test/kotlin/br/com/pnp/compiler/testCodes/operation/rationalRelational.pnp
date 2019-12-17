@@ -1,0 +1,8 @@
+procedimento principal
+inicio
+    test1: booleano;
+    test1 <- 42.0 > 42.0;
+
+    test2: booleano;
+    test2 <- 42.0 < 42.0;
+fim

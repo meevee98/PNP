@@ -18,6 +18,10 @@ import br.com.pnp.model.instruction.ProcedureInstruction
 import br.com.pnp.semantic.SymbolTable
 
 class WatGenerator : Generator() {
+    private val INTEGER_PREFIX = "i32"
+    private val FLOAT_PREFIX = "f32"
+    private val INTEGER_OPERATOR_SUFFIX = "_s"
+
     override fun convert(symbols: SymbolTable): String {
         val wat = StringBuilder()
 
@@ -143,25 +147,36 @@ class WatGenerator : Generator() {
             Operator.SUBTRACTION -> "sub"
             Operator.MULTIPLICATION -> "mul"
             Operator.RATIONAL_DIVISION -> "div"
-            Operator.INTEGER_DIVISION -> "div_s"
-            Operator.MODULO -> "rem_s"
+            Operator.INTEGER_DIVISION -> "div$INTEGER_OPERATOR_SUFFIX"
+            Operator.MODULO -> "rem$INTEGER_OPERATOR_SUFFIX"
             Operator.NOT -> "eqz"
             Operator.AND -> "and"
             Operator.OR -> "or"
             Operator.XOR -> "xor"
+            Operator.EQUALITY -> "eq"
+            Operator.INEQUALITY -> "ne"
+            Operator.GREATER_THAN -> "gt$INTEGER_OPERATOR_SUFFIX"
+            Operator.GREATER_THAN_EQUAL -> "ge$INTEGER_OPERATOR_SUFFIX"
+            Operator.LESS_THAN -> "lt$INTEGER_OPERATOR_SUFFIX"
+            Operator.LESS_THAN_EQUAL -> "le$INTEGER_OPERATOR_SUFFIX"
             else -> TODO("not implemented")
         }
     }
 
     private fun convertOperator(operator: Operator, operand: Type): String? {
         val operatorType = operator.getType(operand)
-        val op = convertOperator(operator)
+        val type = convertType(operatorType)
+        var op = convertOperator(operator)
 
         if (op.isEmpty()) {
             return null
         }
 
-        return "${convertType(operatorType)}.$op"
+        if (type.startsWith(FLOAT_PREFIX)) {
+            op = op.removeSuffix(INTEGER_OPERATOR_SUFFIX)
+        }
+
+        return "$type.$op"
     }
 
     override fun convertVariable(variable: Variable, get: Boolean): String {
@@ -190,10 +205,10 @@ class WatGenerator : Generator() {
 
     override fun convertPrimitiveType(type: Type): String {
         return when (type) {
-            PrimitiveType.integer -> "i32"
-            PrimitiveType.rational -> "f32"
-            PrimitiveType.boolean -> "i32"
-            PrimitiveType.character -> "i32"
+            PrimitiveType.integer -> INTEGER_PREFIX
+            PrimitiveType.rational -> FLOAT_PREFIX
+            PrimitiveType.boolean -> INTEGER_PREFIX
+            PrimitiveType.character -> INTEGER_PREFIX
             else -> TODO("not implemented")
         }
     }
@@ -216,10 +231,8 @@ class WatGenerator : Generator() {
             PrimitiveType.rational.isTypeOf(from) && PrimitiveType.integer.isTypeOf(to) -> {
                 "$toType.trunc_s/$fromType"
             }
-            PrimitiveType.rational.isTypeOf(from) && PrimitiveType.boolean.isTypeOf(to) -> {
-                "$toType.trunc_s/$fromType"
-            }
-            PrimitiveType.integer.isTypeOf(from) && PrimitiveType.boolean.isTypeOf(to) -> {
+            PrimitiveType.boolean.isTypeOf(to) -> {
+                // operations with boolean result don't need to change the operands
                 ""
             }
             else -> TODO("not implemented")

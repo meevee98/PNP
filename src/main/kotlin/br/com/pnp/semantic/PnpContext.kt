@@ -388,12 +388,12 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             isBoolean(op1) -> checkAndGetBooleanOperation(token, symbol, op1, op2)
             isInteger(op1) || isCharacter(op1) -> {
                 when (token.type) {
-                    PnpParser.IGUALDADE -> BinaryOperation(Operator.EQUALITY, op1, op2, resultType)
-                    PnpParser.DESIGUALDADE -> BinaryOperation(Operator.INEQUALITY, op1, op2, resultType)
-                    PnpParser.MAIOR_IGUAL -> BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, resultType)
-                    PnpParser.MAIOR -> BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType)
-                    PnpParser.MENOR_IGUAL -> BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, resultType)
-                    PnpParser.MENOR -> BinaryOperation(Operator.LESS_THAN, op1, op2, resultType)
+                    PnpParser.IGUALDADE -> BinaryOperation(Operator.EQUALITY, op1, op2, resultType, op1.type)
+                    PnpParser.DESIGUALDADE -> BinaryOperation(Operator.INEQUALITY, op1, op2, resultType, op1.type)
+                    PnpParser.MAIOR_IGUAL -> BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, resultType, op1.type)
+                    PnpParser.MAIOR -> BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType, op1.type)
+                    PnpParser.MENOR_IGUAL -> BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, resultType, op1.type)
+                    PnpParser.MENOR -> BinaryOperation(Operator.LESS_THAN, op1, op2, resultType, op1.type)
                     else -> {
                         throw MismatchedInputException(token, symbol, literalNames(
                             PnpParser.IGUALDADE,
@@ -418,8 +418,8 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         }
         val resultType: Type = PrimitiveType.boolean
         return when (token.type) {
-            PnpParser.MAIOR -> BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType)
-            PnpParser.MENOR -> BinaryOperation(Operator.LESS_THAN, op1, op2, resultType)
+            PnpParser.MAIOR -> BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType, op1.type)
+            PnpParser.MENOR -> BinaryOperation(Operator.LESS_THAN, op1, op2, resultType, op1.type)
             else -> {
                 throw MismatchedInputException(token, symbol, literalNames(
                     PnpParser.MAIOR,
@@ -435,8 +435,8 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         }
         val resultType: Type = PrimitiveType.boolean
         return when (token.type) {
-            PnpParser.IGUALDADE -> BinaryOperation(Operator.EQUALITY, op1, op2, resultType)
-            PnpParser.DESIGUALDADE -> BinaryOperation(Operator.INEQUALITY, op1, op2, resultType)
+            PnpParser.IGUALDADE -> BinaryOperation(Operator.EQUALITY, op1, op2, resultType, op1.type)
+            PnpParser.DESIGUALDADE -> BinaryOperation(Operator.INEQUALITY, op1, op2, resultType, op1.type)
             else -> {
                 throw MismatchedInputException(token, symbol, literalNames(
                     PnpParser.IGUALDADE,

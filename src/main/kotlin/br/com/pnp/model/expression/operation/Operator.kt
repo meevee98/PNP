@@ -42,22 +42,22 @@ enum class Operator {
                 PrimitiveType.integer
             }
             EQUALITY -> {
-                PrimitiveType.boolean
+                operand
             }
             INEQUALITY -> {
-                PrimitiveType.boolean
+                operand
             }
             LESS_THAN -> {
-                PrimitiveType.boolean
+                operand
             }
             LESS_THAN_EQUAL -> {
-                PrimitiveType.boolean
+                operand
             }
             GREATER_THAN -> {
-                PrimitiveType.boolean
+                operand
             }
             GREATER_THAN_EQUAL -> {
-                PrimitiveType.boolean
+                operand
             }
             NOT -> {
                 PrimitiveType.boolean

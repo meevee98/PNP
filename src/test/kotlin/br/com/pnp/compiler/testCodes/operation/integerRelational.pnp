@@ -1,0 +1,20 @@
+procedimento principal
+inicio
+    test1: booleano;
+    test1 <- 42 = 42;
+
+    test2: booleano;
+    test2 <- 42 != 42;
+
+    test3: booleano;
+    test3 <- 42 > 42;
+
+    test4: booleano;
+    test4 <- 42 >= 42;
+
+    test5: booleano;
+    test5 <- 42 < 42;
+
+    test6: booleano;
+    test6 <- 42 <= 42;
+fim
