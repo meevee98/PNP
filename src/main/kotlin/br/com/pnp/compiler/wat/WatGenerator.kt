@@ -7,6 +7,7 @@ import br.com.pnp.model.construct.statement.DoWhileStatement
 import br.com.pnp.model.construct.statement.IfStatement
 import br.com.pnp.model.construct.statement.WhileStatement
 import br.com.pnp.model.construct.type.Type
+import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
 import br.com.pnp.model.expression.operation.BinaryOperation
 import br.com.pnp.model.expression.operation.Operator
@@ -15,7 +16,6 @@ import br.com.pnp.model.instruction.AssignmentInstruction
 import br.com.pnp.model.instruction.Instruction
 import br.com.pnp.model.instruction.ProcedureInstruction
 import br.com.pnp.semantic.SymbolTable
-import java.lang.StringBuilder
 
 class WatGenerator : Generator() {
     override fun convert(symbols: SymbolTable): String {
@@ -50,7 +50,7 @@ class WatGenerator : Generator() {
         // Procedure output
         procedure.output?.let {
             result = " (result ${convertType(procedure.type)})"
-            locals += " (local ${it.name} ${convertType(it.type)})"
+            locals += " (local \$${it.name} ${convertType(it.type)})"
             body = convertVariable(it)
         }
 
@@ -61,7 +61,7 @@ class WatGenerator : Generator() {
 
         // Procedure local variables
         for (local in procedure.declarations) {
-            locals += " local ${local.variable.name} ${convertType(local.variable.type)}"
+            locals += " (local \$${local.variable.name} ${convertType(local.variable.type)})"
         }
 
         // Procedure instructions
@@ -75,7 +75,23 @@ class WatGenerator : Generator() {
     }
 
     override fun convertBinaryOperation(operation: BinaryOperation): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return convertOperator(operation.operator, operation.operandType)?.let { operator ->
+            convertExpression(operation.op1)?.let { operand1 ->
+                convertExpression(operation.op2)?.let { operand2 ->
+                    var op1 = operand1
+                    var op2 = operand2
+
+                    if (!operation.operandType.isTypeOf(operation.op1)) {
+                        op1 += "\n${cast(operation.op1.type, operation.operandType)}"
+                    }
+                    if (!operation.operandType.isTypeOf(operation.op2)) {
+                        op2 += "\n${cast(operation.op2.type, operation.operandType)}"
+                    }
+
+                    "$op1\n$op2\n$operator"
+                }
+            }
+        } ?: ""
     }
 
     override fun convertProcedureCall(call: ProcedureInstruction): String {
@@ -95,7 +111,8 @@ class WatGenerator : Generator() {
     }
 
     override fun convertAssignment(assignment: AssignmentInstruction): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return convertExpression(assignment.expression) ?: ""
+        // TODO ("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun convertWhile(statement: WhileStatement): String {
@@ -111,18 +128,81 @@ class WatGenerator : Generator() {
     }
 
     override fun convertOperator(operator: Operator): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return when (operator) {
+            Operator.ADDITION -> "add"
+            Operator.SUBTRACTION -> "sub"
+            Operator.MULTIPLICATION -> "mul"
+            Operator.RATIONAL_DIVISION -> "div"
+            Operator.INTEGER_DIVISION -> "div_s"
+            Operator.MODULO -> "rem_s"
+            else -> TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        }
+    }
+
+    private fun convertOperator(operator: Operator, operand: Type): String? {
+        val operatorType = operator.getType(operand)
+        val op = convertOperator(operator)
+
+        if (op.isEmpty()) {
+            return null
+        }
+
+        return "${convertType(operatorType)}.$op"
     }
 
     override fun convertVariable(variable: Variable, get: Boolean): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return when {
+            variable.isLiteral() -> "${convertType(variable.type)}.const ${convertValue(variable)}"
+            get -> "get_local \$${variable.name}"
+            else -> "set_local \$${variable.name}"
+        }
+    }
+
+    private fun convertValue(variable: Variable): String {
+        return when {
+            PrimitiveType.boolean.isTypeOf(variable.type) -> {
+                if (variable.value == false) {
+                    "0"
+                } else {
+                    "1"
+                }
+            }
+            PrimitiveType.character.isTypeOf(variable.type) -> {
+                "${variable.value as Char}"
+            }
+            else -> variable.value.toString()
+        }
     }
 
     override fun convertPrimitiveType(type: Type): String {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        return when (type) {
+            PrimitiveType.integer -> "i32"
+            PrimitiveType.rational -> "f32"
+            PrimitiveType.boolean -> "i32"
+            PrimitiveType.character -> "i32"
+            else -> TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        }
     }
 
     override fun convertAbstractType(type: Type): String {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun cast(from: Type, to: Type): String {
+        if (from.isTypeOf(to)) {
+            return ""
+        }
+        val fromType = convertType(from)
+        val toType = convertType(to)
+
+        return when {
+            PrimitiveType.integer.isTypeOf(from) && PrimitiveType.rational.isTypeOf(to) -> {
+                "$toType.convert_s/$fromType"
+            }
+            PrimitiveType.rational.isTypeOf(from) && PrimitiveType.integer.isTypeOf(to) -> {
+                "$toType.trunc_s/$fromType"
+            }
+            else -> TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        }
     }
 }

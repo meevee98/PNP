@@ -1,0 +1,11 @@
+procedimento principal
+inicio
+    test1: inteiro;
+    test1 <- 50 + 20 div 5 - 3;
+
+    test2: inteiro;
+    test2 <- 4 * 25 mod 8;
+
+    test3: racional;
+    test3 <- 30 / 3;
+fim

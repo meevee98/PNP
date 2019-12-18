@@ -7,12 +7,12 @@ import junit.framework.TestCase
 abstract class AppTest : TestCase() {
     protected abstract val subject: Any
 
-    protected fun getPrivateMethod(name: String, parameterTypes: Class<*>? = null): Method? {
+    protected fun getPrivateMethod(name: String, vararg parameterTypes: Class<*>): Method? {
         try {
-            val privateMethod = if (parameterTypes == null) {
+            val privateMethod = if (parameterTypes.isEmpty()) {
                 subject.javaClass.getDeclaredMethod(name)
             } else {
-                subject.javaClass.getDeclaredMethod(name, parameterTypes)
+                subject.javaClass.getDeclaredMethod(name, *parameterTypes)
             }
             privateMethod?.isAccessible = true
 

@@ -1,0 +1,11 @@
+procedimento principal
+inicio
+    test1: racional;
+    test1 <- 50 + 20 / 5 - 3;
+
+    test2: racional;
+    test2 <- 4 * 25 + 8 * 3.0;
+
+    test3: racional;
+    test3 <- 30 / 3.0;
+fim
