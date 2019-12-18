@@ -21,7 +21,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         val identifier = ctx.identifier.text
 
         val procedure = Procedure(identifier)
-        analyser.tryPut(identifier, procedure)
+        analyser.tryPut(procedure)
         analyser.newScope(procedure)
     }
 
@@ -123,7 +123,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             }
         }
         val variable = Variable(type, identifier)
-        analyser.tryPut(identifier, variable)
+        analyser.tryPut(variable)
     }
 
     // endregion

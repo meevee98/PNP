@@ -27,7 +27,13 @@ class Analyser {
     private val blocks = Stack<Block>()
 
     val currentBlock: Block?
-        get() = blocks.peek()
+        get() {
+            return try {
+                blocks.peek()
+            } catch (e: EmptyStackException) {
+                null
+            }
+        }
     val lastInstruction: Instruction?
         get() = currentBlock?.lastInstruction
 
@@ -43,6 +49,13 @@ class Analyser {
         analyse(CharStreams.fromString(sourceCode))
     }
 
+    private fun reset() {
+        mainSymbolTable.resetTable()
+        currentSymbolTable = mainSymbolTable
+        executionStack.clear()
+        blocks.clear()
+    }
+
     private fun analyse(source: CharStream) {
         try {
             val lexical = PnpLexer(source)
@@ -52,6 +65,7 @@ class Analyser {
             val tree = syntax.file()
             val rules = PnpContext(this)
 
+            reset()
             ParseTreeWalker().walk(rules, tree)
         } catch (ex: RecognitionException) {
             throw CompilationException(ex.message)
@@ -61,11 +75,11 @@ class Analyser {
     }
 
     fun tryPush(item: Expression): Boolean {
-        try {
+        return try {
             executionStack.push(item)
-            return true
+            true
         } catch (e: Exception) {
-            return false
+            false
         }
     }
 
@@ -89,8 +103,8 @@ class Analyser {
         return currentSymbolTable.tryGetValue(key)
     }
 
-    fun tryPut(key: String, value: Construct) {
-        currentSymbolTable.tryPutValue(key, value)
+    fun tryPut(value: Construct): Boolean {
+        return currentSymbolTable.tryPutValue(value.name, value)
     }
 
     fun exists(key: String): Boolean {
@@ -101,12 +115,21 @@ class Analyser {
         return currentSymbolTable.existsInThisScope(key)
     }
 
-    fun newAssignment(variable: Variable, expression: Expression) {
-        currentBlock?.addAssignmentInstruction(variable, expression)
+    fun newAssignment(variable: Variable, expression: Expression): Boolean {
+        return currentBlock?.run {
+            if (exists(variable.name)) {
+                addAssignmentInstruction(variable, expression)
+                true
+            } else {
+                false
+            }
+        } ?: false
     }
 
-    fun newInstruction(instruction: Instruction) {
-        currentBlock?.addInstruction(instruction)
+    fun newInstruction(instruction: Instruction): Boolean {
+        return currentBlock?.apply {
+            addInstruction(instruction)
+        } != null
     }
 
     fun newScope(newScope: Block? = null) {
