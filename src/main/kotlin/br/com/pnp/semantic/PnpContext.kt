@@ -1,8 +1,12 @@
 package br.com.pnp.semantic
 
-import br.com.pnp.exception.MismatchedInput
-import br.com.pnp.exception.OperatorNotApplicable
-import br.com.pnp.exception.SemanticException
+import br.com.pnp.exception.ConflictDeclarationException
+import br.com.pnp.exception.IncompatibleTypeException
+import br.com.pnp.exception.MismatchedInputException
+import br.com.pnp.exception.MissingOutputAssignment
+import br.com.pnp.exception.OperatorNotApplicableException
+import br.com.pnp.exception.UnknownSemanticException
+import br.com.pnp.exception.UnresolvedReferenceException
 import br.com.pnp.grammar.antlr.PnpBaseListener
 import br.com.pnp.grammar.antlr.PnpParser
 import br.com.pnp.model.construct.Procedure
@@ -30,9 +34,9 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         val identifier = ctx.identifier.text
 
         val procedure = analyser.tryGet(identifier) as? Procedure
-            ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+            ?: throw UnknownSemanticException(ctx.start)
         if (!procedure.isOutputAssigned()) {
-            throw SemanticException(ctx.procedureBody().procedureOutput().start, "Missing return assignment")
+            throw MissingOutputAssignment(ctx.procedureBody().procedureOutput().start)
         }
         analyser.endScope()
     }
@@ -75,7 +79,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
 
         analyser.tryGet(identifier)?.also {
             if (it !is Variable) {
-                throw SemanticException(ctx.id, "Cannot resolve symbol '$identifier'")
+                throw UnresolvedReferenceException(ctx.id, ctx.id)
             }
             analyser.tryPush(it)
         }
@@ -94,17 +98,17 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             }
 
             val variableCtx = ctx.variable()
-                ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+                ?: throw UnknownSemanticException(ctx.start)
             val identifier = variableCtx.id.text
 
             analyser.tryGet(identifier)?.let {
             // exp?.let {
                 if (it !is Variable) {
-                    throw SemanticException(variableCtx.start, "Something went wrong on ${getMethodName()}")
+                    throw UnknownSemanticException(variableCtx.start)
                 }
 
                 if (!assignment.type.isTypeOf(it)) {
-                    throw SemanticException(variableCtx.start, "Incompatible types between '${it.type}' and '${assignment.type}'")
+                    throw IncompatibleTypeException(variableCtx.start, it.type, assignment.type)
                 }
 
                 analyser.newAssignment(it, assignment)
@@ -117,7 +121,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         val typeToken = ctx.t.start.type
 
         if (analyser.existsInScope(identifier)) {
-            throw SemanticException(ctx.identifier, "The identifier '$identifier' is already defined in the scope")
+            throw ConflictDeclarationException(ctx.identifier, ctx.identifier)
         }
 
         val type = when (typeToken) {
@@ -129,7 +133,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             else -> {
                 val abstractType = analyser.tryGet(ctx.t.text)
                 if (abstractType == null || abstractType !is Type) {
-                    throw SemanticException(ctx.t.start, "Cannot resolve symbol '${ctx.t.text}'")
+                    throw UnresolvedReferenceException(ctx.t.start, ctx.t)
                 }
                 abstractType
             }
@@ -147,7 +151,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             analyser.tryPop()?.let { op1 ->
                 pushAdditiveOperation(ctx.operator.start, ctx.operator.text, op1, op2)
             }
-        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+        } ?: throw UnknownSemanticException(ctx.start)
     }
 
     override fun exitRationalAdditiveOperation(ctx: PnpParser.RationalAdditiveOperationContext) {
@@ -155,12 +159,12 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             analyser.tryPop()?.let { op1 ->
                 pushAdditiveOperation(ctx.operator.start, ctx.operator.text, op1, op2)
             }
-        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+        } ?: throw UnknownSemanticException(ctx.start)
     }
 
     private fun pushAdditiveOperation(token: Token, symbol: String, op1: Expression, op2: Expression) {
         if (!isNumber(op1) || !isNumber(op2)) {
-            throw OperatorNotApplicable(token, symbol, op1.type, op2.type)
+            throw OperatorNotApplicableException(token, symbol, op1.type, op2.type)
         }
 
         var resultType: Type = PrimitiveType.integer
@@ -172,7 +176,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             PnpParser.ADICAO -> BinaryOperation(Operator.ADDITION, op1, op2, resultType)
             PnpParser.SUBTRACAO -> BinaryOperation(Operator.SUBTRACTION, op1, op2, resultType)
             else -> {
-                throw MismatchedInput(token, symbol, literalNames(
+                throw MismatchedInputException(token, symbol, literalNames(
                         PnpParser.ADICAO,
                         PnpParser.SUBTRACAO
                     ))
@@ -187,7 +191,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             analyser.tryPop()?.let { op1 ->
                 pushMultiplicativeOperation(ctx.operator.start, ctx.operator.text, op1, op2)
             }
-        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+        } ?: throw UnknownSemanticException(ctx.start)
     }
 
     override fun exitRationalMultiplicativeOperation(ctx: PnpParser.RationalMultiplicativeOperationContext) {
@@ -195,12 +199,12 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             analyser.tryPop()?.let { op1 ->
                 pushMultiplicativeOperation(ctx.operator.start, ctx.operator.text, op1, op2)
             }
-        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+        } ?: throw UnknownSemanticException(ctx.start)
     }
 
     private fun pushMultiplicativeOperation(token: Token, symbol: String, op1: Expression, op2: Expression) {
         if (!isNumber(op1) || !isNumber(op2)) {
-            throw OperatorNotApplicable(token, symbol, op1.type, op2.type)
+            throw OperatorNotApplicableException(token, symbol, op1.type, op2.type)
         }
 
         var resultType: Type = PrimitiveType.integer
@@ -214,7 +218,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             PnpParser.MODULO -> {
                 // modulo is a integer operation only
                 if (!isInteger(resultType)) {
-                    throw MismatchedInput(token, symbol, literalNames(
+                    throw MismatchedInputException(token, symbol, literalNames(
                             PnpParser.MULTIPLICACAO,
                             PnpParser.DIVISAO_RAC
                         ))
@@ -224,7 +228,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             PnpParser.DIVISAO_INT -> {
                 // integer division, as the name says, is a integer operation only
                 if (!isInteger(resultType)) {
-                    throw MismatchedInput(token, symbol, literalNames(
+                    throw MismatchedInputException(token, symbol, literalNames(
                         PnpParser.MULTIPLICACAO,
                         PnpParser.DIVISAO_RAC
                     ))
@@ -232,7 +236,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
                 BinaryOperation(Operator.INTEGER_DIVISION, op1, op2, resultType)
             }
             else -> {
-                throw MismatchedInput(token, symbol, literalNames(
+                throw MismatchedInputException(token, symbol, literalNames(
                         PnpParser.MULTIPLICACAO,
                         PnpParser.DIVISAO_RAC,
                         PnpParser.DIVISAO_INT,
@@ -247,7 +251,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
     override fun exitUnaryLogicalOperation(ctx: PnpParser.UnaryLogicalOperationContext) {
         analyser.tryPop()?.let { op1 ->
             pushLogicalOperation(ctx.operator.start, ctx.operator.text, op1)
-        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+        } ?: throw UnknownSemanticException(ctx.start)
     }
 
     override fun exitBinaryLogicalOperation(ctx: PnpParser.BinaryLogicalOperationContext) {
@@ -255,7 +259,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             analyser.tryPop()?.let { op1 ->
                 pushLogicalOperation(ctx.operator.start, ctx.operator.text, op1, op2)
             }
-        } ?: throw SemanticException(ctx.start, "Something went wrong on ${getMethodName()}")
+        } ?: throw UnknownSemanticException(ctx.start)
     }
 
     private fun pushLogicalOperation(token: Token, symbol: String, op1: Expression, op2: Expression? = null) {
@@ -263,8 +267,8 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
 
         if (!isBoolean(op1) || !isBoolean(op2 ?: resultType)) {
             op2?.let {
-                throw OperatorNotApplicable(token, symbol, op1.type, it.type)
-            } ?: throw OperatorNotApplicable(token, symbol, op1.type)
+                throw OperatorNotApplicableException(token, symbol, op1.type, it.type)
+            } ?: throw OperatorNotApplicableException(token, symbol, op1.type)
         }
 
         val operation = op2?.let {
@@ -280,7 +284,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
                     BinaryOperation(Operator.XOR, op1, it, resultType)
                 }
                 else -> {
-                    throw MismatchedInput(token, symbol, literalNames(
+                    throw MismatchedInputException(token, symbol, literalNames(
                         PnpParser.AND,
                         PnpParser.OR,
                         PnpParser.XOR
@@ -293,7 +297,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
                 UnaryOperation(Operator.NOT, op1, resultType)
             }
             else -> {
-                throw MismatchedInput(token, symbol, literalNames(
+                throw MismatchedInputException(token, symbol, literalNames(
                     PnpParser.NOT
                 ))
             }
@@ -334,11 +338,9 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
 
     // region exception
 
-    private fun getMethodName(): String? {
-        return Thread.currentThread().stackTrace.getOrNull(2)?.methodName
-    }
-
     private fun literalNames(vararg tokenId: Int): List<String> {
         return tokenId.map { it -> PnpParser.VOCABULARY?.getLiteralName(it) ?: "" }
     }
+
+    // endregion
 }
