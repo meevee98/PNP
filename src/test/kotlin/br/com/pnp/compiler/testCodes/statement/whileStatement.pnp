@@ -1,0 +1,9 @@
+procedimento principal
+inicio
+    test1: booleano;
+    test1 <- true;
+
+    enquanto (test1) faca
+        test1 <- false;
+    fim
+fim

@@ -11,6 +11,7 @@ import br.com.pnp.grammar.antlr.PnpBaseListener
 import br.com.pnp.grammar.antlr.PnpParser
 import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
+import br.com.pnp.model.construct.statement.WhileStatement
 import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
@@ -444,6 +445,22 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
                 ))
             }
         }
+    }
+
+    // endregion
+
+    // region statement
+
+    override fun exitWhileStart(ctx: PnpParser.WhileStartContext) {
+        analyser.tryPop()?.let { condition ->
+            if (!isBoolean(condition)) {
+                throw IncompatibleTypeException(ctx.start, condition.type, PrimitiveType.boolean)
+            }
+
+            val statement = WhileStatement(condition)
+            analyser.newInstruction(statement)
+            analyser.newScope(statement.block)
+        } ?: throw UnknownSemanticException(ctx.start)
     }
 
     // endregion

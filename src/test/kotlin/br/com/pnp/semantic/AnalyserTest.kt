@@ -969,4 +969,42 @@ class AnalyserTest : AppTest() {
     }
 
     // endregion
+
+    // region statements
+
+    @Test
+    fun testAnalyseWhileStatementSuccess() {
+        val testCode = """
+                procedimento principal
+                inicio
+                    test: inteiro;
+                    test <- 1;
+                    
+                    enquanto (test < 10) faca
+                        test <- test + 1;
+                    fim
+                fim
+            """.trimIndent()
+        subject.analyse(testCode)
+    }
+
+    @Test
+    fun testAnalyseWhileStatementFailConditionNotBoolean() {
+        assertFailsWith<CompilationException> {
+            val testCode = """
+                    procedimento principal
+                    inicio
+                        test: inteiro;
+                        test <- 1;
+                        
+                        enquanto (test) faca
+                            test <- test + 1;
+                        fim
+                    fim
+                """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    // endregion
 }
