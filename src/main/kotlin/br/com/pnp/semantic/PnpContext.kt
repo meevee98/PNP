@@ -3,7 +3,7 @@ package br.com.pnp.semantic
 import br.com.pnp.exception.ConflictDeclarationException
 import br.com.pnp.exception.IncompatibleTypeException
 import br.com.pnp.exception.MismatchedInputException
-import br.com.pnp.exception.MissingOutputAssignment
+import br.com.pnp.exception.MissingOutputAssignmentException
 import br.com.pnp.exception.OperatorNotApplicableException
 import br.com.pnp.exception.UnknownSemanticException
 import br.com.pnp.exception.UnresolvedReferenceException
@@ -38,7 +38,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         val procedure = analyser.tryGet(identifier) as? Procedure
             ?: throw UnknownSemanticException(ctx.start)
         if (!procedure.isOutputAssigned()) {
-            throw MissingOutputAssignment(ctx.procedureBody().procedureOutput().start)
+            throw MissingOutputAssignmentException(ctx.procedureBody().procedureOutput().start)
         }
         analyser.endScope()
     }
