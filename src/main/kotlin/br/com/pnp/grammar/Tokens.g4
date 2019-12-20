@@ -87,10 +87,11 @@ fragment ALFA: [_a-zA-Z];
 fragment CARACTER: ~['\\\n\r]   // qualquer caractere, menos \n, \r, ' e \
                  | ESCAPE;
 fragment ESCAPE: '\\''b'     // backspace
-               | '\\''t'     // tabulation
+               | '\\''t'     // horizontal tabulation
                | '\\''n'     // new line
                | '\\''f'     // form feed
                | '\\''r'     // carriage return
+               | '\\''v'     // vertical tabulation
                | '\\''"'     // escaped "
                | '\\''\''    // escaped '
                | '\\''\\';   // escaped \
