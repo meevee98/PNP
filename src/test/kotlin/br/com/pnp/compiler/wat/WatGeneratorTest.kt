@@ -3,6 +3,7 @@ package br.com.pnp.compiler.wat
 import br.com.pnp.AppTest
 import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
+import br.com.pnp.model.construct.statement.WhileStatement
 import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.operation.BinaryOperation
@@ -13,6 +14,7 @@ import org.junit.Test
 
 class WatGeneratorTest : AppTest() {
     override val subject = WatGenerator()
+    private val dollar = '$'
 
     @Test
     fun testConvert() {
@@ -533,4 +535,28 @@ class WatGeneratorTest : AppTest() {
     }
 
     // endregion
+
+    fun testConvertWhile() {
+        val counter = getPrivateAttribute("IDENTIFIER_COUNTER") as Long
+        val convertWhileMethod = getPrivateMethod("convertWhile", WhileStatement::class.java)
+
+        val blockID = counter
+        val loopID = counter + 1
+        val expectedResult = """
+            block ${dollar}B$blockID
+            i32.const 1
+            i32.eqz
+            br_if ${dollar}B$blockID
+            loop ${dollar}L$loopID
+            i32.const 1
+            br_if ${dollar}L$loopID
+            end
+            end
+        """.trimIndent()
+
+        val statement = WhileStatement(Variable.literalBoolean(true))
+        val result = convertWhileMethod?.invoke(subject, statement) as String
+
+        assertEquals(expectedResult, result)
+    }
 }

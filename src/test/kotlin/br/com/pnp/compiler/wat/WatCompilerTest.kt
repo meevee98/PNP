@@ -260,4 +260,32 @@ class WatCompilerTest : AppTest() {
         subject.analyse(sourceFile)
         val result = subject.generateCode()
     }
+
+    @Test
+    fun testWhileStatement() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/statement/whileStatement.pnp"
+        val sourceFile = File(relativePath)
+
+        val expectedResult = """
+            (module
+            (func (export "main")
+            i32.const 1
+            block ${dollar}B0
+            get_local ${dollar}test1
+            i32.eqz
+            br_if ${dollar}B0
+            loop ${dollar}L1
+            i32.const 0
+            get_local ${dollar}test1
+            br_if ${dollar}L1
+            end
+            end
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
+        val result = subject.generateCode()
+
+        assertEquals(expectedResult, result)
+    }
 }
