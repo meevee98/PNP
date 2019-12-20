@@ -1,3 +1,5 @@
 package br.com.pnp.model.construct
 
-interface Construct
+interface Construct {
+    val name: String
+}

@@ -136,4 +136,31 @@ class WatCompilerTest : AppTest() {
 
         assertEquals(expectedResult, result)
     }
+
+    fun testLogicalOperation() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/operation/logical.pnp"
+        val sourceFile = File(relativePath)
+
+        val expectedResult = """
+            (module
+            (func (export "main") (local ${dollar}test1 i32) (local ${dollar}test2 i32) (local ${dollar}test3 i32) (local ${dollar}test4 i32)
+            i32.const 1
+            i32.const 0
+            i32.and
+            i32.const 1
+            i32.const 0
+            i32.or
+            i32.const 1
+            i32.const 0
+            i32.xor
+            i32.const 0
+            i32.eqz
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
+        val result = subject.generateCode()
+
+        assertEquals(expectedResult, result)
+    }
 }

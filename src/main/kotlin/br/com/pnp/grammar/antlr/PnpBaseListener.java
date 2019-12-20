@@ -1,4 +1,4 @@
-// Generated from C:/Workspace/PNP/src/main/java/br/com/pnp/grammar\Pnp.g4 by ANTLR 4.7.2
+// Generated from C:/Workspace/PNP/src/main/kotlin/br/com/pnp/grammar\Pnp.g4 by ANTLR 4.7.2
 package br.com.pnp.grammar.antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;

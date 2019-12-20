@@ -4,7 +4,7 @@ import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.expression.Expression
 
 class UnaryOperation(
-    val operator: Operator,
+    override val operator: Operator,
     var operand: Expression,
     resultType: Type,
     var operandType: Type = resultType

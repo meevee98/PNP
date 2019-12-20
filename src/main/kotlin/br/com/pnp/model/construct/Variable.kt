@@ -6,7 +6,7 @@ import br.com.pnp.model.expression.Expression
 
 class Variable(
     override val type: Type,
-    val name: String,
+    override val name: String,
     value: Any? = null
 ) : Construct, Expression {
     var value: Any? private set
