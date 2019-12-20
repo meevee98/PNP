@@ -160,7 +160,19 @@ class WatGenerator : Generator() {
     }
 
     override fun convertDoWhile(statement: DoWhileStatement): String {
-        TODO("not implemented")
+        val conditionNegation = UnaryOperation(Operator.NOT, statement.condition, PrimitiveType.boolean)
+
+        return convertExpression(conditionNegation)?.let { continueCondition ->
+            val body = convertBody(statement.block.instructions)
+            // has auto increment, so the next access has a different value and has to be stored
+            val loopRef = "\$L$IDENTIFIER_COUNTER"
+
+            "loop $loopRef" +
+            body +
+            "$continueCondition\n" +
+            "br_if $loopRef\n" +
+            "end"
+        } ?: ""
     }
 
     override fun convertIf(statement: IfStatement): String {

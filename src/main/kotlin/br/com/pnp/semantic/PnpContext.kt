@@ -11,6 +11,7 @@ import br.com.pnp.grammar.antlr.PnpBaseListener
 import br.com.pnp.grammar.antlr.PnpParser
 import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
+import br.com.pnp.model.construct.statement.DoWhileStatement
 import br.com.pnp.model.construct.statement.WhileStatement
 import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
@@ -460,6 +461,31 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
             val statement = WhileStatement(condition)
             analyser.newInstruction(statement)
             analyser.newScope(statement.block)
+        } ?: throw UnknownSemanticException(ctx.start)
+    }
+
+    override fun enterDoWhileBlock(ctx: PnpParser.DoWhileBlockContext) {
+        val statement = DoWhileStatement()
+        analyser.newInstruction(statement)
+        analyser.newScope(statement.block)
+    }
+
+    override fun exitDoWhileBlock(ctx: PnpParser.DoWhileBlockContext) {
+        analyser.endScope()
+    }
+
+    override fun exitDoWhileEnd(ctx: PnpParser.DoWhileEndContext) {
+        analyser.lastInstruction?.let { statement ->
+            if (statement !is DoWhileStatement) {
+                throw UnknownSemanticException(ctx.start)
+            }
+
+            analyser.tryPop()?.let { expression ->
+                if (!isBoolean(expression)) {
+                    throw IncompatibleTypeException(ctx.start, expression.type, PrimitiveType.boolean)
+                }
+                statement.condition = expression
+            }
         } ?: throw UnknownSemanticException(ctx.start)
     }
 

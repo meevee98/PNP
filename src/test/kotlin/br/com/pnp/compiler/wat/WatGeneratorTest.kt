@@ -3,6 +3,7 @@ package br.com.pnp.compiler.wat
 import br.com.pnp.AppTest
 import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
+import br.com.pnp.model.construct.statement.DoWhileStatement
 import br.com.pnp.model.construct.statement.WhileStatement
 import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
@@ -556,6 +557,26 @@ class WatGeneratorTest : AppTest() {
 
         val statement = WhileStatement(Variable.literalBoolean(true))
         val result = convertWhileMethod?.invoke(subject, statement) as String
+
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testConvertDoWhile() {
+        val counter = getPrivateAttribute("IDENTIFIER_COUNTER") as Long
+        val convertDoWhileMethod = getPrivateMethod("convertDoWhile", DoWhileStatement::class.java)
+
+        val loopID = counter
+        val expectedResult = """
+            loop ${dollar}L$loopID
+            i32.const 1
+            i32.eqz
+            br_if ${dollar}L$loopID
+            end
+        """.trimIndent()
+
+        val statement = DoWhileStatement(Variable.literalBoolean(true))
+        val result = convertDoWhileMethod?.invoke(subject, statement) as String
 
         assertEquals(expectedResult, result)
     }

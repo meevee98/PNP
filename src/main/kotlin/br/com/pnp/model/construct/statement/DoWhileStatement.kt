@@ -5,7 +5,7 @@ import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
 
-class DoWhileStatement(condition: Expression) : Statement {
+class DoWhileStatement() : Statement {
     val block: Block = StatementBlock()
     var condition: Expression = Variable.literalBoolean(true)
         set(value) {
@@ -20,7 +20,7 @@ class DoWhileStatement(condition: Expression) : Statement {
             field = value
         }
 
-    init {
+    constructor(condition: Expression) : this() {
         this.condition = condition
     }
 }

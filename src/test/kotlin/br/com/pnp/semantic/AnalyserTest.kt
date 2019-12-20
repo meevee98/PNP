@@ -1006,5 +1006,39 @@ class AnalyserTest : AppTest() {
         }
     }
 
+    @Test
+    fun testAnalyseDoWhileStatementSuccess() {
+        val testCode = """
+            procedimento principal
+            inicio
+                test: inteiro;
+                test <- 1;
+            
+                repita
+                    test <- test + 1;
+                ate que (test >= 10);
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+    }
+
+    @Test
+    fun testAnalyseDoWhileStatementFailConditionNotBoolean() {
+        assertFailsWith<CompilationException> {
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: inteiro;
+                    test <- 1;
+                
+                    repita
+                        test <- test + 1;
+                    ate que (test);
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
     // endregion
 }

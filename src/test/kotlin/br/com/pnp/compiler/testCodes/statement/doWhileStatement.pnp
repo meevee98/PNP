@@ -1,0 +1,9 @@
+procedimento principal
+inicio
+    test1: booleano;
+    test1 <- false;
+
+    repita
+        test1 <- true;
+    ate que (test1);
+fim

@@ -288,4 +288,28 @@ class WatCompilerTest : AppTest() {
 
         assertEquals(expectedResult, result)
     }
+
+    @Test
+    fun testDoWhileStatement() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/statement/doWhileStatement.pnp"
+        val sourceFile = File(relativePath)
+
+        val expectedResult = """
+            (module
+            (func (export "main") (local ${dollar}test1 i32)
+            i32.const 0
+            loop ${dollar}L0
+            i32.const 1
+            get_local ${dollar}test1
+            i32.eqz
+            br_if ${dollar}L0
+            end
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
+        val result = subject.generateCode()
+
+        assertEquals(expectedResult, result)
+    }
 }
