@@ -463,6 +463,10 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         } ?: throw UnknownSemanticException(ctx.start)
     }
 
+    override fun exitWhileBlock(ctx: PnpParser.WhileBlockContext) {
+        analyser.endScope()
+    }
+
     // endregion
 
     // region type validation
