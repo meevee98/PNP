@@ -1,6 +1,7 @@
 package br.com.pnp.semantic
 
 import br.com.pnp.AppTest
+import br.com.pnp.exception.CompilationException
 import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
 import br.com.pnp.model.construct.statement.WhileStatement
@@ -9,6 +10,7 @@ import br.com.pnp.model.expression.operation.BinaryOperation
 import br.com.pnp.model.expression.operation.Operator
 import br.com.pnp.model.expression.operation.UnaryOperation
 import br.com.pnp.model.instruction.AssignmentInstruction
+import kotlin.test.assertFailsWith
 import org.junit.Test
 
 class AnalyserTest : AppTest() {
@@ -255,6 +257,486 @@ class AnalyserTest : AppTest() {
         assertEquals(false, result)
     }
 
+    // region integer operations
+
+    @Test
+    fun testAnalyseIntegerEqualityOperation() {
+        val operationText = "4 = 2"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.EQUALITY, andOperation.operator)
+        assertEquals(4, op1.value)
+        assertEquals(2, op2.value)
+    }
+
+    @Test
+    fun testAnalyseIntegerInequalityOperation() {
+        val operationText = "4 != 2"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.INEQUALITY, andOperation.operator)
+        assertEquals(4, op1.value)
+        assertEquals(2, op2.value)
+    }
+
+    @Test
+    fun testAnalyseIntegerGreaterThanOperation() {
+        val operationText = "4 > 2"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.GREATER_THAN, andOperation.operator)
+        assertEquals(4, op1.value)
+        assertEquals(2, op2.value)
+    }
+
+    @Test
+    fun testAnalyseIntegerGreaterThanOrEqualOperation() {
+        val operationText = "4 >= 2"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.GREATER_THAN_EQUAL, andOperation.operator)
+        assertEquals(4, op1.value)
+        assertEquals(2, op2.value)
+    }
+
+    @Test
+    fun testAnalyseIntegerLessThanOperation() {
+        val operationText = "4 < 2"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.LESS_THAN, andOperation.operator)
+        assertEquals(4, op1.value)
+        assertEquals(2, op2.value)
+    }
+
+    @Test
+    fun testAnalyseIntegerLessThanOrEqualOperation() {
+        val operationText = "4 <= 2"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.LESS_THAN_EQUAL, andOperation.operator)
+        assertEquals(4, op1.value)
+        assertEquals(2, op2.value)
+    }
+
+    // endregion
+
+    // region rational operations
+
+    @Test
+    fun testAnalyseRationalEqualityOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "4.0 = 2.0"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    @Test
+    fun testAnalyseRationalInequalityOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "4.0 != 2.0"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    @Test
+    fun testAnalyseRationalGreaterThanOperation() {
+        val operationText = "4.0 > 2.0"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.GREATER_THAN, andOperation.operator)
+        assertEquals(4.0, op1.value)
+        assertEquals(2.0, op2.value)
+    }
+
+    @Test
+    fun testAnalyseRationalGreaterThanOrEqualOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "4.0 >= 2.0"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    @Test
+    fun testAnalyseRationalLessThanOperation() {
+        val operationText = "4.0 < 2.0"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.LESS_THAN, andOperation.operator)
+        assertEquals(4.0, op1.value)
+        assertEquals(2.0, op2.value)
+    }
+
+    @Test
+    fun testAnalyseRationalLessThanOrEqualOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "4.0 <= 2.0"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    // endregion
+
+    // region character operations
+
+    @Test
+    fun testAnalyseCharacterEqualityOperation() {
+        val operationText = "'4' = '2'"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.EQUALITY, andOperation.operator)
+        assertEquals('4', op1.value)
+        assertEquals('2', op2.value)
+    }
+
+    @Test
+    fun testAnalyseCharacterInequalityOperation() {
+        val operationText = "'4' != '2'"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.INEQUALITY, andOperation.operator)
+        assertEquals('4', op1.value)
+        assertEquals('2', op2.value)
+    }
+
+    @Test
+    fun testAnalyseCharacterGreaterThanOperation() {
+        val operationText = "'4' > '2'"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.GREATER_THAN, andOperation.operator)
+        assertEquals('4', op1.value)
+        assertEquals('2', op2.value)
+    }
+
+    @Test
+    fun testAnalyseCharacterGreaterThanOrEqualOperation() {
+        val operationText = "'4' >= '2'"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.GREATER_THAN_EQUAL, andOperation.operator)
+        assertEquals('4', op1.value)
+        assertEquals('2', op2.value)
+    }
+
+    @Test
+    fun testAnalyseCharacterLessThanOperation() {
+        val operationText = "'4' < '2'"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.LESS_THAN, andOperation.operator)
+        assertEquals('4', op1.value)
+        assertEquals('2', op2.value)
+    }
+
+    @Test
+    fun testAnalyseCharacterLessThanOrEqualOperation() {
+        val operationText = "'4' <= '2'"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.LESS_THAN_EQUAL, andOperation.operator)
+        assertEquals('4', op1.value)
+        assertEquals('2', op2.value)
+    }
+
+    // endregion
+
+    // region boolean operations
+
     @Test
     fun testAnalyseLogicalAndOperation() {
         val operationText = "true e false"
@@ -367,4 +849,124 @@ class AnalyserTest : AppTest() {
         assertEquals(Operator.NOT, andOperation.operator)
         assertEquals(true, operand.value)
     }
+
+    @Test
+    fun testAnalyseBooleanEqualityOperation() {
+        val operationText = "true = false"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.EQUALITY, andOperation.operator)
+        assertEquals(true, op1.value)
+        assertEquals(false, op2.value)
+    }
+
+    @Test
+    fun testAnalyseBooleanInequalityOperation() {
+        val operationText = "true != false"
+        val testCode = """
+            procedimento principal
+            inicio
+                test: booleano;
+                test <- $operationText;
+            fim
+        """.trimIndent()
+        subject.analyse(testCode)
+
+        val mainBlock = subject.tryGet("principal") as Procedure
+        val assignments = mainBlock.instructions.filterIsInstance<AssignmentInstruction>()
+
+        assertEquals(1, assignments.size)
+        assertTrue(assignments[0].expression is BinaryOperation)
+        val andOperation = assignments[0].expression as BinaryOperation
+
+        assertTrue(andOperation.op1 is Variable)
+        assertTrue(andOperation.op2 is Variable)
+        val op1 = andOperation.op1 as Variable
+        val op2 = andOperation.op2 as Variable
+
+        assertEquals(Operator.INEQUALITY, andOperation.operator)
+        assertEquals(true, op1.value)
+        assertEquals(false, op2.value)
+    }
+
+    @Test
+    fun testAnalyseBooleanGreaterThanOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "true > false"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    @Test
+    fun testAnalyseBooleanGreaterThanOrEqualOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "true >= false"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    @Test
+    fun testAnalyseBooleanLessThanOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "true < false"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    @Test
+    fun testAnalyseBooleanLessThanOrEqualOperation() {
+        assertFailsWith<CompilationException> {
+            val operationText = "true <= false"
+            val testCode = """
+                procedimento principal
+                inicio
+                    test: booleano;
+                    test <- $operationText;
+                fim
+            """.trimIndent()
+            subject.analyse(testCode)
+        }
+    }
+
+    // endregion
 }

@@ -81,6 +81,7 @@ relationalOperation
     | integerArithmeticOperation operator=relationalOperator integerArithmeticOperation     #integerRelationalOperation
     | rationalArithmeticOperation operator=comparisonOperator rationalArithmeticOperation   #rationalRelationalOperation
     | characterExpression operator=relationalOperator characterExpression                   #characterRelationalOperation
+    | booleanExpression operator=equalityOperator booleanExpression                         #booleanRelationalOperation
     | booleanExpression                                                                     #expressionRelationalOperation
     ;
 logicalOperation
@@ -291,13 +292,17 @@ binaryOperator
 
 relationalOperator
     : equalityOperator
+    | equalityComparisonOperator
     | comparisonOperator
     ;
 
 equalityOperator
     : IGUALDADE
     | DESIGUALDADE
-    | MAIOR_IGUAL
+    ;
+
+equalityComparisonOperator
+    : MAIOR_IGUAL
     | MENOR_IGUAL
     ;
 comparisonOperator

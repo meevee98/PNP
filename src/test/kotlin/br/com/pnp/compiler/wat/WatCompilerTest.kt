@@ -163,4 +163,101 @@ class WatCompilerTest : AppTest() {
 
         assertEquals(expectedResult, result)
     }
+
+    @Test
+    fun testIntegerRelationalOperation() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/operation/integerRelational.pnp"
+        val sourceFile = File(relativePath)
+
+        val expectedResult = """
+            (module
+            (func (export "main") (local ${dollar}test1 i32) (local ${dollar}test2 i32) (local ${dollar}test3 i32) (local ${dollar}test4 i32) (local ${dollar}test5 i32) (local ${dollar}test6 i32)
+            i32.const 42
+            i32.const 42
+            i32.eq
+            i32.const 42
+            i32.const 42
+            i32.ne
+            i32.const 42
+            i32.const 42
+            i32.gt_s
+            i32.const 42
+            i32.const 42
+            i32.ge_s
+            i32.const 42
+            i32.const 42
+            i32.lt_s
+            i32.const 42
+            i32.const 42
+            i32.le_s
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
+        val result = subject.generateCode()
+
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testRationalRelationalOperation() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/operation/rationalRelational.pnp"
+        val sourceFile = File(relativePath)
+
+        val expectedResult = """
+            (module
+            (func (export "main") (local ${dollar}test1 i32) (local ${dollar}test2 i32)
+            f32.const 42.0
+            f32.const 42.0
+            f32.gt
+            f32.const 42.0
+            f32.const 42.0
+            f32.lt
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
+        val result = subject.generateCode()
+
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testBooleanRelationalOperation() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/operation/booleanRelational.pnp"
+        val sourceFile = File(relativePath)
+
+        val expectedResult = """
+            (module
+            (func (export "main") (local ${dollar}test1 i32) (local ${dollar}test2 i32)
+            i32.const 1
+            i32.const 1
+            i32.eq
+            i32.const 1
+            i32.const 1
+            i32.ne
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
+        val result = subject.generateCode()
+
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testCharacterRelationalOperation() {
+        val relativePath = "src/test/kotlin/br/com/pnp/compiler/testCodes/operation/characterRelational.pnp"
+        val sourceFile = File(relativePath)
+
+        // TODO: Not implemented the conversion from character yet
+        val expectedResult = """
+            (module
+            (func (export "main") 
+            ))
+        """.trimIndent()
+
+        subject.analyse(sourceFile)
+        val result = subject.generateCode()
+    }
 }

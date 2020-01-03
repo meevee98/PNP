@@ -141,6 +141,13 @@ public interface PnpVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCharacterRelationalOperation(PnpParser.CharacterRelationalOperationContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code booleanRelationalOperation}
+	 * labeled alternative in {@link PnpParser#relationalOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBooleanRelationalOperation(PnpParser.BooleanRelationalOperationContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code expressionRelationalOperation}
 	 * labeled alternative in {@link PnpParser#relationalOperation}.
 	 * @param ctx the parse tree
@@ -539,6 +546,12 @@ public interface PnpVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitEqualityOperator(PnpParser.EqualityOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PnpParser#equalityComparisonOperator}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqualityComparisonOperator(PnpParser.EqualityComparisonOperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link PnpParser#comparisonOperator}.
 	 * @param ctx the parse tree

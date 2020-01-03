@@ -15,6 +15,7 @@ import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
 import br.com.pnp.model.expression.operation.BinaryOperation
+import br.com.pnp.model.expression.operation.Operation
 import br.com.pnp.model.expression.operation.Operator
 import br.com.pnp.model.expression.operation.UnaryOperation
 import org.antlr.v4.runtime.Token
@@ -48,18 +49,23 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
     override fun exitIntegerExpression(ctx: PnpParser.IntegerExpressionContext) {
         val expression = ctx.text
 
-        expression.toIntOrNull()?.let { value ->
-            val variable = Variable.literalInteger(value)
-            analyser.tryPush(variable)
+        if (ctx.start.type == PnpParser.INTEIRO_LITERAL ||
+            ctx.start.type == PnpParser.NATURAL_LITERAL) {
+            expression.toIntOrNull()?.let { value ->
+                val variable = Variable.literalInteger(value)
+                analyser.tryPush(variable)
+            }
         }
     }
 
     override fun exitRationalExpression(ctx: PnpParser.RationalExpressionContext) {
         val expression = ctx.text
 
-        expression.toDoubleOrNull()?.let { value ->
-            val variable = Variable.literalRational(value)
-            analyser.tryPush(variable)
+        if (ctx.start.type == PnpParser.RACIONAL_LITERAL) {
+            expression.toDoubleOrNull()?.let { value ->
+                val variable = Variable.literalRational(value)
+                analyser.tryPush(variable)
+            }
         }
     }
 
@@ -71,6 +77,35 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
                 val variable = Variable.literalBoolean(value)
                 analyser.tryPush(variable)
             }
+        }
+    }
+
+    override fun exitCharacterExpression(ctx: PnpParser.CharacterExpressionContext) {
+        val expression = ctx.text
+
+        if (ctx.start.type == PnpParser.CARACTERE_LITERAL) {
+            expression?.let {
+                val value = if (it[1] == '\\') {
+                    escapedChar(it[2])
+                } else {
+                    it[1]
+                }
+
+                val variable = Variable.literalCharacter(value)
+                analyser.tryPush(variable)
+            }
+        }
+    }
+
+    private fun escapedChar(escape: Char): Char {
+        return when (escape) {
+            'b' -> '\b'
+            't' -> '\t'
+            'n' -> '\n'
+            'r' -> '\r'
+            'v' -> 12.toChar() // check ascii table
+            'f' -> 13.toChar()
+            else -> escape
         }
     }
 
@@ -304,6 +339,111 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         }
 
         analyser.tryPush(operation)
+    }
+
+    override fun exitIntegerRelationalOperation(ctx: PnpParser.IntegerRelationalOperationContext) {
+        analyser.tryPop()?.let { op2 ->
+            analyser.tryPop()?.let { op1 ->
+                pushRelationalOperation(ctx.operator.start, ctx.operator.text, op1, op2)
+            }
+        } ?: throw UnknownSemanticException(ctx.start)
+    }
+
+    override fun exitRationalRelationalOperation(ctx: PnpParser.RationalRelationalOperationContext) {
+        analyser.tryPop()?.let { op2 ->
+            analyser.tryPop()?.let { op1 ->
+                pushRelationalOperation(ctx.operator.start, ctx.operator.text, op1, op2)
+            }
+        } ?: throw UnknownSemanticException(ctx.start)
+    }
+
+    override fun exitBooleanRelationalOperation(ctx: PnpParser.BooleanRelationalOperationContext) {
+        analyser.tryPop()?.let { op2 ->
+            analyser.tryPop()?.let { op1 ->
+                pushRelationalOperation(ctx.operator.start, ctx.operator.text, op1, op2)
+            }
+        } ?: throw UnknownSemanticException(ctx.start)
+    }
+
+    override fun exitCharacterRelationalOperation(ctx: PnpParser.CharacterRelationalOperationContext) {
+        analyser.tryPop()?.let { op2 ->
+            analyser.tryPop()?.let { op1 ->
+                pushRelationalOperation(ctx.operator.start, ctx.operator.text, op1, op2)
+            }
+        } ?: throw UnknownSemanticException(ctx.start)
+    }
+
+    private fun pushRelationalOperation(token: Token, symbol: String, op1: Expression, op2: Expression) {
+        if (op1.type != op2.type || !op1.type.isPrimitive()) {
+            throw OperatorNotApplicableException(token, symbol, op1.type, op2.type)
+        }
+        if (isString(op1)) {
+            // TODO: check relational operations allowed to String type
+            throw OperatorNotApplicableException(token, symbol, op1.type, op2.type)
+        }
+
+        val resultType: Type = PrimitiveType.boolean
+        val operation = when {
+            isRational(op1) -> checkAndGetRationalRelationalOperation(token, symbol, op1, op2)
+            isBoolean(op1) -> checkAndGetBooleanOperation(token, symbol, op1, op2)
+            isInteger(op1) || isCharacter(op1) -> {
+                when (token.type) {
+                    PnpParser.IGUALDADE -> BinaryOperation(Operator.EQUALITY, op1, op2, resultType, op1.type)
+                    PnpParser.DESIGUALDADE -> BinaryOperation(Operator.INEQUALITY, op1, op2, resultType, op1.type)
+                    PnpParser.MAIOR_IGUAL -> BinaryOperation(Operator.GREATER_THAN_EQUAL, op1, op2, resultType, op1.type)
+                    PnpParser.MAIOR -> BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType, op1.type)
+                    PnpParser.MENOR_IGUAL -> BinaryOperation(Operator.LESS_THAN_EQUAL, op1, op2, resultType, op1.type)
+                    PnpParser.MENOR -> BinaryOperation(Operator.LESS_THAN, op1, op2, resultType, op1.type)
+                    else -> {
+                        throw MismatchedInputException(token, symbol, literalNames(
+                            PnpParser.IGUALDADE,
+                            PnpParser.DESIGUALDADE,
+                            PnpParser.MAIOR_IGUAL,
+                            PnpParser.MAIOR,
+                            PnpParser.MENOR_IGUAL,
+                            PnpParser.MENOR
+                        ))
+                    }
+                }
+            }
+            else -> throw OperatorNotApplicableException(token, symbol, op1.type, op2.type)
+        }
+
+        analyser.tryPush(operation)
+    }
+
+    private fun checkAndGetRationalRelationalOperation(token: Token, symbol: String, op1: Expression, op2: Expression): Operation {
+        if (!isRational(op1) || !isRational(op2)) {
+            throw OperatorNotApplicableException(token, symbol, op1.type, op2.type)
+        }
+        val resultType: Type = PrimitiveType.boolean
+        return when (token.type) {
+            PnpParser.MAIOR -> BinaryOperation(Operator.GREATER_THAN, op1, op2, resultType, op1.type)
+            PnpParser.MENOR -> BinaryOperation(Operator.LESS_THAN, op1, op2, resultType, op1.type)
+            else -> {
+                throw MismatchedInputException(token, symbol, literalNames(
+                    PnpParser.MAIOR,
+                    PnpParser.MENOR
+                ))
+            }
+        }
+    }
+
+    private fun checkAndGetBooleanOperation(token: Token, symbol: String, op1: Expression, op2: Expression): Operation {
+        if (!isBoolean(op1) || !isBoolean(op2)) {
+            throw OperatorNotApplicableException(token, symbol, op1.type, op2.type)
+        }
+        val resultType: Type = PrimitiveType.boolean
+        return when (token.type) {
+            PnpParser.IGUALDADE -> BinaryOperation(Operator.EQUALITY, op1, op2, resultType, op1.type)
+            PnpParser.DESIGUALDADE -> BinaryOperation(Operator.INEQUALITY, op1, op2, resultType, op1.type)
+            else -> {
+                throw MismatchedInputException(token, symbol, literalNames(
+                    PnpParser.IGUALDADE,
+                    PnpParser.DESIGUALDADE
+                ))
+            }
+        }
     }
 
     // endregion

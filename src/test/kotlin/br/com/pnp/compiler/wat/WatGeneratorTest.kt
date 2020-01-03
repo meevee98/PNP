@@ -44,6 +44,8 @@ class WatGeneratorTest : AppTest() {
         assertEquals(expectedResult, result)
     }
 
+    // region testConvertOperator
+
     @Test
     fun testConvertOperatorAdditionIntegerOperand() {
         val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
@@ -244,6 +246,90 @@ class WatGeneratorTest : AppTest() {
     }
 
     @Test
+    fun testConvertOperatorEquality() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.EQUALITY
+        val type = PrimitiveType.integer
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.eq", result)
+    }
+
+    @Test
+    fun testConvertOperatorInequality() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.INEQUALITY
+        val type = PrimitiveType.integer
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.ne", result)
+    }
+
+    @Test
+    fun testConvertOperatorGreaterThanIntegerOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.GREATER_THAN
+        val type = PrimitiveType.integer
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.gt_s", result)
+    }
+
+    @Test
+    fun testConvertOperatorGreaterThanRationalOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.GREATER_THAN
+        val type = PrimitiveType.rational
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("f32.gt", result)
+    }
+
+    @Test
+    fun testConvertOperatorGreaterThanOrEqual() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.GREATER_THAN_EQUAL
+        val type = PrimitiveType.integer
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.ge_s", result)
+    }
+
+    @Test
+    fun testConvertOperatorLessThanIntegerOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.LESS_THAN
+        val type = PrimitiveType.integer
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.lt_s", result)
+    }
+
+    @Test
+    fun testConvertOperatorLessThanRationalOperand() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.LESS_THAN
+        val type = PrimitiveType.rational
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("f32.lt", result)
+    }
+
+    @Test
+    fun testConvertOperatorLessThanOrEqual() {
+        val convertOperatorMethod = getPrivateMethod("convertOperator", Operator::class.java, Type::class.java)
+        val operator = Operator.LESS_THAN_EQUAL
+        val type = PrimitiveType.integer
+
+        val result = convertOperatorMethod?.invoke(subject, operator, type) as String?
+        assertEquals("i32.le_s", result)
+    }
+
+    // endregion
+
+    // region testConvertBinaryOperation
+
+    @Test
     fun testConvertBinaryOperationIntegerWithOneRationalOperand() {
         val convertBinaryOperationMethod = getPrivateMethod("convertBinaryOperation", BinaryOperation::class.java)
 
@@ -385,4 +471,66 @@ class WatGeneratorTest : AppTest() {
         val result = convertUnaryOperationMethod?.invoke(subject, operation) as String?
         assertEquals(expectedResult, result)
     }
+
+    @Test
+    fun testConvertBinaryOperationBooleanWithBooleanOperands() {
+        val convertBinaryOperationMethod = getPrivateMethod("convertBinaryOperation", BinaryOperation::class.java)
+
+        val expectedResult = """
+            i32.const 1
+            i32.const 0
+            i32.eq
+        """.trimIndent()
+
+        val op1 = Variable.literalBoolean(true)
+        val op2 = Variable.literalBoolean(false)
+        val operator = Operator.EQUALITY
+        val type = PrimitiveType.boolean
+        val operation = BinaryOperation(operator, op1, op2, type)
+
+        val result = convertBinaryOperationMethod?.invoke(subject, operation) as String
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testConvertBinaryOperationBooleanWithIntegerOperands() {
+        val convertBinaryOperationMethod = getPrivateMethod("convertBinaryOperation", BinaryOperation::class.java)
+
+        val expectedResult = """
+            i32.const 10
+            i32.const 20
+            i32.ge_s
+        """.trimIndent()
+
+        val op1 = Variable.literalInteger(10)
+        val op2 = Variable.literalInteger(20)
+        val operator = Operator.GREATER_THAN_EQUAL
+        val type = PrimitiveType.integer
+        val operation = BinaryOperation(operator, op1, op2, type)
+
+        val result = convertBinaryOperationMethod?.invoke(subject, operation) as String
+        assertEquals(expectedResult, result)
+    }
+
+    @Test
+    fun testConvertBinaryOperationBooleanWithRationalOperands() {
+        val convertBinaryOperationMethod = getPrivateMethod("convertBinaryOperation", BinaryOperation::class.java)
+
+        val expectedResult = """
+            f32.const 10.0
+            f32.const 20.0
+            f32.gt
+        """.trimIndent()
+
+        val op1 = Variable.literalRational(10.0)
+        val op2 = Variable.literalRational(20.0)
+        val operator = Operator.GREATER_THAN
+        val type = PrimitiveType.rational
+        val operation = BinaryOperation(operator, op1, op2, type)
+
+        val result = convertBinaryOperationMethod?.invoke(subject, operation) as String
+        assertEquals(expectedResult, result)
+    }
+
+    // endregion
 }
