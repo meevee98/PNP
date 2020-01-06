@@ -3,7 +3,7 @@ package br.com.pnp.semantic
 import br.com.pnp.exception.ConflictDeclarationException
 import br.com.pnp.exception.IncompatibleTypeException
 import br.com.pnp.exception.MismatchedInputException
-import br.com.pnp.exception.MissingOutputAssignment
+import br.com.pnp.exception.MissingOutputAssignmentException
 import br.com.pnp.exception.OperatorNotApplicableException
 import br.com.pnp.exception.UnknownSemanticException
 import br.com.pnp.exception.UnresolvedReferenceException
@@ -11,6 +11,7 @@ import br.com.pnp.grammar.antlr.PnpBaseListener
 import br.com.pnp.grammar.antlr.PnpParser
 import br.com.pnp.model.construct.Procedure
 import br.com.pnp.model.construct.Variable
+import br.com.pnp.model.construct.statement.WhileStatement
 import br.com.pnp.model.construct.type.Type
 import br.com.pnp.model.construct.type.primitive.PrimitiveType
 import br.com.pnp.model.expression.Expression
@@ -37,7 +38,7 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
         val procedure = analyser.tryGet(identifier) as? Procedure
             ?: throw UnknownSemanticException(ctx.start)
         if (!procedure.isOutputAssigned()) {
-            throw MissingOutputAssignment(ctx.procedureBody().procedureOutput().start)
+            throw MissingOutputAssignmentException(ctx.procedureBody().procedureOutput().start)
         }
         analyser.endScope()
     }
@@ -444,6 +445,26 @@ class PnpContext(val analyser: Analyser) : PnpBaseListener() {
                 ))
             }
         }
+    }
+
+    // endregion
+
+    // region statement
+
+    override fun exitWhileStart(ctx: PnpParser.WhileStartContext) {
+        analyser.tryPop()?.let { condition ->
+            if (!isBoolean(condition)) {
+                throw IncompatibleTypeException(ctx.start, condition.type, PrimitiveType.boolean)
+            }
+
+            val statement = WhileStatement(condition)
+            analyser.newInstruction(statement)
+            analyser.newScope(statement.block)
+        } ?: throw UnknownSemanticException(ctx.start)
+    }
+
+    override fun exitWhileBlock(ctx: PnpParser.WhileBlockContext) {
+        analyser.endScope()
     }
 
     // endregion

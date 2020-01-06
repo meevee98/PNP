@@ -21,6 +21,14 @@ class WatGenerator : Generator() {
     private val INTEGER_PREFIX = "i32"
     private val FLOAT_PREFIX = "f32"
     private val INTEGER_OPERATOR_SUFFIX = "_s"
+    // some conversions to wat need a unique identifier
+    // this variable with autoincrement is for these conversions cases
+    private var IDENTIFIER_COUNTER: Long = 0
+        get() {
+            val value = field
+            field++
+            return value
+        }
 
     override fun convert(symbols: SymbolTable): String {
         val wat = StringBuilder()
@@ -130,7 +138,25 @@ class WatGenerator : Generator() {
     }
 
     override fun convertWhile(statement: WhileStatement): String {
-        TODO("not implemented")
+        val conditionNegation = UnaryOperation(Operator.NOT, statement.condition, PrimitiveType.boolean)
+
+        return convertExpression(statement.condition)?.let { exitCondition ->
+            convertExpression(conditionNegation)?.let { enterCondition ->
+                val body = convertBody(statement.block.instructions)
+                val blockRef = "\$B$IDENTIFIER_COUNTER" // has auto increment, so the next access has
+                val loopRef = "\$L$IDENTIFIER_COUNTER" // a different value and has to be stored
+
+                "block $blockRef\n" +
+                "$enterCondition\n" +
+                "br_if $blockRef\n" +
+                "loop $loopRef" +
+                body +
+                "$exitCondition\n" +
+                "br_if $loopRef\n" +
+                "end\n" +
+                "end"
+            }
+        } ?: ""
     }
 
     override fun convertDoWhile(statement: DoWhileStatement): String {
